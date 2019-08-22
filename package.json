@@ -1,0 +1,46 @@
+{
+  "name": "keepsake-app",
+  "version": "1.0.0",
+  "description": "Scrap your phone camera and bring your photos to life!",
+  "main": "index.js",
+  "scripts": {
+    "build-watch": "webpack -w",
+    "start-server": "./node_modules/.bin/nodemon ./server/index.js",
+    "start": "npm run build-watch & npm run start-server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tsunenori-L/scrap-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tsunenori-L/scrap-app/issues"
+  },
+  "homepage": "https://github.com/Tsunenori-L/scrap-app#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "react": "^16.9.0",
+    "react-dom": "^16.9.0",
+    "react-redux": "^7.1.0",
+    "react-router-dom": "^5.0.1",
+    "redux": "^4.0.4",
+    "redux-thunk": "^2.3.0",
+    "sequelize": "^5.15.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "chalk": "^2.4.2",
+    "morgan": "^1.9.1",
+    "nodemon": "^1.19.1",
+    "redux-logger": "^3.0.6",
+    "webpack": "^4.39.2",
+    "webpack-cli": "^3.3.7"
+  }
+}
