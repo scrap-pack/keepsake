@@ -1,24 +1,24 @@
-const db = require('../db');
-const { STRING, UUID, UUIDV4, DATE, DECIMAL } = require('sequelize');
+const { STRING, UUID, UUIDV4, DATE, DECIMAL } = require("sequelize");
+const db = require("../db");
 
-const Image = db.define('image', {
+const Image = db.define("image", {
   id: {
     type: UUID,
     defaultValue: UUIDV4,
-    primaryKey: true,
+    primaryKey: true
   },
   imageUrl: {
     type: STRING,
     allowNull: false,
     validate: {
-      isUrl: true,
+      isUrl: true
     }
   },
   dateTaken: {
-    type: DATE,
+    type: DATE
   },
   fileName: {
-    type: STRING,
+    type: STRING
   },
   latitude: {
     type: DECIMAL(10, 5),
@@ -27,7 +27,7 @@ const Image = db.define('image', {
   longitude: {
     type: DECIMAL(10, 5),
     validate: { min: -180, max: 180 }
-  },
+  }
 });
 
 module.exports = Image;

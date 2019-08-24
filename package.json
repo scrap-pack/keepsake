@@ -6,19 +6,9 @@
   "scripts": {
     "build-watch": "webpack -w",
     "start-server": "./node_modules/.bin/nodemon ./server/index.js",
-    "start": "npm run build-watch & npm run start-server"
+    "start": "npm run build-watch & npm run start-server",
+    "seed": "node ./server/database/utils/seed.js"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Tsunenori-L/scrap-app.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Tsunenori-L/scrap-app/issues"
-  },
-  "homepage": "https://github.com/Tsunenori-L/scrap-app#readme",
   "dependencies": {
     "express": "^4.17.1",
     "pg": "^7.12.1",
@@ -37,8 +27,17 @@
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.6",
     "chalk": "^2.4.2",
+    "eslint": "^6.2.1",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-react": "^7.14.3",
+    "faker": "^4.1.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
+    "prettier": "^1.18.2",
     "redux-logger": "^3.0.6",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7"
