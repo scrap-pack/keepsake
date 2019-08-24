@@ -1,17 +1,17 @@
-const db = require('../db.js');
-const { STRING, DATE } = require('sequelize');
+const { STRING, DATE } = require("sequelize");
+const db = require("../db.js");
 
-const Session = db.define('Session', {
+const Session = db.define("Session", {
   sid: {
     type: STRING,
-    primaryKey: true,
+    primaryKey: true
   },
   expires: {
-    type: DATE,
+    type: DATE
   },
   data: {
-    type: STRING,
-  },
+    type: STRING
+  }
 });
 
 module.exports = Session;
