@@ -1,12 +1,12 @@
-const chalk = require("chalk");
-const { db } = require("./database/index.js");
-const app = require("./server");
+const chalk = require('chalk');
+const { db } = require('./database/index.js');
+const app = require('./server');
 
 const PORT = 3000;
 
-db.sync({ force: true })
+db.sync()
   .then(() => {
-    console.log(chalk.hex("#ACE000")("Database sync'd!"));
+    console.log(chalk.hex('#ACE000')("Database sync'd!"));
   })
   .then(() => {
     app.listen(PORT, () => {
