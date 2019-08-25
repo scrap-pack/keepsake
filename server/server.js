@@ -1,9 +1,9 @@
 const path = require('path');
 const express = require('express');
 const chalk = require('chalk');
+const morgan = require('morgan');
 
 const app = express();
-const morgan = require('morgan');
 
 app.use(morgan('dev'));
 app.use(express.json());
