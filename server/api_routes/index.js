@@ -6,6 +6,6 @@ const router = require('express').Router();
 router.use('/users', userRoutes);
 
 const imageRoutes = require('./imageRouter');
-router.use('/images', imageRoutes);
+router.use('/users', imageRoutes);
 
 module.exports = router;

@@ -1,11 +1,9 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Link } from "react-router-dom";
+import connect from "react-redux";
+import PropTypes from "prop-types";
 
-const Home = props => {
-  const { images } = props.images;
-
+const Home = ({ images }) => {
   return (
     <div>
       <div
@@ -28,6 +26,7 @@ const Home = props => {
       <Link to="/upload">
         <div
           style={{
+<<<<<<< HEAD:client/components/Home.js
             borderRadius: '50%',
             width: '200px',
             height: '200px',
@@ -36,6 +35,12 @@ const Home = props => {
             textAlign: 'center',
             verticalAlign: 'middle',
             size: '100px',
+=======
+            borderRadius: "50%",
+            width: "200px",
+            background: "orange",
+            border: "5px solid blue"
+>>>>>>> 48d2b8fbe8d75adfabdaf29750d3fc77757b111f:client/components/Home.jsx
           }}
         >
           Upload
@@ -52,14 +57,18 @@ Home.propTypes = {
       dateTaken: PropTypes.number,
       fileName: PropTypes.string,
       latitude: PropTypes.number,
-      longitude: PropTypes.number,
+      longitude: PropTypes.number
     })
-  ).isRequired,
+  ).isRequired
 };
 
 const mapStateToProps = state => {
   return {
+<<<<<<< HEAD:client/components/Home.js
     images: state.images.allImages,
+=======
+    images: state.imageStore.images
+>>>>>>> 48d2b8fbe8d75adfabdaf29750d3fc77757b111f:client/components/Home.jsx
   };
 };
 
