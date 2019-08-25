@@ -18,7 +18,8 @@ const seed = async () => {
       const user = await User.create(userFaker);
       let imgs = [];
       for (let j = 0; j < 3; j++) {
-        const img = await { imageUrl: image.imageUrl() };
+        const imgType = ["people", "animals", "transport"]
+        const img = await { imageUrl: image.imageUrl(400, 400, imgType[j]) };
         const imgRecord = await Image.create(img);
         imgs.push(imgRecord.id);
       }
