@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import Home from "./Home";
+import React, { Component } from 'react';
+import Home from './Home';
 
 class Main extends Component {
   render() {
