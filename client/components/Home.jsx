@@ -1,25 +1,39 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import connect from "react-redux";
+import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
 const Home = ({ images }) => {
   return (
     <div>
-      {images.map(elem => {
-        return (
-          <div key={elem.id}>
-            <img src={elem.imageUrl} alt="" />
-          </div>
-        );
-      })}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+          alignContent: "space-around",
+          flexWrap: "wrap"
+        }}
+      >
+        {images.map(elem => {
+          return (
+            <div key={elem.id}>
+              <img src={elem.imageUrl} alt="" />
+            </div>
+          );
+        })}
+      </div>
       <Link to="/upload">
         <div
           style={{
             borderRadius: "50%",
             width: "200px",
+            height: "200px",
             background: "orange",
-            border: "5px solid blue"
+            border: "5px solid blue",
+            textAlign: "center",
+            verticalAlign: "middle",
+            size: "100px"
           }}
         >
           Upload
@@ -43,7 +57,7 @@ Home.propTypes = {
 
 const mapStateToProps = state => {
   return {
-    images: state.imageStore.images
+    images: state.images.allImages
   };
 };
 
