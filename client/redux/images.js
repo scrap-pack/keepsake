@@ -1,7 +1,7 @@
-import axios from 'axios';
+import axios from "axios";
 
-const GET_IMAGES = 'GET_IMAGES';
-const GET_SINGLE_IMAGE = 'GET_SINGLE_IMAGE';
+const GET_IMAGES = "GET_IMAGES";
+const GET_SINGLE_IMAGE = "GET_SINGLE_IMAGE";
 
 const getImages = images => ({ type: GET_IMAGES, images });
 const getSingleImage = image => ({ type: GET_SINGLE_IMAGE, image });
@@ -22,16 +22,16 @@ const images = (state = imageState, action) => {
   }
 };
 
-export const fetchImages = () => async (dispatch) => {
+export const fetchImages = () => async dispatch => {
   try {
-    const { data } = await axios.get('/api/images');
+    const { data } = await axios.get("/api/images");
     dispatch(getImages(data));
   } catch (e) {
     console.error(e);
   }
 };
 
-export const fetchSingleImage = id => async (dispatch) => {
+export const fetchSingleImage = id => async dispatch => {
   try {
     const { data } = await axios.get(`/api/images/${id}`);
     dispatch(getSingleImage(data));

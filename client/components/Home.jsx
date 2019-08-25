@@ -30,7 +30,9 @@ const Home = ({ images }) => {
             width: "200px",
             height: "200px",
             background: "orange",
-            border: "5px solid blue"
+            border: "5px solid blue",
+            textAlign: "center",
+            size: "100px"
           }}
         >
           Upload
