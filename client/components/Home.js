@@ -1,9 +1,11 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import connect from "react-redux";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Home = ({ images }) => {
+const Home = props => {
+  const { images } = props.images;
+
   return (
     <div>
       {images.map(elem => {
@@ -16,10 +18,10 @@ const Home = ({ images }) => {
       <Link to="/upload">
         <div
           style={{
-            borderRadius: "50%",
-            width: "200px",
-            background: "orange",
-            border: "5px solid blue"
+            borderRadius: '50%',
+            width: '200px',
+            background: 'orange',
+            border: '5px solid blue',
           }}
         >
           Upload
@@ -36,16 +38,12 @@ Home.propTypes = {
       dateTaken: PropTypes.number,
       fileName: PropTypes.string,
       latitude: PropTypes.number,
-      longitude: PropTypes.number
+      longitude: PropTypes.number,
     })
-  ).isRequired
+  ).isRequired,
 };
 
-const mapStateToProps = state => {
-  return {
-    images: state.imageStore.images
-  };
-};
+const mapStateToProps = ({ images }) => ({ images });
 
 const connectedComponent = connect(mapStateToProps);
 
