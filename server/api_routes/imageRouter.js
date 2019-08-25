@@ -5,9 +5,9 @@ const chalk = require('chalk');
 //Get all iamges
 router.get('/', (req, res, next) => {
   return Image.findAll()
-    .then(users => {
+    .then(images => {
       console.log(chalk.green('Successfully got all images'));
-      return res.status(200).json(users);
+      return res.status(200).json(images);
     })
     .catch(e => {
       console.error(chalk.red('Failed to find any images', e));
