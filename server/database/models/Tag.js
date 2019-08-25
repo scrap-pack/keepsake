@@ -1,16 +1,16 @@
-const { STRING, UUID, UUIDV4 } = require("sequelize");
-const db = require("../db");
+const db = require('../db');
+const { STRING, UUID, UUIDV4 } = require('sequelize');
 
-const Tag = db.define("tag", {
+const Tag = db.define('tag', {
   id: {
     type: UUID,
     defaultValue: UUIDV4,
-    primaryKey: true
+    primaryKey: true,
   },
   description: {
     type: STRING,
-    allowNull: false
-  }
+    allowNull: false,
+  },
 });
 
 module.exports = Tag;

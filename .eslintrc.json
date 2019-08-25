@@ -6,6 +6,7 @@
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "no-await-in-loop": "off",
     "no-plusplus":"off",
-    "react/no-unescaped-entities": "off"
+    "react/no-unescaped-entities": "off",
+    "quotes": "off"
   }
 }
