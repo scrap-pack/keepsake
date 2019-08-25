@@ -25,6 +25,7 @@
     "@babel/core": "^7.5.5",
     "@babel/preset-env": "^7.5.5",
     "@babel/preset-react": "^7.0.0",
+    "babel-eslint": "^10.0.2",
     "babel-loader": "^8.0.6",
     "chalk": "^2.4.2",
     "eslint": "^6.2.1",
@@ -38,6 +39,7 @@
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2",
+    "prop-types": "^15.7.2",
     "redux-logger": "^3.0.6",
     "webpack": "^4.39.2",
     "webpack-cli": "^3.3.7"

@@ -7,7 +7,7 @@ const Tag = db.define('tag', {
     defaultValue: UUIDV4,
     primaryKey: true,
   },
- description: {
+  description: {
     type: STRING,
     allowNull: false,
   },
