@@ -32,6 +32,7 @@ const Home = ({ images }) => {
             background: "orange",
             border: "5px solid blue",
             textAlign: "center",
+            verticalAlign: "middle",
             size: "100px"
           }}
         >
