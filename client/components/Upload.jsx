@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import * as mobilenet from '@tensorflow-models/mobilenet';
 import { postImages } from '../redux/images';
+import Dropbox from './Dropbox.jsx';
 
 const propTypes = {
   uploadImage: PropTypes.func.isRequired,
@@ -12,14 +13,27 @@ const propTypes = {
 
 const Upload = ({ uploadImage, previewImage }) => {
   return (
-    <form name="uploadForm" onSubmit={uploadImage} onChange={previewImage} encType="multipart/form-data" style={{ display: 'flex', flexDirection: 'column' }}>
+    <form
+      name="uploadForm"
+      onSubmit={uploadImage}
+      onChange={previewImage}
+      encType="multipart/form-data"
+      style={{ display: 'flex', flexDirection: 'column' }}
+    >
       <div>
         <div>Choose image to upload</div>
-        <input type="file" id="imageUpload" name="uploadInput" accept="image/*" multiple />
+        {/* <input
+          type="file"
+          id="imageUpload"
+          name="uploadInput"
+          accept="image/*"
+          multiple
+        /> */}
+        <Dropbox id="dropbox" />
         <img src="" height="200" name="imagePreview" alt="preview..." />
       </div>
-      <div>
-        <button type="submit">Submit</button>
+      <div className="row center">
+        <button type="submit">Upload</button>
       </div>
     </form>
   );
@@ -28,14 +42,14 @@ const Upload = ({ uploadImage, previewImage }) => {
 Upload.propTypes = propTypes;
 
 const mapDispatchToProps = dispatch => ({
-  uploadImage: (e) => {
+  uploadImage: e => {
     e.preventDefault();
     const fileList = e.target.uploadInput.files[0];
-    
+
     // tbd pending AWS S3 bucket
     // dispatch(postImages());
   },
-  previewImage: async (e) => {
+  previewImage: async e => {
     e.preventDefault();
     e.persist();
     const preview = document.querySelector('img');
@@ -57,13 +71,20 @@ const mapDispatchToProps = dispatch => ({
       reader.readAsDataURL(fileList);
     }
 
-    reader.addEventListener("load", () => {
-      preview.src = reader.result;
-    }, false);
+    reader.addEventListener(
+      'load',
+      () => {
+        preview.src = reader.result;
+      },
+      false
+    );
   },
 });
 
-const connectToStore = connect(null, mapDispatchToProps);
+const connectToStore = connect(
+  null,
+  mapDispatchToProps
+);
 
 const connectedUpload = connectToStore(Upload);
 
