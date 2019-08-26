@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = props => {
   return (
@@ -11,7 +12,7 @@ const Navbar = props => {
         </a>
         <ul class="right hide-on-med-and-down">
           <li>
-            <a href="/">My Images</a>
+            <Link to="/upload">My Images</Link>
           </li>
         </ul>
 
