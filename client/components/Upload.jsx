@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { postImages } from '../redux/images';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import * as mobilenet from '@tensorflow-models/mobilenet';
+import { postImages } from '../redux/images';
 
 const propTypes = {
   uploadImage: PropTypes.func.isRequired,
