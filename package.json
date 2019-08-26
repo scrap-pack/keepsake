@@ -10,6 +10,13 @@
     "seed": "node ./server/database/utils/seed.js"
   },
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "@tensorflow-models/coco-ssd": "^2.0.0",
+    "@tensorflow-models/mobilenet": "^2.0.3",
+    "@tensorflow/tfjs": "^1.2.8",
+    "axios": "^0.19.0",
+>>>>>>> 46848a7dd4bc1de502ac5c8d4e1c038eb8b3c66b
     "express": "^4.17.1",
     "npm": "^6.11.2",
     "pg": "^7.12.1",
@@ -17,6 +24,7 @@
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-redux": "^7.1.0",
+    "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",

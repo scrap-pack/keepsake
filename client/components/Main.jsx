@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Switch, Route } from 'react-router';
 import { connect } from 'react-redux';
-import Home from './Home';
-import { fetchImages } from '../redux/images.js';
+import Home from './Home.jsx';
+import Upload from './Upload.jsx';
+import { fetchImages } from '../redux/images';
+import Navbar from './Header/Navbar.js';
 
 const propTypes = {
   getImages: PropTypes.func.isRequired,
@@ -15,7 +18,15 @@ class Main extends Component {
   }
 
   render() {
-    return <Home />;
+    return (
+      <div>
+        <Navbar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/upload" component={Upload} />
+        </Switch>
+      </div>
+    );
   }
 }
 
