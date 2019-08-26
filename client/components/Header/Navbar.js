@@ -14,6 +14,9 @@ const Navbar = props => {
           <li>
             <Link to="/scrapbook">My Images</Link>
           </li>
+          <li>
+            <Link to="/upload">Add to Scrapbook</Link>
+          </li>
         </ul>
 
         <ul id="nav-mobile" class="sidenav">
