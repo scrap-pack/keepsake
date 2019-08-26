@@ -2,9 +2,9 @@ const chalk = require('chalk');
 const { db } = require('./database/index.js');
 const app = require('./server');
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
-db.sync()
+db.sync({ force: process.env.DB_FORCE === 'true' })
   .then(() => {
     console.log(chalk.hex('#ACE000')("Database sync'd!"));
   })
