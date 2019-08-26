@@ -48,8 +48,14 @@ const mapDispatchToProps = dispatch => ({
   getSelectedImages: () => dispatch(fetchSelectedImages()),
   getTags: () => dispatch(fetchTags()),
   getTag: id => dispatch(fetchSingleTag(id)),
-  uploadTags: currentTags => dispatch(postTags(currentTags)),
-  addTags: tags => storeTags(tags),
+  uploadTags: currentTags => {
+    e.preventDefault();
+    dispatch(postTags(currentTags));
+  },
+  addTags: tags => {
+    e.preventDefault();
+    storeTags(tags);
+  },
 });
 
 export default connect(
