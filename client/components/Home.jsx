@@ -1,44 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Home = ({ images }) => {
+const Home = props => {
   return (
     <div>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-evenly",
-          alignContent: "space-around",
-          flexWrap: "wrap"
-        }}
-      >
-        {images.map(elem => {
-          return (
-            <div key={elem.id}>
-              <img src={elem.imageUrl} alt="" />
-            </div>
-          );
-        })}
-      </div>
-      <Link to="/upload">
-        <div
-          style={{
-            borderRadius: "50%",
-            width: "200px",
-            height: "200px",
-            background: "orange",
-            border: "5px solid blue",
-            textAlign: "center",
-            verticalAlign: "middle",
-            size: "100px"
-          }}
-        >
-          Upload
-        </div>
-      </Link>
+      <div> Welcome! </div>
+      <Link to="/scrapbook" />
+      <Link to="/upload" />
     </div>
   );
 };
@@ -50,14 +20,14 @@ Home.propTypes = {
       dateTaken: PropTypes.number,
       fileName: PropTypes.string,
       latitude: PropTypes.number,
-      longitude: PropTypes.number
+      longitude: PropTypes.number,
     })
-  ).isRequired
+  ).isRequired,
 };
 
 const mapStateToProps = state => {
   return {
-    images: state.images.allImages
+    images: state.images.allImages,
   };
 };
 
