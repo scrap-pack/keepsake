@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchSelectedImages } from '../redux/tags';
+import { fetchTags, fetchSingleTag, postTags, storeTags } from '../redux/tags';
 
 class Tag extends React.Component {
   componentDidMount() {
@@ -13,10 +13,10 @@ class Tag extends React.Component {
   render() {
     return (
       <div>
-        <form>
-          >Add tags field with submit button
-          <label>l</label>
-          <input>i</input>
+        <form onSubmit={this.props.uploadTags(this.props.currentTags)}>
+          <label>Add Tags seperated by commas</label>
+          <input onChange={this.props.addTags(e.target.value)}></input>{' '}
+          <button type="onSubmit">Upload Tags</button>
         </form>
         back to home page button
       </div>
@@ -37,11 +37,19 @@ Home.propTypes = {
 };
 
 const mapStateToProps = state => {
-  return { selectedImages: state.images.selectedImages };
+  return {
+    selectedImages: state.images.selectedImages,
+    currenttags: state.tags.currentTags,
+    singletag: state.tags.singleTag,
+  };
 };
 
 const mapDispatchToProps = dispatch => ({
   getSelectedImages: () => dispatch(fetchSelectedImages()),
+  getTags: () => dispatch(fetchTags()),
+  getTag: id => dispatch(fetchSingleTag(id)),
+  uploadTags: currentTags => dispatch(postTags(currentTags)),
+  addTags: tags => storeTags(tags),
 });
 
 export default connect(
