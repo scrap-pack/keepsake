@@ -36,11 +36,11 @@ const intialState = {
 const tags = (state = intialState, action) => {
   switch (action.type) {
     case GET_TAGS:
-      return { ...state, currentTags: [...state.allTags, ...action.tags] };
+      return { ...state, currentTags: [...state.currentTags, ...action.tags] };
     case GET_SINGLE_TAG:
       return { ...state, singleTag: action.tag };
     case UPLOAD_TAGS:
-      return { ...state, currentTags: [...allTags, ...action.addedTags] };
+      return { ...state, currentTags: [...currentTags, ...action.addedTags] };
     case CLEAR_TAGS:
       return { ...state, currentTags: [] };
     default:
