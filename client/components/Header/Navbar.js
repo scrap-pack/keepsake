@@ -12,7 +12,7 @@ const Navbar = props => {
         </a>
         <ul class="right hide-on-med-and-down">
           <li>
-            <Link to="/upload">My Images</Link>
+            <Link to="/scrapbook">My Images</Link>
           </li>
         </ul>
 

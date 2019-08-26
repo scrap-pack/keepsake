@@ -27,7 +27,6 @@ class Main extends Component {
     return (
       <div>
         <Navbar />
-
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/upload" component={Upload} />
