@@ -1,12 +1,10 @@
-
-
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { Switch, Route } from "react-router";
-import { connect } from "react-redux";
-import Home from "./Home.jsx";
-import Upload from "./Upload.jsx";
-import { fetchImages } from "../redux/images";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { Switch, Route } from 'react-router';
+import { connect } from 'react-redux';
+import Home from './Home.jsx';
+import Upload from './Upload.jsx';
+import { fetchImages } from '../redux/images';
 import Navbar from './Header/Navbar.js';
 
 const propTypes = {
@@ -21,22 +19,20 @@ class Main extends Component {
 
   render() {
     return (
-
       <div>
         <Navbar />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/upload" component={Upload} />
         </Switch>
-       </div>
-
+      </div>
     );
   }
 }
 
 Main.propTypes = propTypes;
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   getImages: () => dispatch(fetchImages()),
 });
 
