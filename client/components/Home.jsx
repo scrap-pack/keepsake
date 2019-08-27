@@ -26,6 +26,7 @@ const Home = ({ images }) => {
                   event.preventDefault();
                   this.props.selectImage(elem);
                 }}
+                //add ability to deselect images
               />
             </div>
           );

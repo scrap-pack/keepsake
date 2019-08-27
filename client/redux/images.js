@@ -3,12 +3,12 @@ import axios from 'axios';
 const GET_IMAGES = 'GET_IMAGES';
 const GET_SINGLE_IMAGE = 'GET_SINGLE_IMAGE';
 const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
-const SELECT_IMAGE = 'SELECTED_IMAGE';
+const SELECT_IMAGE = 'SELECT_IMAGE';
 
 const getImages = images => ({ type: GET_IMAGES, images });
 const getSingleImage = image => ({ type: GET_SINGLE_IMAGE, image });
 const uploadImages = () => ({ type: UPLOAD_IMAGES });
-export const selectImage = image => ({ type: SELECT_IMAGE, image });
+export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 
 const imageState = {
   allImages: [],
