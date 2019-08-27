@@ -7,6 +7,6 @@
     "no-await-in-loop": "off",
     "no-plusplus":"off",
     "react/no-unescaped-entities": "off",
-    "quotes": "off"
+    "quotes": [2, "single", { "avoidEscape": true }]
   }
 }
