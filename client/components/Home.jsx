@@ -27,6 +27,7 @@ const Home = ({ images }) => {
                   this.props.selectImage(elem);
                 }}
                 //add ability to deselect images
+                //add jsx to show image is selected
               />
             </div>
           );
