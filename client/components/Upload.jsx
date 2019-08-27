@@ -54,10 +54,6 @@ const mapDispatchToProps = dispatch => ({
   
       console.log(predictedObject);
   
-      // const model = await mobilenet.load();
-      // const predictions = await model.classify(preview);
-  
-      // console.log(predictions);
     }, false);
   },
 });
