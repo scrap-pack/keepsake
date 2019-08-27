@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { addSelectedImage } from '../redux/images';
 
 const Home = ({ images }) => {
   return (
@@ -18,7 +19,14 @@ const Home = ({ images }) => {
         {images.map(elem => {
           return (
             <div key={elem.id}>
-              <img src={elem.imageUrl} alt="" />
+              <img
+                src={elem.imageUrl}
+                alt=""
+                onClick={event => {
+                  event.preventDefault();
+                  this.props.selectImage(elem);
+                }}
+              />
             </div>
           );
         })}
@@ -58,10 +66,22 @@ Home.propTypes = {
 const mapStateToProps = state => {
   return {
     images: state.images.allImages,
+    currentImages: state.images.selectedImages,
   };
 };
 
-const connectedComponent = connect(mapStateToProps);
+const mapDispatchToProps = dispatch => {
+  return {
+    selectImage: image => {
+      addSelectedImage(image);
+    },
+  };
+};
+
+const connectedComponent = connect(
+  mapStateToProps,
+  mapDispatchToProps
+);
 
 const connectedImagesComponent = connectedComponent(Home);
 
