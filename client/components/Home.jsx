@@ -1,12 +1,25 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { addSelectedImage } from '../redux/images';
 
+//select button to changes between single image veiw and select images
+
 const Home = ({ images }) => {
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
+      <h1
+        onClick={() => {
+          this.props.select = !this.props.select;
+        }}
+      >
+        SELECT
+      </h1>
       <div
         style={{
           display: 'flex',
@@ -24,7 +37,11 @@ const Home = ({ images }) => {
                 alt=""
                 onClick={event => {
                   event.preventDefault();
-                  this.props.selectImage(elem);
+                  if (this.props.select) {
+                    this.props.selectImage(elem);
+                  } else {
+                    <Redirect to="/singleImage" />;
+                  }
                 }}
                 //add ability to deselect images
                 //add jsx to show image is selected
@@ -69,6 +86,7 @@ const mapStateToProps = state => {
   return {
     images: state.images.allImages,
     currentImages: state.images.selectedImages,
+    select: false,
   };
 };
 
