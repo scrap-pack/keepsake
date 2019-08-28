@@ -2,7 +2,11 @@ import React from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addSelectedImage, removeSelectedImage } from '../redux/images';
+import {
+  addSelectedImage,
+  removeSelectedImage,
+  getSingleImage,
+} from '../redux/images';
 
 //select button to changes between single image veiw and select images
 
@@ -45,7 +49,8 @@ const Home = ({ images }) => {
                       //add jsx to show image is selected
                     }
                   } else {
-                    <Redirect to="/singleImage" image={image} />;
+                    this.props.addToSingleImage(image);
+                    <Redirect to="/singleImage" />;
                   }
                 }}
               />
@@ -96,11 +101,12 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     selectImage: image => {
-      addSelectedImage(image);
+      dispatch(addSelectedImage(image));
     },
     deselectImage: image => {
-      removeSelectedImage(image);
+      dispatch(removeSelectedImage(image));
     },
+    addToSingleImage: image => dispatch(getSingleImage(image)),
   };
 };
 
