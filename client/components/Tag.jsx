@@ -61,7 +61,7 @@ const mapDispatchToProps = dispatch => ({
   getTags: () => dispatch(fetchTags()),
   getTag: id => dispatch(fetchSingleTag(id)),
   uploadTags: currentTags => dispatch(postTags(currentTags)),
-  addTags: tags => storeTags(tags),
+  addTags: tags => storeTags(tags, dispatch),
 });
 
 export default connect(

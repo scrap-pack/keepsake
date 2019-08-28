@@ -23,9 +23,9 @@ const parseTagsFromString = tagsString => {
   }
 };
 
-export const storeTags = tags => {
+export const storeTags = (tags, dispatch) => {
   const addedTags = parseTagsFromString(tags);
-  uploadTags(addedTags);
+  dispatch(uploadTags(addedTags));
 };
 
 const intialState = {
