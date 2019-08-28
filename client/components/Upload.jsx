@@ -43,22 +43,17 @@ const mapDispatchToProps = dispatch => ({
     console.log('FILE HEREEEEE', fileList);
     const reader = new FileReader();
 
-    const objectDetector = await cocoSsd.load();
-    const predictedObject = await objectDetector.detect(preview);
-
-    console.log(predictedObject);
-
-    const model = await mobilenet.load();
-    const predictions = await model.classify(preview);
-
-    console.log(predictions);
-
     if (fileList) {
       reader.readAsDataURL(fileList);
     }
 
-    reader.addEventListener("load", () => {
+    reader.addEventListener("load", async () => {
       preview.src = reader.result;
+      const objectDetector = await cocoSsd.load();
+      const predictedObject = await objectDetector.detect(preview);
+  
+      console.log(predictedObject);
+  
     }, false);
   },
 });
