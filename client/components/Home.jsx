@@ -50,13 +50,13 @@ const Home = props => {
                     ) {
                       props.deselectImage(image);
                     } else {
-                      console.log(props.currentImages);
                       props.selectImage(image);
                       //add jsx to show image is selected
                     }
                   } else {
                     props.addToSingleImage(image);
-                    <Redirect to="/singleImage" />;
+                    <Redirect to="/SingleImage" />;
+                    //fix this
                   }
                 }}
               />
