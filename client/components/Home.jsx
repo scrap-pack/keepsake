@@ -43,10 +43,14 @@ const Home = props => {
                 onClick={event => {
                   event.preventDefault();
                   if (props.select) {
-                    console.log(props.select);
-                    if (image in props.currentImages) {
+                    if (
+                      props.currentImages.filter(
+                        currentImage => currentImage === image
+                      ).length > 0
+                    ) {
                       props.deselectImage(image);
                     } else {
+                      console.log(props.currentImages);
                       props.selectImage(image);
                       //add jsx to show image is selected
                     }

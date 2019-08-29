@@ -14,7 +14,7 @@ export const getSingleImage = image => {
 const uploadImages = () => ({ type: UPLOAD_IMAGES });
 export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });
-export const flipSelect = select => ({ type: SWAP_SELECT, select });
+export const flipSelect = () => ({ type: SWAP_SELECT });
 
 const imageState = {
   allImages: [],
