@@ -7,7 +7,7 @@ const CLEAR_TAGS = 'CLEAR_TAGS';
 
 const getTags = tags => ({ type: GET_TAG, tags });
 const getSingleTag = tag => ({ type: GET_SINGLE_TAG, tag });
-const uploadTags = addedtags => ({ type: UPLOAD_IMAGES, addedtags });
+const uploadTags = addedtags => ({ type: UPLOAD_TAGS, addedtags });
 const clearTags = () => ({ type: CLEAR_TAGS });
 
 const parseTagsFromString = tagsString => {
@@ -40,7 +40,10 @@ const tags = (state = intialState, action) => {
     case GET_SINGLE_TAG:
       return { ...state, singleTag: action.tag };
     case UPLOAD_TAGS:
-      return { ...state, currentTags: [...currentTags, ...action.addedTags] };
+      return {
+        ...state,
+        currentTags: [...state.currentTags, ...action.addedTags],
+      };
     case CLEAR_TAGS:
       return { ...state, currentTags: [] };
     default:

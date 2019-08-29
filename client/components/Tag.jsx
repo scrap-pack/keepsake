@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { fetchTags, fetchSingleTag, postTags, storeTags } from '../redux/tags';
+import Home from './Home.jsx';
 
 class Tag extends React.Component {
-  componentDidMount() {
-    const { getSelectedImages } = this.props;
-    getSelectedImages();
-  }
+  // componentDidMount() {
+  //   const { getSelectedImages } = this.props;
+  //   getSelectedImages();
+  // }
 
   render() {
     return (
@@ -24,28 +25,28 @@ class Tag extends React.Component {
             <input
               onChange={event => {
                 event.preventDefault();
-                this.props.addTags(e.target.value);
+                this.props.addTags(event.target.value);
               }}
             ></input>{' '}
             <button type="onSubmit">Upload Tags</button>
           </form>
         </div>
-        <Link to="/home">HOME</Link>
+        <Link to="/">HOME</Link>
       </div>
     );
   }
 }
 
-Home.propTypes = {
+Tag.propTypes = {
   selectedImages: PropTypes.arrayOf(
     PropTypes.shape({
-      imageUrl: PropTypes.string.isRequired,
+      imageUrl: PropTypes.string,
       dateTaken: PropTypes.number,
       fileName: PropTypes.string,
       latitude: PropTypes.number,
       longitude: PropTypes.number,
     })
-  ).isRequired,
+  ),
 };
 
 const mapStateToProps = state => {
@@ -57,7 +58,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  getSelectedImages: () => dispatch(fetchSelectedImages()),
+  // getSelectedImages: () => dispatch(fetchSelectedImages()),
   getTags: () => dispatch(fetchTags()),
   getTag: id => dispatch(fetchSingleTag(id)),
   uploadTags: currentTags => dispatch(postTags(currentTags)),

@@ -8,6 +8,8 @@ import {
   getSingleImage,
   flipSelect,
 } from '../redux/images';
+import Tag from './Tag.jsx';
+import SingleImage from './SingleImage.jsx';
 
 const Home = props => {
   const { images } = props;
@@ -45,7 +47,7 @@ const Home = props => {
                   if (props.select) {
                     if (
                       props.currentImages.filter(
-                        currentImage => currentImage === image
+                        currentImage => currentImage.id === image.id
                       ).length > 0
                     ) {
                       props.deselectImage(image);
@@ -55,7 +57,7 @@ const Home = props => {
                     }
                   } else {
                     props.addToSingleImage(image);
-                    <Redirect to="/SingleImage" />;
+                    <Redirect to="/SingleImage" component={SingleImage} />;
                     //fix this
                   }
                 }}
@@ -64,6 +66,7 @@ const Home = props => {
           );
         })}
       </div>
+
       <Link to="/upload">
         <div
           style={{

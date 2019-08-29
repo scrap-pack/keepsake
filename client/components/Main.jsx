@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router';
 import { connect } from 'react-redux';
 import Home from './Home.jsx';
 import Upload from './Upload.jsx';
+import SingleImage from './singleImage.jsx';
 import { fetchImages } from '../redux/images';
 import Navbar from './Header/Navbar.js';
 
@@ -24,6 +25,7 @@ class Main extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/upload" component={Upload} />
+          <Route path="/SingleImage" component={SingleImage} />
         </Switch>
       </div>
     );
