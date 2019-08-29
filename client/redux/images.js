@@ -5,6 +5,7 @@ const GET_SINGLE_IMAGE = 'GET_SINGLE_IMAGE';
 const UPLOAD_IMAGES = 'UPLOAD_IMAGES';
 const SELECT_IMAGE = 'SELECT_IMAGE';
 const DESELECT_IMAGE = 'DESELECT_IMAGE';
+const SWAP_SELECT = 'SWAP_SELECT';
 
 const getImages = images => ({ type: GET_IMAGES, images });
 export const getSingleImage = image => {
@@ -13,11 +14,13 @@ export const getSingleImage = image => {
 const uploadImages = () => ({ type: UPLOAD_IMAGES });
 export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });
+export const flipSelect = select => ({ type: SWAP_SELECT, select });
 
 const imageState = {
   allImages: [],
   singleImage: {},
   selectedImages: [],
+  select: false,
 };
 
 const images = (state = imageState, action) => {
@@ -37,6 +40,11 @@ const images = (state = imageState, action) => {
         selectedImages: state.selectedImages.filter(
           selectedImage => selectedImage.id !== action.image.id
         ),
+      };
+    case SWAP_SELECT:
+      return {
+        ...state,
+        select: action.select,
       };
     default:
       return state;

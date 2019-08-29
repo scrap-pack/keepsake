@@ -6,6 +6,7 @@ import {
   addSelectedImage,
   removeSelectedImage,
   getSingleImage,
+  flipSelect,
 } from '../redux/images';
 
 //select button to changes between single image veiw and select images
@@ -44,7 +45,7 @@ const Home = props => {
                 onClick={event => {
                   event.preventDefault();
                   if (props.select) {
-                    if (elem in props.currentImages) {
+                    if (image in props.currentImages) {
                       props.deselectImage(image);
                     } else {
                       props.selectImage(image);
@@ -96,7 +97,7 @@ const mapStateToProps = state => {
   return {
     images: state.images.allImages,
     currentImages: state.images.selectedImages,
-    select: false,
+    select: state.select,
   };
 };
 
@@ -109,7 +110,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(removeSelectedImage(image));
     },
     addToSingleImage: image => dispatch(getSingleImage(image)),
-    swapSelect: select => !select,
+    swapSelect: select => dispatch(flipSelect(!select)),
   };
 };
 
