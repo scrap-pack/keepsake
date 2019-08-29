@@ -7,7 +7,9 @@ const SELECT_IMAGE = 'SELECT_IMAGE';
 const DESELECT_IMAGE = 'DESELECT_IMAGE';
 
 const getImages = images => ({ type: GET_IMAGES, images });
-const getSingleImage = image => ({ type: GET_SINGLE_IMAGE, image });
+export const getSingleImage = image => {
+  return { type: GET_SINGLE_IMAGE, image };
+};
 const uploadImages = () => ({ type: UPLOAD_IMAGES });
 export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });

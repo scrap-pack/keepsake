@@ -10,7 +10,8 @@ import {
 
 //select button to changes between single image veiw and select images
 
-const Home = ({ images }) => {
+const Home = props => {
+  const { images } = props;
   return (
     <div
       style={{
@@ -18,8 +19,9 @@ const Home = ({ images }) => {
       }}
     >
       <h1
-        onClick={() => {
-          this.props.select = !this.props.select;
+        onClick={event => {
+          event.preventDefault();
+          props.swapSelect(props.select);
         }}
       >
         SELECT
@@ -41,15 +43,15 @@ const Home = ({ images }) => {
                 alt=""
                 onClick={event => {
                   event.preventDefault();
-                  if (this.props.select) {
-                    if (elem in this.props.currentImages) {
-                      this.props.deselectImage(image);
+                  if (props.select) {
+                    if (elem in props.currentImages) {
+                      props.deselectImage(image);
                     } else {
-                      this.props.selectImage(image);
+                      props.selectImage(image);
                       //add jsx to show image is selected
                     }
                   } else {
-                    this.props.addToSingleImage(image);
+                    props.addToSingleImage(image);
                     <Redirect to="/singleImage" />;
                   }
                 }}
@@ -107,6 +109,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(removeSelectedImage(image));
     },
     addToSingleImage: image => dispatch(getSingleImage(image)),
+    swapSelect: select => !select,
   };
 };
 
