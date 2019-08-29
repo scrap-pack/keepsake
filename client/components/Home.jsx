@@ -9,8 +9,6 @@ import {
   flipSelect,
 } from '../redux/images';
 
-//select button to changes between single image veiw and select images
-
 const Home = props => {
   const { images } = props;
   return (
@@ -22,7 +20,7 @@ const Home = props => {
       <h1
         onClick={event => {
           event.preventDefault();
-          props.swapSelect(props.select);
+          props.swapSelect();
         }}
       >
         SELECT
@@ -45,6 +43,7 @@ const Home = props => {
                 onClick={event => {
                   event.preventDefault();
                   if (props.select) {
+                    console.log(props.select);
                     if (image in props.currentImages) {
                       props.deselectImage(image);
                     } else {
@@ -97,7 +96,7 @@ const mapStateToProps = state => {
   return {
     images: state.images.allImages,
     currentImages: state.images.selectedImages,
-    select: state.select,
+    select: state.images.select,
   };
 };
 
@@ -110,7 +109,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(removeSelectedImage(image));
     },
     addToSingleImage: image => dispatch(getSingleImage(image)),
-    swapSelect: select => dispatch(flipSelect(!select)),
+    swapSelect: () => dispatch(flipSelect()),
   };
 };
 

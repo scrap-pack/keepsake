@@ -44,7 +44,7 @@ const images = (state = imageState, action) => {
     case SWAP_SELECT:
       return {
         ...state,
-        select: action.select,
+        select: !state.select,
       };
     default:
       return state;
