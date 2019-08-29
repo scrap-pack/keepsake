@@ -13,22 +13,24 @@ class Tag extends React.Component {
   render() {
     return (
       <div>
-        <form
-          onSubmit={event => {
-            event.preventDefault();
-            this.props.uploadTags(this.props.currentTags);
-          }}
-        >
-          <label>Add Tags seperated by commas</label>
-          <input
-            onChange={event => {
+        <div>
+          <form
+            onSubmit={event => {
               event.preventDefault();
-              this.props.addTags(e.target.value);
+              this.props.uploadTags(this.props.currentTags);
             }}
-          ></input>{' '}
-          <button type="onSubmit">Upload Tags</button>
-        </form>
-        back to home page button
+          >
+            <label>Add Tags seperated by commas</label>
+            <input
+              onChange={event => {
+                event.preventDefault();
+                this.props.addTags(e.target.value);
+              }}
+            ></input>{' '}
+            <button type="onSubmit">Upload Tags</button>
+          </form>
+        </div>
+        <Link to="/home">HOME</Link>
       </div>
     );
   }
@@ -59,7 +61,7 @@ const mapDispatchToProps = dispatch => ({
   getTags: () => dispatch(fetchTags()),
   getTag: id => dispatch(fetchSingleTag(id)),
   uploadTags: currentTags => dispatch(postTags(currentTags)),
-  addTags: tags => storeTags(tags),
+  addTags: tags => storeTags(tags, dispatch),
 });
 
 export default connect(
