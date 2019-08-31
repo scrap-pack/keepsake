@@ -18,13 +18,13 @@ const apiRoutes = require('./api_routes');
 app.use('/api', apiRoutes);
 
 // Serve index.html for all paths
-app.use('/*', (req, res, next) => {
+app.use('/*', (req, res) => {
   const publicHtml = path.join(publicPath, 'index.html');
   res.sendFile(publicHtml);
 });
 
 // Error-handling middleware
-app.use((error, req, res, next) => {
+app.use((error, req, res) => {
   console.log(chalk.bold.red('Error: ', error.stack));
   res
     .status(error.status || 500)

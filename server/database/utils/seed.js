@@ -1,6 +1,7 @@
 const { name, internet, image } = require('faker');
-const { db, User, Image } = require('../index');
 const chalk = require('chalk');
+const { db, User, Image } = require('../index');
+
 
 const seed = async () => {
   // const Users = [];

@@ -15,7 +15,7 @@ db.sync({ force: process.env.DB_FORCE === 'true' })
             Listening on PORT : ${PORT}
 
             http://localhost:${PORT}
-        `)
+        `),
       );
     });
   });
