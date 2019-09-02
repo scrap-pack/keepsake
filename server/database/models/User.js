@@ -1,6 +1,7 @@
-const { STRING, UUID, UUIDV4, ENUM } = require('sequelize');
+const { STRING, UUID, UUIDV4, ENUM, ARRAY, JSON } = require('sequelize');
 const db = require('../db.js');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 // userType constants for when we have auth
 const GUEST = 'guest';
@@ -38,15 +39,19 @@ const User = db.define('user', {
   },
   password: {
     type: STRING,
-    // validate: {
-    //   notEmpty: true,
-    //   len: [8, 24],
-    // },
+    validate: {
+      notEmpty: true,
+      len: [8, 24],
+    },
+  },
+  tokens: {
+    type: ARRAY(JSON),
+    defaultValue: [],
   },
 });
 
 const hashPassword = (password, saltRounds = 8) => {
-  return new Promise((reject, resolve) => {
+  return new Promise((resolve, reject) => {
     bcrypt.genSalt(saltRounds, (err, salt) => {
       if (err) reject(err);
       bcrypt.hash(password, salt, (err, hash) => {
@@ -58,7 +63,7 @@ const hashPassword = (password, saltRounds = 8) => {
 };
 
 const comparePassword = (password, hashedPassword) => {
-  return new Promise((reject, resolve) => {
+  return new Promise((resolve, reject) => {
     bcrypt.compare(password, hashedPassword, (err, res) => {
       if (err) reject(err);
       resolve(res);
@@ -69,15 +74,29 @@ const comparePassword = (password, hashedPassword) => {
 const loginError = 'Unable to login!';
 
 User.findByCredentials = async (email, password) => {
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ where: { email } });
+  try {
+    if (!user) throw new Error(loginError);
 
-  if (!user) throw new Error(loginError);
+    const isMatch = await comparePassword(password, user.password);
 
-  const isMatch = comparePassword(password, user.password);
+    if (!isMatch) throw new Error(loginError);
 
-  if (!isMatch) throw new Error(loginError);
+    return user;
+  } catch (e) {
+    throw new Error('Invalid login credentitals!');
+  }
+};
 
-  return user;
+User.prototype.generateAuthToken = async function() {
+  const user = this;
+  const token = jwt.sign(
+    { id: user.id },
+    process.env.AUTH_SECRET || 'secretkey'
+  );
+  user.tokens = user.tokens.concat({ token });
+  user.save();
+  return token;
 };
 
 User.beforeCreate(async function(user) {

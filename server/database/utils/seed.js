@@ -11,6 +11,13 @@ const seed = async () => {
   try {
     console.log(chalk.cyan('Syncing db...'));
     await db.sync({ force: true });
+    await User.create({
+      firstName: 'Admin',
+      lastName: 'AlsoAdmin',
+      email: 'keepsake@keepsake.com',
+      password: 'keepsafe',
+      userType: 'registered',
+    });
 
     await Tag.create({ description: 'people' });
     await Tag.create({ description: 'animals' });
@@ -25,11 +32,17 @@ const seed = async () => {
         firstName: name.firstName(),
         lastName: name.lastName(),
         email: internet.email(),
+        password: 'keepsake',
       };
       const user = await User.create(userFaker);
       let imgs = [];
+<<<<<<< HEAD
       for (let j = 0; j < 7; j++) {
         const imgType = ['people', 'animals', 'transport', 'food', 'fashion', 'nature', 'nightlife'];
+=======
+      for (let j = 0; j < 3; j++) {
+        const imgType = ['people', 'animals', 'transport'];
+>>>>>>> Successfully generate jsonwebtoken for user
         const img = await { imageUrl: image.imageUrl(400, 400, imgType[j]) };
         const imgRecord = await Image.create(img);
         const foundTag = await Tag.findOne({ where: { description: imgType[j] } });
