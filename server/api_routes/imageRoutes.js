@@ -17,7 +17,6 @@ router.get('/', (req, res, next) => Image.findAll()
 // search images
 router.get('/search', async (req, res) => {
   const { tag } = req.query;
-  console.log('tag:', tag);
   try {
     const results = await Image.searchByTag(tag);
     res.json(results);

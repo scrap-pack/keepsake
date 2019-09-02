@@ -4,7 +4,7 @@ const app = require('./server');
 
 const PORT = process.env.PORT || 3000;
 
-db.sync({ force: process.env.DB_FORCE === 'true' })
+db.sync({ force: true })
   .then(() => {
     console.log(chalk.hex('#ACE000')("Database sync'd!"));
   })

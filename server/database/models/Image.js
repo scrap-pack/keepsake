@@ -34,7 +34,6 @@ const Image = db.define('image', {
 });
 
 Image.searchByTag = async function searchByTag(searchTerm) {
-  console.log('searchterm', searchTerm);
   const tagResults = await Tag.findAll({
     where: {
       description: {

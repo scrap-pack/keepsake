@@ -1,8 +1,8 @@
 // Import and connect all routes to router here to export to ../server.js
+const router = require('express').Router();
 const userRoutes = require('./userRoutes');
 const imageRoutes = require('./imageRoutes');
 const tagRoutes = require('./tagRoutes');
-const router = require('express').Router();
 
 router.use('/users', userRoutes);
 
