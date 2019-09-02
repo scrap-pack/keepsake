@@ -12,9 +12,18 @@ router.get('/search', async (req, res) => {
     } else {
       const results = await Tag.findAll({
         where: {
-          description: {
-            [Op.startsWith]: queryString,
-          },
+          [Op.or]: [
+            {
+              description: {
+                [Op.startsWith]: queryString.toLowerCase(),
+              },
+            },
+            {
+              description: {
+                [Op.startsWith]: queryString.toUpperCase(),
+              },
+            },
+          ]
         },
         order: ['description'],
       });
