@@ -1,34 +1,56 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { fetchAllImages } from '../redux/images';
+import Search from './Search.jsx';
 
-const Scrapbook = props => {
-  const { allImages } = props.images;
-  console.log('scrapbook images', allImages);
-
+const Scrapbook = (props) => {
+  const { allImages, filteredImages } = props;
   return (
     <div>
-      Images will be stored here
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          alignContent: 'space-around',
-          flexWrap: 'wrap',
-        }}
-      >
-        {allImages.map(elem => {
-          return (
-            <div key={elem.id}>
-              <img src={elem.imageUrl} alt="" />
+      <div className="row">
+        <Search />
+      </div>
+      <div className="row" display="block">
+        {filteredImages.length ? filteredImages.map((image) => (
+          <div className="col s12 m6 xl3">
+            <div className="card" key={image.id}>
+              <div className="card-image">
+                <img className="responsive-img" src={image.imageUrl} alt="" />
+              </div>
             </div>
-          );
-        })}
+          </div>
+        )) : allImages.map((image) => (
+          <div className="col s12 m6 xl3">
+            <div className="card" key={image.id}>
+              <div className="card-image">
+                <img className="responsive-img" src={image.imageUrl} alt="" />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
 };
 
-const mapState = ({ images }) => ({ images });
+const mapStateToProps = (state) => ({
+  allImages: state.images.allImages,
+  filteredImages: state.images.filteredImages,
+});
 
-export default connect(mapState)(Scrapbook);
+const mapDispatchToProps = (dispatch) => ({
+  getAllImages: () => dispatch(fetchAllImages()),
+});
+
+const propTypes = {
+  getAllImages: PropTypes.func.isRequired,
+  allImages: PropTypes.array.isRequired,
+  filteredImages: PropTypes.array.isRequired,
+};
+
+Scrapbook.propTypes = propTypes;
+
+const ConnectedScrapbook = connect(mapStateToProps, mapDispatchToProps)(Scrapbook);
+
+export default ConnectedScrapbook;

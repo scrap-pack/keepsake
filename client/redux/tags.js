@@ -11,9 +11,9 @@ const CLEAR_SELECTED_TAG = 'CLEAR_SELECTED_TAGS';
 const SET_SELECTED_TAG = 'SET_SELECTED_TAG';
 
 // Action Creators
-const getTags = (tags) => ({ type: GET_TAG, tags });
+const getTags = (tags) => ({ type: GET_TAGS, tags });
 const getSingleTag = (tag) => ({ type: GET_SINGLE_TAG, tag });
-const uploadTags = (addedtags) => ({ type: UPLOAD_IMAGES, addedtags });
+const uploadTags = (addedtags) => ({ type: UPLOAD_TAGS, addedtags });
 const clearTags = () => ({ type: CLEAR_TAGS });
 const getSearchTags = (tags) => ({ type: SEARCH_TAGS, tags });
 export const clearFilteredTags = () => ({ type: CLEAR_FILTERED_TAGS });
@@ -63,7 +63,6 @@ export const postTags = (tags) => (dispatch) => {
 export const searchTags = (queryString) => async (dispatch) => {
   try {
     const { data } = await axios.get(`/api/tags/search?q=${queryString}`);
-    console.log('data returned from searchTags:', data);
     dispatch(getSearchTags(data));
   } catch (e) {
     console.error(e);

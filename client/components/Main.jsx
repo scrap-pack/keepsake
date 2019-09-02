@@ -5,13 +5,12 @@ import { Switch, Route } from 'react-router';
 import { connect } from 'react-redux';
 
 // Redux store
-import { fetchImages } from '../redux/images';
+import { fetchAllImages } from '../redux/images';
 
 // React Components
-import Home from './Home.jsx';
 import Upload from './Upload.jsx';
 import Scrapbook from './Scrapbook.jsx';
-import Navbar from './Header/Navbar.js';
+import Navbar from './Navbar.jsx';
 
 const propTypes = {
   getImages: PropTypes.func.isRequired,
@@ -28,7 +27,7 @@ class Main extends Component {
       <div>
         <Navbar />
         <Switch>
-          <Route exact path="/" component={ImageGallery} />
+          <Route exact path="/" component={Scrapbook} />
           <Route exact path="/upload" component={Upload} />
           <Route exact path="/scrapbook" component={Scrapbook} />
         </Switch>
