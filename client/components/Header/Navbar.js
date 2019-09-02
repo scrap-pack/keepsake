@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom';
 
 const Navbar = props => {
   return (
-    <nav class="teal darken-2" role="navigation">
-      <div class="nav-wrapper container">
-        <a id="logo-container" href="/" class="brand-logo">
+    <nav className="teal darken-2" role="navigation">
+      <div className="nav-wrapper container">
+        <a id="logo-container" href="/" className="brand-logo">
           <div id="logo" style={{ fontFamily: 'Chalkduster, fantasy' }}>
             KeepSake
           </div>
         </a>
-        <ul class="right hide-on-med-and-down">
+        <ul className="right hide-on-med-and-down">
           <li>
             <Link to="/scrapbook">My Images</Link>
           </li>
@@ -19,13 +19,13 @@ const Navbar = props => {
           </li>
         </ul>
 
-        <ul id="nav-mobile" class="sidenav">
+        <ul id="nav-mobile" className="sidenav">
           <li>
             <a href="/">Navbar Link</a>
           </li>
         </ul>
-        <a href="#" data-target="nav-mobile" class="sidenav-trigger">
-          <i class="material-icons">menu</i>
+        <a href="#" data-target="nav-mobile" className="sidenav-trigger">
+          <i className="material-icons">menu</i>
         </a>
       </div>
     </nav>

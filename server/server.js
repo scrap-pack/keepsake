@@ -5,7 +5,7 @@ const morgan = require('morgan');
 
 const app = express();
 
-app.use(morgan('dev'));
+app.use(morgan(process.env.MORGAN_MODE || null));
 app.use(express.json());
 
 const publicPath = path.join(__dirname, './public');
