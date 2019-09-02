@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -10,8 +10,12 @@ import {
 
 // select button to changes between single image veiw and select images
 
-const Home = ({ images }) => {
+const Home = props => {
   return (
+    <div>
+      <div> Welcome! </div>
+      <Link to="/scrapbook" />
+      <Link to="/upload" />
     <div
       style={{
         display: 'flex',
