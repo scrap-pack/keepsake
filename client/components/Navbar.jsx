@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const Navbar = props => {
+const Navbar = (props) => {
   return (
     <nav className="teal darken-2" role="navigation">
       <div className="nav-wrapper container">
@@ -18,7 +18,6 @@ const Navbar = props => {
             <Link to="/upload">Add to Scrapbook</Link>
           </li>
         </ul>
-
         <ul id="nav-mobile" className="sidenav">
           <li>
             <a href="/">Navbar Link</a>
