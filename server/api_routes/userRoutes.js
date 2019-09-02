@@ -44,6 +44,19 @@ router.post('/', (req, res, next) => {
     });
 });
 
+router.post('/login', async (req, res, next) => {
+  console.log('login route', req.body);
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findByCredentials(email, password);
+    res.send(user);
+  } catch (e) {
+    res.sendStatus(400);
+    next(e);
+  }
+});
+
 // Put route for updating user by id
 router.put('/:id', (req, res, next) => {
   const { id } = req.params;
