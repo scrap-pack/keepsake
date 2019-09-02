@@ -5,10 +5,10 @@ const morgan = require('morgan');
 
 const app = express();
 
-app.use(morgan(process.env.MORGAN_MODE || null));
+// app.use(morgan(process.env.MORGAN_MODE || null));
 app.use(express.json());
 
-const publicPath = path.join(__dirname, './public');
+const publicPath = path.join(__dirname, '..', 'public');
 app.use(express.static(publicPath));
 
 const apiRoutes = require('./api_routes');

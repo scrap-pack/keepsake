@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Navbar = props => {
+const Navbar = (props) => {
   return (
     <nav className="teal darken-2" role="navigation">
       <div className="nav-wrapper container">
@@ -14,7 +14,6 @@ const Navbar = props => {
             <a href="/">My Images</a>
           </li>
         </ul>
-
         <ul id="nav-mobile" className="sidenav">
           <li>
             <a href="/">Navbar Link</a>

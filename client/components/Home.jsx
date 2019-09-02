@@ -1,12 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { addSelectedImage } from '../redux/images';
+import {
+  addSelectedImage,
+  removeSelectedImage,
+  getSingleImage,
+} from '../redux/images';
+
+// select button to changes between single image veiw and select images
 
 const Home = ({ images }) => {
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
+      <h1
+        onClick={() => {
+          this.props.select = !this.props.select;
+        }}
+      >
+        SELECT
+      </h1>
       <div
         style={{
           display: 'flex',
@@ -16,18 +33,26 @@ const Home = ({ images }) => {
           flexWrap: 'wrap',
         }}
       >
-        {images.map(elem => {
+        {images.map(image => {
           return (
-            <div key={elem.id}>
+            <div key={image.id}>
               <img
-                src={elem.imageUrl}
+                src={image.imageUrl}
                 alt=""
                 onClick={event => {
                   event.preventDefault();
-                  this.props.selectImage(elem);
+                  if (this.props.select) {
+                    if (elem in this.props.currentImages) {
+                      this.props.deselectImage(image);
+                    } else {
+                      this.props.selectImage(image);
+                      //add jsx to show image is selected
+                    }
+                  } else {
+                    this.props.addToSingleImage(image);
+                    <Redirect to="/singleImage" />;
+                  }
                 }}
-                //add ability to deselect images
-                //add jsx to show image is selected
               />
             </div>
           );
@@ -69,20 +94,25 @@ const mapStateToProps = state => {
   return {
     images: state.images.allImages,
     currentImages: state.images.selectedImages,
+    select: false,
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     selectImage: image => {
-      addSelectedImage(image);
+      dispatch(addSelectedImage(image));
     },
+    deselectImage: image => {
+      dispatch(removeSelectedImage(image));
+    },
+    addToSingleImage: image => dispatch(getSingleImage(image)),
   };
 };
 
 const connectedComponent = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const connectedImagesComponent = connectedComponent(Home);

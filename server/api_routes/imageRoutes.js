@@ -16,6 +16,14 @@ router.get('/', (req, res, next) => Image.findAll()
 
 // search images
 router.get('/search', async (req, res) => {
+  const { tag } = req.query;
+  console.log('tag:', tag);
+  try {
+    const results = await Image.searchByTag(tag);
+    res.json(results);
+  } catch (e) {
+    console.error(e);
+  }
 });
 
 // Get image by ID
@@ -32,11 +40,11 @@ router.get('/:id', (req, res, next) => Image.findByPk(req.params.id)
 // post new image
 router.post('/', (req, res, next) => Image.create(req.body)
   .then((image) => {
-    console.log(`Successfully posted new image`);
+    console.log('Successfully posted new image');
     return res.status(201).json(image);
   })
   .catch((e) => {
-    console.error(chalk.red(`Failed to post new image`), e);
+    console.error(chalk.red('Failed to post new image'), e);
     next(e);
   }));
 
