@@ -1,7 +1,7 @@
 const { STRING, UUID, UUIDV4, ENUM, ARRAY, JSON } = require('sequelize');
 const db = require('../db.js');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { hashPassword, comparePassword } = require('../utils/bcrypt');
 
 // userType constants for when we have auth
 const GUEST = 'guest';
@@ -15,12 +15,14 @@ const User = db.define('user', {
   },
   firstName: {
     type: STRING,
+    allowNull: false,
     validate: {
       notEmpty: true,
     },
   },
   lastName: {
     type: STRING,
+    allowNull: false,
     validate: {
       notEmpty: true,
     },
@@ -50,55 +52,6 @@ const User = db.define('user', {
   },
 });
 
-const hashPassword = (password, saltRounds = 8) => {
-  return new Promise((resolve, reject) => {
-    bcrypt.genSalt(saltRounds, (err, salt) => {
-      if (err) reject(err);
-      bcrypt.hash(password, salt, (err, hash) => {
-        if (err) reject(err);
-        resolve(hash);
-      });
-    });
-  });
-};
-
-const comparePassword = (password, hashedPassword) => {
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, hashedPassword, (err, res) => {
-      if (err) reject(err);
-      resolve(res);
-    });
-  });
-};
-
-const loginError = 'Unable to login!';
-
-User.findByCredentials = async (email, password) => {
-  const user = await User.findOne({ where: { email } });
-  try {
-    if (!user) throw new Error(loginError);
-
-    const isMatch = await comparePassword(password, user.password);
-
-    if (!isMatch) throw new Error(loginError);
-
-    return user;
-  } catch (e) {
-    throw new Error('Invalid login credentitals!');
-  }
-};
-
-User.prototype.generateAuthToken = async function() {
-  const user = this;
-  const token = jwt.sign(
-    { id: user.id },
-    process.env.AUTH_SECRET || 'secretkey'
-  );
-  user.tokens = user.tokens.concat({ token });
-  user.save();
-  return token;
-};
-
 User.beforeCreate(async function(user) {
   try {
     user.password = await hashPassword(user.password);
@@ -120,5 +73,38 @@ User.beforeUpdate(async function(user) {
     throw new Error('Error updating password!');
   }
 });
+
+const loginError = 'Unable to login!';
+
+User.findByCredentials = async (email, password) => {
+  const user = await User.findOne({ where: { email } });
+  try {
+    if (!user) throw new Error(loginError);
+
+    const isMatch = await comparePassword(password, user.password);
+
+    if (!isMatch) throw new Error(loginError);
+
+    return user;
+  } catch (e) {
+    throw new Error('Invalid login credentitals!');
+  }
+};
+
+User.prototype.generateAuthToken = async function() {
+  const user = this;
+  const token = jwt.sign({ id: user.id }, process.env.AUTH_SECRET, {
+    expiresIn: 60 * 60,
+  });
+  user.tokens = user.tokens.concat({ token });
+  user.save();
+  return token;
+};
+
+User.prototype.getPublicProfile = function() {
+  const { id, firstName, lastName, userType, email, token } = this;
+  const userObject = { id, firstName, lastName, userType, email, token };
+  return userObject;
+};
 
 module.exports = User;
