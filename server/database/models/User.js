@@ -43,7 +43,6 @@ const User = db.define('user', {
     type: STRING,
     validate: {
       notEmpty: true,
-      len: [8, 24],
     },
   },
   tokens: {
