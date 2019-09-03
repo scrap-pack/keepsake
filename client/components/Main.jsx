@@ -13,12 +13,9 @@ import SingleImage from './singleImage.jsx';
 import { fetchImages } from '../redux/images';
 import Scrapbook from './Scrapbook.jsx';
 import Navbar from './Navbar.jsx';
-<<<<<<< HEAD
 import Home from './Home.jsx';
-=======
 import Login from './Login.jsx';
 import SignUp from './SignUp.jsx';
->>>>>>> Created layout for signup page
 
 const propTypes = {
   getImages: PropTypes.func.isRequired,

@@ -16,18 +16,12 @@
     "@tensorflow/tfjs-node": "^1.2.8",
     "aws-sdk": "^2.518.0",
     "axios": "^0.19.0",
-<<<<<<< HEAD
     "canvas": "^2.6.0",
-=======
     "bcrypt": "^3.0.6",
->>>>>>> Working on setting up login route
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
-<<<<<<< HEAD
     "multer": "^1.4.2",
-=======
     "jsonwebtoken": "^8.5.1",
->>>>>>> Successfully generate jsonwebtoken for user
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
     "react": "^16.9.0",
