@@ -11,16 +11,16 @@ const CLEAR_SELECTED_TAG = 'CLEAR_SELECTED_TAGS';
 const SET_SELECTED_TAG = 'SET_SELECTED_TAG';
 
 // Action Creators
-const getTags = (tags) => ({ type: GET_TAGS, tags });
-const getSingleTag = (tag) => ({ type: GET_SINGLE_TAG, tag });
-const uploadTags = (addedtags) => ({ type: UPLOAD_TAGS, addedtags });
+const getTags = tags => ({ type: GET_TAG, tags });
+const getSingleTag = tag => ({ type: GET_SINGLE_TAG, tag });
+const uploadTags = addedtags => ({ type: UPLOAD_TAGS, addedtags });
 const clearTags = () => ({ type: CLEAR_TAGS });
-const getSearchTags = (tags) => ({ type: SEARCH_TAGS, tags });
+const getSearchTags = tags => ({ type: SEARCH_TAGS, tags });
 export const clearFilteredTags = () => ({ type: CLEAR_FILTERED_TAGS });
 export const clearSelectedTag = () => ({ type: CLEAR_SELECTED_TAG });
-export const setSelectedTag = (tag) => ({ type: SET_SELECTED_TAG, tag });
+export const setSelectedTag = tag => ({ type: SET_SELECTED_TAG, tag });
 
-const parseTagsFromString = (tagsString) => {
+const parseTagsFromString = tagsString => {
   let tagsArr = [];
   let tag = '';
   for (let i = 0; i < tagsString.length; i++) {
@@ -39,28 +39,28 @@ export const storeTags = (tags, dispatch) => {
   dispatch(uploadTags(addedTags));
 };
 
-export const fetchTags = () => (dispatch) => {
+export const fetchTags = () => dispatch => {
   axios
     .get('/api/tags')
-    .then((tags) => dispatch(getTags(tags)))
-    .catch((e) => console.error(e));
+    .then(tags => dispatch(getTags(tags)))
+    .catch(e => console.error(e));
 };
 
-export const fetchSingleTag = (id) => (dispatch) => {
+export const fetchSingleTag = id => dispatch => {
   axios
     .get(`/api/tag/${id}`)
-    .then((tag) => dispatch(getSingleTag(tag)))
-    .catch((e) => console.error(e));
+    .then(tag => dispatch(getSingleTag(tag)))
+    .catch(e => console.error(e));
 };
 
-export const postTags = (tags) => (dispatch) => {
+export const postTags = tags => dispatch => {
   axios
     .post('/api/tags', [...tags])
-    .then((tags) => dispatch(clearTags(tags)))
-    .catch((e) => console.error(e));
+    .then(tags => dispatch(clearTags(tags)))
+    .catch(e => console.error(e));
 };
 
-export const searchTags = (queryString) => async (dispatch) => {
+export const searchTags = queryString => async dispatch => {
   try {
     const { data } = await axios.get(`/api/tags/search?q=${queryString}`);
     dispatch(getSearchTags(data));
@@ -84,7 +84,10 @@ const tags = (state = intialState, action) => {
     case GET_SINGLE_TAG:
       return { ...state, singleTag: action.tag };
     case UPLOAD_TAGS:
-      return { ...state, currentTags: [...currentTags, ...action.addedTags] };
+      return {
+        ...state,
+        currentTags: [...state.currentTags, ...action.addedTags],
+      };
     case CLEAR_TAGS:
       return { ...state, currentTags: [] };
     case SEARCH_TAGS:

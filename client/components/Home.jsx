@@ -6,24 +6,39 @@ import {
   addSelectedImage,
   removeSelectedImage,
   getSingleImage,
+  flipSelect,
 } from '../redux/images';
-
-// select button to changes between single image veiw and select images
+import Tag from './Tag.jsx';
+import SingleImage from './SingleImage.jsx';
 
 const Home = props => {
+  const {
+    images,
+    select,
+    swapSelect,
+    selectImage,
+    deselectImage,
+    addToSingleImage,
+    currentImages,
+  } = props;
+
+  // select button to changes between single image veiw and select images
   return (
-    <div>
-      <div> Welcome! </div>
-      <Link to="/scrapbook" />
-      <Link to="/upload" />
     <div
       style={{
         display: 'flex',
       }}
     >
+      <div>
+        <div> Welcome! </div>
+        <Link to="/scrapbook" />
+        <Link to="/upload" />,
+      </div>
+
       <h1
-        onClick={() => {
-          this.props.select = !this.props.select;
+        onClick={event => {
+          event.preventDefault();
+          swapSelect();
         }}
       >
         SELECT
@@ -45,16 +60,21 @@ const Home = props => {
                 alt=""
                 onClick={event => {
                   event.preventDefault();
-                  if (this.props.select) {
-                    if (elem in this.props.currentImages) {
-                      this.props.deselectImage(image);
+                  if (select) {
+                    if (
+                      currentImages.filter(
+                        currentImage => currentImage.id === image.id
+                      ).length > 0
+                    ) {
+                      deselectImage(image);
                     } else {
-                      this.props.selectImage(image);
+                      selectImage(image);
                       //add jsx to show image is selected
                     }
                   } else {
-                    this.props.addToSingleImage(image);
-                    <Redirect to="/singleImage" />;
+                    addToSingleImage(image);
+                    // <Redirect to="/SingleImage" component={SingleImage} />;
+                    //fix this
                   }
                 }}
               />
@@ -62,6 +82,7 @@ const Home = props => {
           );
         })}
       </div>
+
       <Link to="/upload">
         <div
           style={{
@@ -98,7 +119,7 @@ const mapStateToProps = state => {
   return {
     images: state.images.allImages,
     currentImages: state.images.selectedImages,
-    select: false,
+    select: state.images.select,
   };
 };
 
@@ -110,13 +131,18 @@ const mapDispatchToProps = dispatch => {
     deselectImage: image => {
       dispatch(removeSelectedImage(image));
     },
-    addToSingleImage: image => dispatch(getSingleImage(image)),
+    addToSingleImage: image => {
+      dispatch(getSingleImage(image));
+    },
+    swapSelect: () => {
+      dispatch(flipSelect());
+    },
   };
 };
 
 const connectedComponent = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 );
 
 const connectedImagesComponent = connectedComponent(Home);

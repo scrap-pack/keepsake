@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tag from './Tag.jsx';
 import { addSelectedImage, removeSelectedImage } from '../redux/images';
+import Home from './Home.jsx';
 
 const SingleImage = props => {
   const { image, selectedImages } = props;
@@ -15,29 +16,21 @@ const SingleImage = props => {
           onClick={event => {
             event.preventDefault();
             if (image in selectedImages) {
-              this.props.deselectImage(image);
+              props.deselectImage(image);
             } else {
-              this.props.selectImage(image);
+              props.selectImage(image);
             }
           }}
         />
       </div>
       <Tag />
-      <button
-        onClick={event => {
-          event.preventDefault();
-          this.props.back();
-        }}
-      >
-        BACK
-      </button>
     </div>
   );
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    back: () => <Redirect to="/Home" />,
+    back: () => <Redirect to="/" component={Home} />,
     selectImage: image => dispatch(addSelectedImage(image)),
     deselectImage: image => dispatch(removeSelectedImage(image)),
   };

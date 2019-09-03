@@ -18,4 +18,5 @@ db.sync()
         `),
       );
     });
-  });
+  })
+  .catch(e => console.error(e));
