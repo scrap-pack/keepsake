@@ -1,6 +1,38 @@
 const router = require('express').Router();
-const { Tag } = require('../database/index');
 const chalk = require('chalk');
+const { Op } = require('sequelize');
+const { Tag } = require('../database/index');
+
+// Search Tags
+router.get('/search', async (req, res) => {
+  const queryString = req.query.q;
+  try {
+    if (queryString === '' || queryString === null) {
+      res.json([]);
+    } else {
+      const results = await Tag.findAll({
+        where: {
+          [Op.or]: [
+            {
+              description: {
+                [Op.startsWith]: queryString.toLowerCase(),
+              },
+            },
+            {
+              description: {
+                [Op.startsWith]: queryString.toUpperCase(),
+              },
+            },
+          ]
+        },
+        order: ['description'],
+      });
+      res.json(results);
+    }
+  } catch (e) {
+    console.error(e);
+  }
+});
 
 //Get all iamges
 router.get('/', (req, res, next) => {

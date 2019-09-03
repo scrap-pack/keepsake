@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -11,6 +11,7 @@ import {
 import Tag from './Tag.jsx';
 import SingleImage from './SingleImage.jsx';
 
+
 const Home = props => {
   const {
     images,
@@ -21,7 +22,16 @@ const Home = props => {
     addToSingleImage,
     currentImages,
   } = props;
+
+// select button to changes between single image veiw and select images
+
+const Home = props => {
+
   return (
+    <div>
+      <div> Welcome! </div>
+      <Link to="/scrapbook" />
+      <Link to="/upload" />
     <div
       style={{
         display: 'flex',
@@ -130,7 +140,7 @@ const mapDispatchToProps = dispatch => {
 
 const connectedComponent = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const connectedImagesComponent = connectedComponent(Home);
