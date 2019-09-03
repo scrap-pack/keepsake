@@ -11,7 +11,6 @@ import { fetchAllImages } from '../redux/images';
 import Upload from './Upload.jsx';
 import SingleImage from './singleImage.jsx';
 import { fetchImages } from '../redux/images';
-import Navbar from './Header/Navbar.js';
 import Scrapbook from './Scrapbook.jsx';
 import Navbar from './Navbar.jsx';
 

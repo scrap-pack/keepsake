@@ -21,6 +21,8 @@ const Home = props => {
     addToSingleImage,
     currentImages,
   } = props;
+
+  // select button to changes between single image veiw and select images
   return (
     <div
       style={{

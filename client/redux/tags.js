@@ -11,6 +11,7 @@ const CLEAR_SELECTED_TAG = 'CLEAR_SELECTED_TAGS';
 const SET_SELECTED_TAG = 'SET_SELECTED_TAG';
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 const getTags = tags => ({ type: GET_TAG, tags });
 const getSingleTag = tag => ({ type: GET_SINGLE_TAG, tag });
 const uploadTags = addedtags => ({ type: UPLOAD_TAGS, addedtags });
@@ -20,6 +21,12 @@ const getTags = (tags) => ({ type: GET_TAGS, tags });
 const getSingleTag = (tag) => ({ type: GET_SINGLE_TAG, tag });
 const uploadTags = (addedtags) => ({ type: UPLOAD_TAGS, addedtags });
 >>>>>>> d2c3fb24096a965d0725f25ce4069c2837eff8de
+=======
+
+const getTags = tags => ({ type: GET_TAG, tags });
+const getSingleTag = tag => ({ type: GET_SINGLE_TAG, tag });
+const uploadTags = addedtags => ({ type: UPLOAD_TAGS, addedtags });
+>>>>>>> f58bcffb682aeb682abadd2c1e98f379ade84d9e
 const clearTags = () => ({ type: CLEAR_TAGS });
 const getSearchTags = (tags) => ({ type: SEARCH_TAGS, tags });
 export const clearFilteredTags = () => ({ type: CLEAR_FILTERED_TAGS });
