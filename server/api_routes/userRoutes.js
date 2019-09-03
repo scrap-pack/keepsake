@@ -4,17 +4,20 @@ const auth = require('./utils/userAuth.js');
 const chalk = require('chalk');
 
 // Get all users
-router.get('/', (req, res, next) => {
-  return User.findAll()
-    .then(users => {
-      console.log(chalk.green('Found all users'));
-      res.json(users);
-    })
-    .catch(error => {
-      console.error(chalk.bgRed('Error finding users from db!', error));
-      next(error);
-    });
+router.get('/', auth, (req, res, next) => {
+  if (req.user.userType === 'registered') {
+    return User.findAll()
+      .then(users => {
+        console.log(chalk.green('Found all users'));
+        res.json(users);
+      })
+      .catch(error => {
+        console.error(chalk.bgRed('Error finding users from db!', error));
+        next(error);
+      });
+  } else res.status(401).send('Unauthorized access!');
 });
+
 // Get my user info
 router.get('/me', auth, (req, res, next) => {
   res.json(req.user);
@@ -22,11 +25,22 @@ router.get('/me', auth, (req, res, next) => {
 
 // Post/Create user (Dummy post route, will need to be modified later)
 router.post('/', (req, res, next) => {
-  console.log(req.body);
-  return User.create(req.body)
-    .then(newUser => {
-      console.log(chalk.green('New user created: ', newUser));
-      res.status(201).json(req.body);
+  const { email, password } = req.body;
+
+  return User.findOne({ where: { email } })
+    .then(user => {
+      if (user) {
+        res.json({ error: 'User already exists!' });
+      } else if (password.length < 8 || password.length > 24) {
+        res.json({
+          error: 'Password must be between 8 to 24 characters long!',
+        });
+      } else {
+        return User.create(req.body).then(newUser => {
+          console.log(chalk.green('New user created: ', newUser));
+          res.status(201).json(req.body);
+        });
+      }
     })
     .catch(error => {
       console.log(chalk.bgRed('Error creating new user', error));
@@ -76,25 +90,28 @@ router.post('/logoutAll', auth, async (req, res, next) => {
 });
 
 // Put route for updating user by id
-router.put('/:id', (req, res, next) => {
-  const { id } = req.params;
-  return User.findByPk(id)
-    .then(user => {
-      return user.update(req.body);
-    })
-    .then(() => {
-      res.status(200).json({ message: 'User info updated successfully!' });
-    })
-    .catch(error => {
-      console.error(chalk.bgRed('Error updating user info!'));
-      next(error);
-    });
+router.put('/me', auth, async (req, res, next) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['firstName', 'lastName', 'email', 'password'];
+  const isValidUpdate = updates.every(update =>
+    allowedUpdates.includes(update)
+  );
+
+  if (!isValidUpdate) res.status(400).send({ error: 'Invalid update!' });
+
+  try {
+    updates.forEach(update => (req.user[update] = req.body[update]));
+    await req.user.save();
+    res.send({ user: req.user, message: 'Successfully updated user!' });
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Delete user by id
-router.delete('/:id', (req, res, next) => {
-  const { id } = req.params;
-  return User.destroy({ where: { id } })
+router.delete('/me', auth, (req, res, next) => {
+  const { user } = req;
+  return User.destroy({ where: { id: user.id } })
     .then(() => {
       console.log(chalk.green('Successfully deleted user!'));
       res.status(200).json({ message: 'User successfully deleted!' });
