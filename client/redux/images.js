@@ -50,7 +50,11 @@ export const searchImagesByTag = tag => async dispatch => {
 
 export const postImages = fileData => async dispatch => {
   try {
-    const { data } = await axios.post('/api/images', fileData);
+    const { data } = await axios.post('/api/images', fileData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     console.log('SUCCESSS POSTING IMAGE!!!', data);
     dispatch(uploadImages(data));
   } catch (e) {
