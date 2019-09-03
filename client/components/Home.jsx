@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -27,6 +27,12 @@ const Home = props => {
         display: 'flex',
       }}
     >
+      <div>
+        <div> Welcome! </div>
+        <Link to="/scrapbook" />
+        <Link to="/upload" />,
+      </div>
+
       <h1
         onClick={event => {
           event.preventDefault();
