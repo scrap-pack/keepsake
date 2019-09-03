@@ -1,29 +1,79 @@
-import axios from "axios";
+import axios from 'axios';
 
-const GET_USERS = "GET_USERS";
+export const GOT_USER = 'GOT_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';
+export const CHANGE_LOGIN_STATUS = 'CHANGE_LOGIN_STATUS';
 
-const getUsers = users => ({ type: GET_USERS, users });
+export const gotUser = user => ({ type: GOT_USER, user });
+export const logoutUser = () => ({ type: LOGOUT_USER });
+export const changeLoginStatus = loginStatus => ({
+  type: CHANGE_LOGIN_STATUS,
+  loginStatus,
+});
 
-const userState = {
-  allUsers: [],
+export const loginThunk = (email, password) => {
+  console.log(email, password);
+  return dispatch => {
+    return axios
+      .post('/api/users/login', { email, password })
+      .then(res => res.data)
+      .then(user => {
+        console.log('redux user', user);
+        dispatch(gotUser(user));
+      })
+      .then(() => {
+        console.log('changing login status');
+        dispatch(changeLoginStatus(true));
+      })
+      .catch(() => {
+        console.log('Login error');
+        dispatch(gotUser({ error: 'Invalid login credentials!' }));
+      });
+  };
 };
 
-const users = (state = userState, action) => {
+export const logoutThunk = () => {
+  return dispatch => {
+    return axios
+      .post('/api/users/logout')
+      .then(() => {
+        dispatch(logoutUser());
+      })
+      .catch(() => {
+        console.log('Logout error');
+      });
+  };
+};
+
+const userState = {
+  currentUser: {},
+  error: '',
+  loggedIn: false,
+};
+
+const userReducer = (state = userState, action) => {
   switch (action.type) {
-    case GET_USERS:
-      return { ...state, allUsers: [...state.allUsers, ...action.users] };
+    case GOT_USER:
+      return { ...state, currentUser: action.user };
+    case LOGOUT_USER: {
+      return { ...userState };
+    }
+    case CHANGE_LOGIN_STATUS: {
+      return { ...state, loggedIn: action.loginStatus };
+    }
     default:
       return state;
   }
 };
 
-export const fetchUsers = () => async dispatch => {
+export const fetchUser = () => async dispatch => {
   try {
-    const { data } = await axios.get("/api/users");
+    const { data } = await axios.get('/api/users/me');
+    console.log(data);
     dispatch(getUsers(data));
   } catch (e) {
     console.error(e);
   }
 };
 
-export default users;
+export default userReducer;

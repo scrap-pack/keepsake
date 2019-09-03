@@ -1,7 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-const Navbar = (props) => {
+const Navbar = props => {
+  const { loggedIn } = props;
+
+  const amILoggedIn = loggedIn ? (
+    <li>
+      <Link to="/">Logout</Link>
+    </li>
+  ) : (
+    <li>
+      <Link to="/signup">Sign Up</Link>
+    </li>
+  );
+
   return (
     <nav className="teal darken-2" role="navigation">
       <div className="nav-wrapper container">
@@ -11,9 +24,14 @@ const Navbar = (props) => {
           </div>
         </a>
         <ul className="right hide-on-med-and-down">
-          <li>
-            <Link to="/scrapbook">My Images</Link>
-          </li>
+          {amILoggedIn}
+          {loggedIn ? (
+            <li>
+              <Link to="/scrapbook">My Images</Link>
+            </li>
+          ) : (
+            ''
+          )}
           <li>
             <Link to="/upload">Add to Scrapbook</Link>
           </li>
@@ -31,4 +49,10 @@ const Navbar = (props) => {
   );
 };
 
-export default Navbar;
+const mapState = ({ loggedIn }) => ({ loggedIn });
+const mapDispatch = dispatch => ({});
+
+export default connect(
+  mapState,
+  mapDispatch
+)(Navbar);
