@@ -12,7 +12,15 @@ import Tag from './Tag.jsx';
 import SingleImage from './SingleImage.jsx';
 
 const Home = props => {
-  const { images } = props;
+  const {
+    images,
+    select,
+    swapSelect,
+    selectImage,
+    deselectImage,
+    addToSingleImage,
+    currentImages,
+  } = props;
   return (
     <div
       style={{
@@ -22,7 +30,7 @@ const Home = props => {
       <h1
         onClick={event => {
           event.preventDefault();
-          props.swapSelect();
+          swapSelect();
         }}
       >
         SELECT
@@ -44,19 +52,19 @@ const Home = props => {
                 alt=""
                 onClick={event => {
                   event.preventDefault();
-                  if (props.select) {
+                  if (select) {
                     if (
-                      props.currentImages.filter(
+                      currentImages.filter(
                         currentImage => currentImage.id === image.id
                       ).length > 0
                     ) {
-                      props.deselectImage(image);
+                      deselectImage(image);
                     } else {
-                      props.selectImage(image);
+                      selectImage(image);
                       //add jsx to show image is selected
                     }
                   } else {
-                    props.addToSingleImage(image);
+                    addToSingleImage(image);
                     <Redirect to="/SingleImage" component={SingleImage} />;
                     //fix this
                   }
