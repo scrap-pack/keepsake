@@ -46,8 +46,7 @@ export const searchImagesByTag = (tag) => async (dispatch) => {
   }
 };
 
-export const postImages = fileData => async dispatch => {
-  console.log('##### FILE IN THUNK', fileData);
+export const postImages = (fileData) => async (dispatch) => {
   try {
     const { data } = await axios.post('/api/images', fileData, {
       headers: {

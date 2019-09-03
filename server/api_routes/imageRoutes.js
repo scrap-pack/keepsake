@@ -10,7 +10,6 @@ require('@tensorflow/tfjs-node');
 
 const upload = multer();
 
-
 // Get all images
 router.get('/', (req, res, next) => Image.findAll()
   .then((images) => {

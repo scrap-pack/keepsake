@@ -1,11 +1,16 @@
+// Npm libraries
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router';
 import { connect } from 'react-redux';
-import Home from './Home.jsx';
+
+// Redux store
+import { fetchAllImages } from '../redux/images';
+
+// React Components
 import Upload from './Upload.jsx';
-import { fetchImages } from '../redux/images';
-import Navbar from './Header/Navbar.js';
+import Scrapbook from './Scrapbook.jsx';
+import Navbar from './Navbar.jsx';
 
 const propTypes = {
   getImages: PropTypes.func.isRequired,
@@ -22,8 +27,9 @@ class Main extends Component {
       <div>
         <Navbar />
         <Switch>
-          <Route exact path="/" component={Home} />
+          <Route exact path="/" component={Scrapbook} />
           <Route exact path="/upload" component={Upload} />
+          <Route exact path="/scrapbook" component={Scrapbook} />
         </Switch>
       </div>
     );
@@ -32,13 +38,13 @@ class Main extends Component {
 
 Main.propTypes = propTypes;
 
-const mapDispatchToProps = dispatch => ({
-  getImages: () => dispatch(fetchImages()),
+const mapDispatchToProps = (dispatch) => ({
+  getImages: () => dispatch(fetchAllImages()),
 });
 
 const connectedComponent = connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const connectedMain = connectedComponent(Main);

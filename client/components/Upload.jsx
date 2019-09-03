@@ -51,6 +51,11 @@ const mapDispatchToProps = dispatch => ({
 
     reader.addEventListener("load", async () => {
       preview.src = reader.result;
+      const objectDetector = await cocoSsd.load();
+      const predictedObject = await objectDetector.detect(preview);
+  
+      console.log(predictedObject);
+  
     }, false);
   },
 });
