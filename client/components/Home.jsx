@@ -73,7 +73,7 @@ const Home = props => {
                     }
                   } else {
                     addToSingleImage(image);
-                    <Redirect to="/SingleImage" component={SingleImage} />;
+                    // <Redirect to="/SingleImage" component={SingleImage} />;
                     //fix this
                   }
                 }}
@@ -131,8 +131,12 @@ const mapDispatchToProps = dispatch => {
     deselectImage: image => {
       dispatch(removeSelectedImage(image));
     },
-    addToSingleImage: image => dispatch(getSingleImage(image)),
-    swapSelect: () => dispatch(flipSelect()),
+    addToSingleImage: image => {
+      dispatch(getSingleImage(image));
+    },
+    swapSelect: () => {
+      dispatch(flipSelect());
+    },
   };
 };
 

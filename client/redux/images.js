@@ -12,7 +12,7 @@ const CLEAR_FILTERED_IMAGES = 'CLEAR_FILTERED_IMAGES';
 
 // Action Creators
 const getAllImages = images => ({ type: GET_ALL_IMAGES, images });
-const getSingleImage = image => ({ type: GET_SINGLE_IMAGE, image });
+export const getSingleImage = image => ({ type: GET_SINGLE_IMAGE, image });
 const getFilteredImages = images => ({ type: GET_FILTERED_IMAGES, images });
 const uploadImages = () => ({ type: UPLOAD_IMAGES });
 export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
