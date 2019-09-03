@@ -1,5 +1,6 @@
 const router = require('express').Router();
-const { db, User } = require('../database/index.js');
+const { User } = require('../database/index.js');
+const auth = require('./utils/userAuth.js');
 const chalk = require('chalk');
 
 // Get all users
@@ -14,20 +15,9 @@ router.get('/', (req, res, next) => {
       next(error);
     });
 });
-
-// Get users by id
-router.get('/:id', (req, res, next) => {
-  const { id } = req.params;
-
-  return User.findByPk(id)
-    .then(user => {
-      console.log(chalk.green('Found user'));
-      res.json(user);
-    })
-    .catch(error => {
-      console.error(chalk.bgRed('Error find user: ', user));
-      next(error);
-    });
+// Get my user info
+router.get('/me', auth, (req, res, next) => {
+  res.json(req.user);
 });
 
 // Post/Create user (Dummy post route, will need to be modified later)
@@ -44,8 +34,8 @@ router.post('/', (req, res, next) => {
     });
 });
 
+// Login route
 router.post('/login', async (req, res, next) => {
-  console.log('login route', req.body);
   const { email, password } = req.body;
   if (!email || !password)
     res.status(400).json({ error: 'Invalid login credentials!' });
@@ -53,9 +43,35 @@ router.post('/login', async (req, res, next) => {
   try {
     const user = await User.findByCredentials(email, password);
     const token = await user.generateAuthToken();
-    res.send({ user, token });
+    if (user) res.send({ user: user.getPublicProfile(), token });
   } catch (e) {
     next(e);
+  }
+});
+
+// User logout single session route
+router.post('/logout', auth, async (req, res, next) => {
+  const { user } = req;
+  try {
+    user.tokens = user.tokens.filter(token => {
+      return token.token !== req.token;
+    });
+    await user.save();
+
+    res.send({ message: 'Logged out user!' });
+  } catch (e) {
+    res.status(500).json();
+  }
+});
+
+// User logout all sessions
+router.post('/logoutAll', auth, async (req, res, next) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+    res.json({ message: 'Logged out all sessions!' });
+  } catch (e) {
+    res.status(500).send('Error logging out all sessions!');
   }
 });
 
