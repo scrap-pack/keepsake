@@ -8,7 +8,7 @@ import {
   getSingleImage,
 } from '../redux/images';
 
-//select button to changes between single image veiw and select images
+// select button to changes between single image veiw and select images
 
 const Home = props => {
   return (
@@ -116,7 +116,7 @@ const mapDispatchToProps = dispatch => {
 
 const connectedComponent = connect(
   mapStateToProps,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const connectedImagesComponent = connectedComponent(Home);
