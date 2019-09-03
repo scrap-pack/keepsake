@@ -2,15 +2,21 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { createUser } from '../redux/users.js';
+
 const SignUp = props => {
-  const { loggedIn } = props;
+  const { loggedIn, createUser } = props;
 
   if (!loggedIn) {
     return (
       <div id="signup-container" className="container valign-wrapper">
         <div className="row center-align">
           <h3>Create An Account</h3>
-          <div className=" card grey lighten-4 col s12 m12 l12 ">
+          <form
+            id="signup-form"
+            className=" card grey lighten-4 col s12 m12 l12 "
+            onSubmit={createUser}
+          >
             <div className="row">
               <div className="input-field col s6">
                 <i className="material-icons prefix">
@@ -32,7 +38,7 @@ const SignUp = props => {
                 <input id="email" type="email" className="validate" />
                 <label htmlFor="email">Email</label>
                 <span
-                  class="helper-text"
+                  className="helper-text"
                   data-error="Invalid Email"
                   data-success=""
                 />
@@ -46,7 +52,7 @@ const SignUp = props => {
                 <input id="password" type="password" className="validate" />
                 <label htmlFor="password">Password</label>
                 <span
-                  class="helper-text"
+                  className="helper-text"
                   data-error="Invalid Password"
                   data-success=""
                 />
@@ -60,7 +66,7 @@ const SignUp = props => {
             <div className="row">
               Already have an account? <Link to="/login">Login here.</Link>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     );
@@ -70,7 +76,11 @@ const SignUp = props => {
 
 const mapState = ({ loggedIn }) => ({ loggedIn });
 
-const mapDispatch = dispatch => ({});
+const mapDispatch = dispatch => ({
+  createUser: (firstName, lastName, email, password) => {
+    dispatch(createUser(firstName, lastName, email, password));
+  },
+});
 
 export default connect(
   mapState,

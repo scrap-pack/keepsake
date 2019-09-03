@@ -24,71 +24,34 @@ const Home = props => {
 
   // select button to changes between single image veiw and select images
   return (
-<<<<<<< HEAD
-    <div
-      style={{
-        display: 'flex',
-      }}
-    >
-      <div>
-        <div> Welcome! </div>
-        <Link to="/scrapbook" />
-        <Link to="/upload" />,
-      </div>
+    // <div
+    //   style={{
+    //     display: 'flex',
+    //   }}
+    // >
+    //   <div>
+    //     <div> Welcome! </div>
+    //     <Link to="/scrapbook" />
+    //     <Link to="/upload" />,
+    //   </div>
 
-      <h1
-        onClick={event => {
-          event.preventDefault();
-          swapSelect();
-        }}
-      >
-        SELECT
-      </h1>
-=======
+    //   <h1
+    //     onClick={event => {
+    //       event.preventDefault();
+    //       swapSelect();
+    //     }}
+    //   >
+    //     SELECT
+    //   </h1>
     <div>
       <div> Welcome! </div>
       <Link to="/scrapbook" />
       <Link to="/upload" />
->>>>>>> Working on setting up login route
       <div
         style={{
           display: 'flex',
         }}
       >
-<<<<<<< HEAD
-        {images.map(image => {
-          return (
-            <div key={image.id}>
-              <img
-                src={image.imageUrl}
-                alt=""
-                onClick={event => {
-                  event.preventDefault();
-                  if (select) {
-                    if (
-                      currentImages.filter(
-                        currentImage => currentImage.id === image.id
-                      ).length > 0
-                    ) {
-                      deselectImage(image);
-                    } else {
-                      selectImage(image);
-                      //add jsx to show image is selected
-                    }
-                  } else {
-                    addToSingleImage(image);
-                    // <Redirect to="/SingleImage" component={SingleImage} />;
-                    //fix this
-                  }
-                }}
-              />
-            </div>
-          );
-        })}
-      </div>
-
-      <Link to="/upload">
-=======
         <h1
           onClick={() => {
             this.props.select = !this.props.select;
@@ -96,7 +59,6 @@ const Home = props => {
         >
           SELECT
         </h1>
->>>>>>> Working on setting up login route
         <div
           style={{
             display: 'flex',
