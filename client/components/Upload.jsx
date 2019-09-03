@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as cocoSsd from '@tensorflow-models/coco-ssd';
-import * as mobilenet from '@tensorflow-models/mobilenet';
 import { postImages } from '../redux/images';
 
 const propTypes = {
@@ -30,34 +28,28 @@ Upload.propTypes = propTypes;
 const mapDispatchToProps = dispatch => ({
   uploadImage: (e) => {
     e.preventDefault();
-    const fileList = e.target.uploadInput.files[0];
-    
-    // tbd pending AWS S3 bucket
-    // dispatch(postImages());
+    const image = e.target.uploadInput.files[0];
+    const formData = new FormData();
+    const preview = document.querySelector('img');
+    formData.append('imageUpload', image);
+    formData.append('imageSrc', preview.src);
+
+    dispatch(postImages(formData));
+
+    preview.src = "";
   },
   previewImage: async (e) => {
     e.preventDefault();
     e.persist();
     const preview = document.querySelector('img');
     const fileList = e.target.files[0];
-    console.log('FILE HEREEEEE', fileList);
     const reader = new FileReader();
-
-    const objectDetector = await cocoSsd.load();
-    const predictedObject = await objectDetector.detect(preview);
-
-    console.log(predictedObject);
-
-    const model = await mobilenet.load();
-    const predictions = await model.classify(preview);
-
-    console.log(predictions);
 
     if (fileList) {
       reader.readAsDataURL(fileList);
     }
 
-    reader.addEventListener("load", () => {
+    reader.addEventListener("load", async () => {
       preview.src = reader.result;
     }, false);
   },
@@ -65,6 +57,6 @@ const mapDispatchToProps = dispatch => ({
 
 const connectToStore = connect(null, mapDispatchToProps);
 
-const connectedUpload = connectToStore(Upload);
+const ConnectedUpload = connectToStore(Upload);
 
-export default connectedUpload;
+export default ConnectedUpload;

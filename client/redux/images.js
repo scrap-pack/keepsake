@@ -18,12 +18,12 @@ const imageState = {
 
 const images = (state = imageState, action) => {
   switch (action.type) {
-    case GET_IMAGES:
+    case GET_ALL_IMAGES:
       return { ...state, allImages: [...state.allImages, ...action.images] };
     case GET_SINGLE_IMAGE:
       return { ...state, singleImage: action.image };
     case SELECT_IMAGE:
-      return { ...state, selectedImages: [...selectedImages, action.image] };
+      return { ...state, selectedImages: [...state.selectedImages, action.image] };
     default:
       return state;
   }
@@ -48,8 +48,13 @@ export const fetchSingleImage = id => async dispatch => {
 };
 
 export const postImages = fileData => async dispatch => {
+  console.log('##### FILE IN THUNK', fileData);
   try {
-    const { data } = await axios.post('/api/images', fileData);
+    const { data } = await axios.post('/api/images', fileData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     console.log('SUCCESSS POSTING IMAGE!!!', data);
     dispatch(uploadImages(data));
   } catch (e) {

@@ -1,11 +1,20 @@
-const router = require('express').Router();
-const { Image } = require('../database/index');
 const chalk = require('chalk');
+const router = require('express').Router();
+const multer = require('multer');
+const cocoSsd = require('@tensorflow-models/coco-ssd');
+const canvas = require('canvas');
+const { Image, Tag } = require('../database/index');
+const s3 = require('../aws3Config');
+require('dotenv').config();
+require('@tensorflow/tfjs-node');
 
-//Get all iamges
+const upload = multer();
+
+// Get all iamges
 router.get('/', (req, res, next) => {
   return Image.findAll()
     .then(images => {
+
       console.log(chalk.green('Successfully got all images'));
       return res.status(200).json(images);
     })
@@ -15,7 +24,7 @@ router.get('/', (req, res, next) => {
     });
 });
 
-//Get image by ID
+// Get image by ID
 router.get('/:id', (req, res, next) => {
   return Image.findByPk(req.params.id)
     .then(image => {
@@ -28,20 +37,58 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-//post new image
-router.post('/', (req, res, next) => {
-  return Image.create(req.body)
-    .then(image => {
-      console.log(`Successfully posted new image`);
-      return res.status(201).json(image);
-    })
-    .catch(e => {
-      console.error(chalk.red(`Failed to post new image`), e);
-      next(e);
+// post new image
+router.post('/', upload.single('imageUpload'), async (req, res, next) => {
+  const { file } = req;
+  let newImage;
+
+  const s3payload = {
+    Bucket: process.env.BUCKET,
+    Key: file.originalname.split('.')[0],
+    ContentType: file.mimetype,
+    Body: file.buffer,
+    ACL: 'public-read',
+  };
+
+  // try catch block for AWS s3 upload + create new image record with s3 URL
+  try {
+    s3.upload(s3payload, async (err, data) => {
+      if (err) {
+        console.log(chalk.red(`### ERROR IN S3 UPLOAD`), err);
+      } if (data) {
+        newImage = await Image.create({ imageUrl: data.Location });
+      }
     });
+  } catch (error) {
+    console.error(chalk.red(`Failed to post new image`), error);
+  }
+
+  // try catch block for tensorflow ML tag detection + create new tag + associate tag(s) with newImage created above
+  try {
+    // canvas or HTMLcanvasElement required for tensorflow in node; below is required config/conversion.
+    const cnvs = canvas.createCanvas(300, 300);
+    const ctx = cnvs.getContext('2d');
+    const img = new canvas.Image();
+    img.src = req.body.imageSrc;
+    ctx.drawImage(img, 0, 0, 300, 300);
+
+    // ML model load and object detection
+    const objectDetector = await cocoSsd.load();
+    const predictedTags = await objectDetector.detect(cnvs);
+
+    // get tags from prediction
+    const mlTags = predictedTags.reduce((accum, elem) => !accum.includes(elem.class) ? [...accum, elem.class] : [...accum], []);
+
+    mlTags.forEach(async (elem) => {
+      const newTag = await Tag.create({ description: elem });
+      await newImage.setTags(newTag);
+    });
+  } catch (error) {
+    console.error(chalk.red(`Failed to create ML tag`), error);
+  }
 });
 
-//put (update) image by ID
+// put (update) image by ID
 router.put('/:id', (req, res, next) => {
   return Image.findByPk(req.params.id)
     .then(image => image.update(req.body))
@@ -57,7 +104,7 @@ router.put('/:id', (req, res, next) => {
     });
 });
 
-//delete image by ID
+// delete image by ID
 router.delete(':/id', (req, res, next) => {
   return Image.findByPk(req.params.id)
     .then(image => image.destroy({ where: req.params.id }))
