@@ -1,9 +1,6 @@
 const { name, internet, image } = require('faker');
 const chalk = require('chalk');
-const {
-  db, User, Image, Tag,
-} = require('../index');
-
+const { db, User, Image, Tag } = require('../index');
 
 const seed = async () => {
   // const Users = [];
@@ -36,16 +33,21 @@ const seed = async () => {
       };
       const user = await User.create(userFaker);
       let imgs = [];
-<<<<<<< HEAD
       for (let j = 0; j < 7; j++) {
-        const imgType = ['people', 'animals', 'transport', 'food', 'fashion', 'nature', 'nightlife'];
-=======
-      for (let j = 0; j < 3; j++) {
-        const imgType = ['people', 'animals', 'transport'];
->>>>>>> Successfully generate jsonwebtoken for user
+        const imgType = [
+          'people',
+          'animals',
+          'transport',
+          'food',
+          'fashion',
+          'nature',
+          'nightlife',
+        ];
         const img = await { imageUrl: image.imageUrl(400, 400, imgType[j]) };
         const imgRecord = await Image.create(img);
-        const foundTag = await Tag.findOne({ where: { description: imgType[j] } });
+        const foundTag = await Tag.findOne({
+          where: { description: imgType[j] },
+        });
         await imgRecord.addTag(foundTag);
         imgs.push(imgRecord.id);
       }
@@ -54,7 +56,7 @@ const seed = async () => {
     }
 
     console.log(
-      chalk.hex('#ACE000')('Finished seeding data...db will now close...'),
+      chalk.hex('#ACE000')('Finished seeding data...db will now close...')
     );
     await db.close();
   } catch (error) {
