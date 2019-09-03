@@ -18,4 +18,5 @@ db.sync({ force: process.env.DB_FORCE === 'true' })
         `)
       );
     });
-  });
+  })
+  .catch(e => console.error(e));
