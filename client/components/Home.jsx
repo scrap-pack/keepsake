@@ -73,7 +73,7 @@ const Home = props => {
                     }
                   } else {
                     addToSingleImage(image);
-                    // <Redirect to="/SingleImage" component={SingleImage} />;
+                    <Link to="/SingleImage" component={SingleImage} />;
                     //fix this
                   }
                 }}
@@ -99,6 +99,7 @@ const Home = props => {
           Upload
         </div>
       </Link>
+      <Tag />
     </div>
   );
 };

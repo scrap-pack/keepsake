@@ -15,5 +15,5 @@ render(
       <Main />
     </Router>
   </Provider>,
-  appDiv,
+  appDiv
 );

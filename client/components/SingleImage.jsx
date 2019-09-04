@@ -45,7 +45,7 @@ const mapStateToProps = state => {
 
 SingleImage.propTypes = {
   image: PropTypes.shape({
-    imageUrl: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
     dateTaken: PropTypes.number,
     fileName: PropTypes.string,
     latitude: PropTypes.number,

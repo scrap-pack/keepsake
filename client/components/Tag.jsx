@@ -2,15 +2,18 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchTags, fetchSingleTag, postTags, storeTags } from '../redux/tags';
+import {
+  fetchTags,
+  fetchSingleTag,
+  postTags,
+  addEnteredTags,
+  parseTags,
+  clearTags,
+  clearString,
+} from '../redux/tags';
 import Home from './Home.jsx';
 
 class Tag extends React.Component {
-  // componentDidMount() {
-  //   const { getSelectedImages } = this.props;
-  //   getSelectedImages();
-  // }
-
   render() {
     return (
       <div>
@@ -19,6 +22,7 @@ class Tag extends React.Component {
             onSubmit={event => {
               event.preventDefault();
               this.props.uploadTags(this.props.currentTags);
+              this.props.clearCurrentTags();
             }}
           >
             <label>Add Tags seperated by commas</label>
@@ -26,6 +30,10 @@ class Tag extends React.Component {
               onChange={event => {
                 event.preventDefault();
                 this.props.addTags(event.target.value);
+              }}
+              onMouseLeave={event => {
+                event.preventDefault();
+                this.props.convertTagStringToTags();
               }}
             ></input>{' '}
             <button type="onSubmit">Upload Tags</button>
@@ -52,17 +60,27 @@ Tag.propTypes = {
 const mapStateToProps = state => {
   return {
     selectedImages: state.images.selectedImages,
-    currenttags: state.tags.currentTags,
-    singletag: state.tags.singleTag,
+    currentTags: state.tags.currentTags,
+    singleTag: state.tags.singleTag,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  // getSelectedImages: () => dispatch(fetchSelectedImages()),
   getTags: () => dispatch(fetchTags()),
   getTag: id => dispatch(fetchSingleTag(id)),
   uploadTags: currentTags => dispatch(postTags(currentTags)),
-  addTags: tags => storeTags(tags, dispatch),
+  addTags: tags => {
+    dispatch(addEnteredTags(tags));
+  },
+  convertTagStringToTags: () => {
+    dispatch(parseTags());
+  },
+  clearCurrentTags: () => {
+    dispatch(clearTags());
+  },
+  clearTagString: () => {
+    dispatch(clearString());
+  },
 });
 
 export default connect(
