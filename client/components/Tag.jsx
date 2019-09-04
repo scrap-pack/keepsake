@@ -8,8 +8,8 @@ import {
   postTags,
   addEnteredTags,
   parseTags,
-  clearTags,
-  clearString,
+  // clearTags,
+  // clearString,
 } from '../redux/tags';
 import Home from './Home.jsx';
 
@@ -22,7 +22,6 @@ class Tag extends React.Component {
             onSubmit={event => {
               event.preventDefault();
               this.props.uploadTags(this.props.currentTags);
-              this.props.clearCurrentTags();
             }}
           >
             <label>Add Tags seperated by commas</label>
@@ -75,12 +74,12 @@ const mapDispatchToProps = dispatch => ({
   convertTagStringToTags: () => {
     dispatch(parseTags());
   },
-  clearCurrentTags: () => {
-    dispatch(clearTags());
-  },
-  clearTagString: () => {
-    dispatch(clearString());
-  },
+  // clearCurrentTags: () => {
+  //   dispatch(clearTags());
+  // },
+  // clearTagString: () => {
+  //   dispatch(clearString());
+  // },
 });
 
 export default connect(

@@ -62,10 +62,10 @@ export const fetchSingleTag = id => dispatch => {
 };
 
 export const postTags = tags => dispatch => {
-  tags.forEach(tag => {
-    axios.post('/api/tags', { tag }).catch(e => console.error(e));
-  });
-  dispatch(clearTags(tags));
+  axios
+    .post('/api/tags', tags)
+    .then(tags => dispatch(clearTags(tags)))
+    .catch(e => console.error(e));
 };
 
 export const searchTags = queryString => async dispatch => {
