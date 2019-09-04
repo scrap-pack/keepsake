@@ -11,7 +11,7 @@ import {
   // clearTags,
   // clearString,
 } from '../redux/tags';
-import Home from './Home.jsx';
+//import Home from './Home.jsx';
 
 class Tag extends React.Component {
   render() {

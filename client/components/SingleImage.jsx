@@ -15,7 +15,7 @@ const SingleImage = props => {
     <div>
       <div>
         <img
-          src={image.imageUrl}
+          src={props.image.imageUrl}
           onClick={event => {
             event.preventDefault();
             // if (image in selectedImages) {

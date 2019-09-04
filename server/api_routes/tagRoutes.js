@@ -62,7 +62,7 @@ router.get('/:id', (req, res, next) => {
 
 //post new tag
 router.post('/', (req, res, next) => {
-  return Tag.create(req.body)
+  return Tag.findOrCreate(req.body)
     .then(tag => {
       console.log(`Successfully posted new tag`);
       return res.status(201).json(tag);
