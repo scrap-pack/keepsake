@@ -13,6 +13,10 @@ import {
 } from '../redux/tags';
 //import Home from './Home.jsx';
 
+const parse = () => {event => {
+  event.preventDefault();
+  this.props.convertTagStringToTags();};
+
 class Tag extends React.Component {
   render() {
     return (
@@ -30,10 +34,11 @@ class Tag extends React.Component {
                 event.preventDefault();
                 this.props.addTags(event.target.value);
               }}
-              onMouseLeave={event => {
-                event.preventDefault();
-                this.props.convertTagStringToTags();
-              }}
+              onMouseLeave={parse}
+              onTouchEnd={parse}
+              onKeyPress={parse}
+              onTouchMove={parse}
+              onTouchEnd={parse}
             ></input>{' '}
             <button type="onSubmit">Upload Tags</button>
           </form>
