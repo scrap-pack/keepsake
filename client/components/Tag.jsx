@@ -13,11 +13,17 @@ import {
 } from '../redux/tags';
 //import Home from './Home.jsx';
 
-const parse = () => {event => {
-  event.preventDefault();
-  this.props.convertTagStringToTags();};
-
 class Tag extends React.Component {
+  constructor(props) {
+    super(props);
+    this.parse = this.parse.bind(this);
+  }
+
+  parse(event) {
+    event.preventDefault();
+    this.props.convertTagStringToTags(event.target.value);
+  }
+
   render() {
     return (
       <div>
@@ -34,12 +40,11 @@ class Tag extends React.Component {
                 event.preventDefault();
                 this.props.addTags(event.target.value);
               }}
-              onMouseLeave={parse}
-              onTouchEnd={parse}
-              onKeyPress={parse}
-              onTouchMove={parse}
-              onTouchEnd={parse}
-            ></input>{' '}
+              onMouseLeave={this.parse}
+              onTouchEnd={this.parse}
+              onTouchMove={this.parse}
+              onTouchEnd={this.parse}
+            ></input>
             <button type="onSubmit">Upload Tags</button>
           </form>
         </div>
@@ -69,23 +74,25 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => ({
-  getTags: () => dispatch(fetchTags()),
-  getTag: id => dispatch(fetchSingleTag(id)),
-  uploadTags: currentTags => dispatch(postTags(currentTags)),
-  addTags: tags => {
-    dispatch(addEnteredTags(tags));
-  },
-  convertTagStringToTags: () => {
-    dispatch(parseTags());
-  },
-  // clearCurrentTags: () => {
-  //   dispatch(clearTags());
-  // },
-  // clearTagString: () => {
-  //   dispatch(clearString());
-  // },
-});
+const mapDispatchToProps = dispatch => {
+  return {
+    getTags: () => dispatch(fetchTags()),
+    getTag: id => dispatch(fetchSingleTag(id)),
+    uploadTags: currentTags => dispatch(postTags(currentTags)),
+    addTags: tags => {
+      dispatch(addEnteredTags(tags));
+    },
+    convertTagStringToTags: () => {
+      dispatch(parseTags());
+    },
+    // clearCurrentTags: () => {
+    //   dispatch(clearTags());
+    // },
+    // clearTagString: () => {
+    //   dispatch(clearString());
+    // },
+  };
+};
 
 export default connect(
   mapStateToProps,
