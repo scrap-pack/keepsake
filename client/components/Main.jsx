@@ -16,6 +16,7 @@ import Navbar from './Navbar.jsx';
 import Home from './Home.jsx';
 import Login from './Login.jsx';
 import SignUp from './SignUp.jsx';
+import FloatingUploadButton from './FUB.jsx';
 
 const propTypes = {
   getImages: PropTypes.func.isRequired,
@@ -38,6 +39,7 @@ class Main extends Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={SignUp} />
         </Switch>
+        <FloatingUploadButton />
       </div>
     );
   }
