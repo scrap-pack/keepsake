@@ -7,6 +7,7 @@ import {
   removeSelectedImage,
   getSingleImage,
   flipSelect,
+  deleteAllSelectedImages,
 } from '../redux/images';
 import Tag from './Tag.jsx';
 import SingleImage from './SingleImage.jsx';
@@ -20,6 +21,7 @@ const Home = props => {
     deselectImage,
     addToSingleImage,
     currentImages,
+    deleteSelectedImages,
   } = props;
 
   // select button to changes between single image veiw and select images
@@ -73,7 +75,7 @@ const Home = props => {
                     }
                   } else {
                     addToSingleImage(image);
-                    <Link to="/SingleImage" component={SingleImage} />;
+
                     //fix this
                   }
                 }}
@@ -87,6 +89,11 @@ const Home = props => {
         <div className="btn orange darken-2">Upload</div>
       </Link>
       <Tag />
+      <div>
+        {/* <button onClick={deleteSelectedImages(currentImages)}>
+          DELETE SELECTED IMAGES
+        </button> */}
+      </div>
     </div>
   );
 };
@@ -124,6 +131,12 @@ const mapDispatchToProps = dispatch => {
     },
     swapSelect: () => {
       dispatch(flipSelect());
+    },
+    deleteSelectedImages: images => {
+      dispatch(deleteAllSelectedImages(images));
+    },
+    goToSingleImage: () => {
+      return <Link to="/SingleImage" component={SingleImage} />;
     },
   };
 };

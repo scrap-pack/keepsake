@@ -9,6 +9,7 @@ const SELECT_IMAGE = 'SELECT_IMAGE';
 const DESELECT_IMAGE = 'DESELECT_IMAGE';
 const SWAP_SELECT = 'SWAP_SELECT';
 const CLEAR_FILTERED_IMAGES = 'CLEAR_FILTERED_IMAGES';
+const DESELECT_ALL_SELECTED_IMAGES = 'DELETE_SELECTED_IMAGES';
 
 // Action Creators
 const getAllImages = images => ({ type: GET_ALL_IMAGES, images });
@@ -19,6 +20,9 @@ export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });
 export const clearFilteredImages = () => ({ type: CLEAR_FILTERED_IMAGES });
 export const flipSelect = () => ({ type: SWAP_SELECT });
+const deselectAllSelectedImages = () => ({
+  type: DESELECT_ALL_SELECTED_IMAGES,
+});
 
 // Thunks
 export const fetchAllImages = () => async dispatch => {
@@ -69,6 +73,16 @@ export const deleteImageFromDB = image => dispatch => {
     .catch(e => console.error(e));
 };
 
+export const deleteAllSelectedImages = images => dispatch => {
+  Promise.all(
+    images.map(image => {
+      axios.delete(`api/images/${image.id}`);
+    })
+  )
+    .then(() => dispatch(deselectAllSelectedImages()))
+    .catch(e => console.error(e));
+};
+
 // Reducer
 const imageState = {
   allImages: [],
@@ -104,6 +118,11 @@ const images = (state = imageState, action) => {
       return {
         ...state,
         select: !state.select,
+      };
+    case DESELECT_ALL_SELECTED_IMAGES:
+      return {
+        ...state,
+        selectedImages: [],
       };
     default:
       return state;

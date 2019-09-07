@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -11,7 +10,6 @@ import {
   // clearTags,
   // clearString,
 } from '../redux/tags';
-//import Home from './Home.jsx';
 
 class Tag extends React.Component {
   constructor(props) {
@@ -48,7 +46,6 @@ class Tag extends React.Component {
             <button type="onSubmit">Upload Tags</button>
           </form>
         </div>
-        <Link to="/">HOME</Link>
       </div>
     );
   }

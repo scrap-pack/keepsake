@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tag from './Tag.jsx';
@@ -37,6 +37,7 @@ const SingleImage = props => {
           DELETE
         </button>
       </div>
+      <Link to="/">HOME</Link>
     </div>
   );
 };
