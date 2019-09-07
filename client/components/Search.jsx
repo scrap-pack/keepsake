@@ -22,7 +22,6 @@ class Search extends React.Component {
   }
 
   handleChange(event) {
-    event.preventDefault();
     const { searchMatchingTags } = this.props;
     this.setState({ value: event.target.value });
     searchMatchingTags(event.target.value);
@@ -82,30 +81,30 @@ class Search extends React.Component {
             </div>
             <div className="row col s3">
               {filteredTags.length
-                ? filteredTags.map(tag => {
-                    return (
-                      <li
-                        className="collection-item"
-                        key={tag.id}
-                        value={tag.description}
+                ? filteredTags.map( (tag) => {
+                  return (
+                    <li
+                      className="collection-item"
+                      key={tag.id}
+                      value={tag.description}
+                      style={styles}
+                    >
+                      <span className="title">{tag.description}</span>
+                      <button
+                        type="submit"
                         style={styles}
+                        className="secondary-content"
+                        onClick={event => {
+                          event.preventDefault();
+                          selectTag(tag);
+                          this.clearInput();
+                        }}
                       >
-                        <span className="title">{tag.description}</span>
-                        <button
-                          type="submit"
-                          style={styles}
-                          className="secondary-content"
-                          onClick={event => {
-                            event.preventDefault();
-                            selectTag(tag);
-                            this.clearInput();
-                          }}
-                        >
-                          <i className="material-icons">arrow_forward</i>
-                        </button>
-                      </li>
-                    );
-                  })
+                        <i className="material-icons">arrow_forward</i>
+                      </button>
+                    </li>
+                  );
+                })
                 : null}
             </div>
           </ul>

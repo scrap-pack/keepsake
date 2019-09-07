@@ -74,7 +74,7 @@ const imageState = {
   allImages: [],
   singleImage: {},
   selectedImages: [],
-  select: false,
+  selectMode: false,
   filteredImages: [],
 };
 
@@ -101,10 +101,10 @@ const images = (state = imageState, action) => {
         ),
       };
     case SWAP_SELECT:
-      return {
-        ...state,
-        select: !state.select,
-      };
+      if (state.selectMode) {
+        return { ...state, selectMode: !state.selectMode, selectedImages: [] };
+      }
+      return { ...state, selectMode: !state.selectMode };
     default:
       return state;
   }
