@@ -23,7 +23,7 @@ router.get('/search', async (req, res) => {
                 [Op.startsWith]: queryString.toUpperCase(),
               },
             },
-          ]
+          ],
         },
         order: ['description'],
       });
@@ -34,7 +34,7 @@ router.get('/search', async (req, res) => {
   }
 });
 
-//Get all iamges
+//Get all tags
 router.get('/', (req, res, next) => {
   return Tag.findAll()
     .then(tags => {
@@ -60,9 +60,9 @@ router.get('/:id', (req, res, next) => {
     });
 });
 
-//post new image
+//post new tag
 router.post('/', (req, res, next) => {
-  return Tag.create(req.body)
+  return Tag.findOrCreate(req.body)
     .then(tag => {
       console.log(`Successfully posted new tag`);
       return res.status(201).json(tag);
@@ -73,7 +73,7 @@ router.post('/', (req, res, next) => {
     });
 });
 
-//put (update) image by ID
+//put (update) tag by ID
 router.put('/:id', (req, res, next) => {
   return Tag.findByPk(req.params.id)
     .then(tag => tag.update(req.body))
@@ -89,7 +89,7 @@ router.put('/:id', (req, res, next) => {
     });
 });
 
-//delete image by ID
+//delete tag by ID
 router.delete(':/id', (req, res, next) => {
   return Tag.findByPk(req.params.id)
     .then(tag => tag.destroy({ where: req.params.id }))

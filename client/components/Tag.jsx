@@ -2,15 +2,22 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { fetchTags, fetchSingleTag, postTags, storeTags } from '../redux/tags';
-import Home from './Home.jsx';
+import {
+  fetchTags,
+  fetchSingleTag,
+  postTags,
+  addEnteredTags,
+  parseTags,
+  // clearTags,
+  // clearString,
+} from '../redux/tags';
+//import Home from './Home.jsx';
+
+const parse = () => {event => {
+  event.preventDefault();
+  this.props.convertTagStringToTags();};
 
 class Tag extends React.Component {
-  // componentDidMount() {
-  //   const { getSelectedImages } = this.props;
-  //   getSelectedImages();
-  // }
-
   render() {
     return (
       <div>
@@ -27,6 +34,11 @@ class Tag extends React.Component {
                 event.preventDefault();
                 this.props.addTags(event.target.value);
               }}
+              onMouseLeave={parse}
+              onTouchEnd={parse}
+              onKeyPress={parse}
+              onTouchMove={parse}
+              onTouchEnd={parse}
             ></input>{' '}
             <button type="onSubmit">Upload Tags</button>
           </form>
@@ -52,17 +64,27 @@ Tag.propTypes = {
 const mapStateToProps = state => {
   return {
     selectedImages: state.images.selectedImages,
-    currenttags: state.tags.currentTags,
-    singletag: state.tags.singleTag,
+    currentTags: state.tags.currentTags,
+    singleTag: state.tags.singleTag,
   };
 };
 
 const mapDispatchToProps = dispatch => ({
-  // getSelectedImages: () => dispatch(fetchSelectedImages()),
   getTags: () => dispatch(fetchTags()),
   getTag: id => dispatch(fetchSingleTag(id)),
   uploadTags: currentTags => dispatch(postTags(currentTags)),
-  addTags: tags => storeTags(tags, dispatch),
+  addTags: tags => {
+    dispatch(addEnteredTags(tags));
+  },
+  convertTagStringToTags: () => {
+    dispatch(parseTags());
+  },
+  // clearCurrentTags: () => {
+  //   dispatch(clearTags());
+  // },
+  // clearTagString: () => {
+  //   dispatch(clearString());
+  // },
 });
 
 export default connect(
