@@ -5,8 +5,6 @@ const chalk = require('chalk');
 
 // Get my user info
 router.get('/me', auth, (req, res, next) => {
-  const headers = req.headers;
-  // console.log('header', headers.authorization)
   res.json(req.user.getPublicProfile());
   next();
 });
@@ -54,13 +52,14 @@ router.post('/login', async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password)
     res.status(400).json({ error: 'Invalid login credentials!' });
-
-  try {
-    const user = await User.findByCredentials(email, password);
-    const token = await user.generateAuthToken();
-    if (user) res.send({ user: user.getPublicProfile(), token });
-  } catch (e) {
-    next(e);
+  else {
+    try {
+      const user = await User.findByCredentials(email, password);
+      const token = await user.generateAuthToken();
+      if (user) res.send({ user: user.getPublicProfile(), token });
+    } catch (e) {
+      next(e);
+    }
   }
 });
 
