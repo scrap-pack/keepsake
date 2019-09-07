@@ -92,9 +92,7 @@ User.findByCredentials = async (email, password) => {
 
 User.prototype.generateAuthToken = async function() {
   const user = this;
-  const token = jwt.sign({ id: user.id }, process.env.AUTH_SECRET, {
-    expiresIn: 60 * 60,
-  });
+  const token = jwt.sign({ id: user.id }, process.env.AUTH_SECRET);
   user.tokens = user.tokens.concat({ token });
   user.save();
   return token;

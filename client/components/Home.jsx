@@ -24,92 +24,68 @@ const Home = props => {
 
   // select button to changes between single image veiw and select images
   return (
-    // <div
-    //   style={{
-    //     display: 'flex',
-    //   }}
-    // >
-    //   <div>
-    //     <div> Welcome! </div>
-    //     <Link to="/scrapbook" />
-    //     <Link to="/upload" />,
-    //   </div>
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
+      <div>
+        <div> Welcome! </div>
+        <Link to="/scrapbook" />
+        <Link to="/upload" />,
+      </div>
 
-    //   <h1
-    //     onClick={event => {
-    //       event.preventDefault();
-    //       swapSelect();
-    //     }}
-    //   >
-    //     SELECT
-    //   </h1>
-    <div>
-      <div> Welcome! </div>
-      <Link to="/scrapbook" />
-      <Link to="/upload" />
+      <h1
+        onClick={event => {
+          event.preventDefault();
+          swapSelect();
+        }}
+      >
+        SELECT
+      </h1>
       <div
         style={{
           display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          alignContent: 'space-around',
+          flexWrap: 'wrap',
         }}
       >
-        <h1
-          onClick={() => {
-            this.props.select = !this.props.select;
-          }}
-        >
-          SELECT
-        </h1>
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignContent: 'space-around',
-            flexWrap: 'wrap',
-          }}
-        >
-          {images.map(image => {
-            return (
-              <div key={image.id}>
-                <img
-                  src={image.imageUrl}
-                  alt=""
-                  onClick={event => {
-                    event.preventDefault();
-                    if (this.props.select) {
-                      if (elem in this.props.currentImages) {
-                        this.props.deselectImage(image);
-                      } else {
-                        this.props.selectImage(image);
-                        //add jsx to show image is selected
-                      }
+        {images.map(image => {
+          return (
+            <div key={image.id}>
+              <img
+                src={image.imageUrl}
+                alt=""
+                onClick={event => {
+                  event.preventDefault();
+                  if (select) {
+                    if (
+                      currentImages.filter(
+                        currentImage => currentImage.id === image.id
+                      ).length > 0
+                    ) {
+                      deselectImage(image);
                     } else {
-                      this.props.addToSingleImage(image);
-                      <Redirect to="/singleImage" />;
+                      selectImage(image);
+                      //add jsx to show image is selected
                     }
-                  }}
-                />
-              </div>
-            );
-          })}
-        </div>
-        <Link to="/upload">
-          <div
-            style={{
-              borderRadius: '50%',
-              width: '200px',
-              height: '200px',
-              background: 'orange',
-              border: '5px solid blue',
-              textAlign: 'center',
-              verticalAlign: 'middle',
-              size: '100px',
-            }}
-          >
-            Upload
-          </div>
-        </Link>
+                  } else {
+                    addToSingleImage(image);
+                    // <Redirect to="/SingleImage" component={SingleImage} />;
+                    //fix this
+                  }
+                }}
+              />
+            </div>
+          );
+        })}
       </div>
+
+      <Link to="/upload">
+        <div className="btn orange darken-2">Upload</div>
+      </Link>
     </div>
   );
 };

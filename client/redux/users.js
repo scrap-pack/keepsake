@@ -1,40 +1,47 @@
 import axios from 'axios';
 
 export const GOT_USER = 'GOT_USER';
-export const LOGOUT_USER = 'LOGOUT_USER';
 export const CHANGE_LOGIN_STATUS = 'CHANGE_LOGIN_STATUS';
 export const CREATE_USER = 'CREATE_USER';
 
 export const gotUser = user => ({ type: GOT_USER, user });
-export const logoutUser = () => ({ type: LOGOUT_USER });
-export const changeLoginStatus = loginStatus => ({
+export const changeLoginStatus = authenticated => ({
   type: CHANGE_LOGIN_STATUS,
-  loginStatus,
+  authenticated,
 });
-export const createUser = (firstName, lastName, email, password) => ({
+export const createUser = user => ({
   type: CREATE_USER,
-  firstName,
-  lastName,
-  email,
-  password,
+  user,
 });
 
+export const fetchUser = () => {
+  // const token = Cookies.get('sid');
+  return dispatch => {
+    return (
+      axios
+        .get(`/api/users/me`, { withCredentials: true })
+        // { headers: { Authorization: token }}
+        .then(({ data }) => dispatch(gotUser(data)))
+        .catch(err => {
+          console.log('Error retrieving my info from db!', err);
+        })
+    );
+  };
+};
+
 export const loginThunk = (email, password) => {
-  console.log(email, password);
   return dispatch => {
     return axios
       .post('/api/users/login', { email, password })
       .then(res => res.data)
       .then(user => {
         console.log('redux user', user);
+        Cookies.set('sid', user.token, { expires: 1 });
         dispatch(gotUser(user));
-      })
-      .then(() => {
-        console.log('changing login status');
         dispatch(changeLoginStatus(true));
       })
-      .catch(() => {
-        console.log('Login error');
+      .catch(err => {
+        console.log('Login error', err);
         dispatch(gotUser({ error: 'Invalid login credentials!' }));
       });
   };
@@ -45,7 +52,11 @@ export const logoutThunk = () => {
     return axios
       .post('/api/users/logout')
       .then(() => {
-        dispatch(logoutUser());
+        Cookies.remove('sid');
+        dispatch(changeLoginStatus(false));
+      })
+      .then(() => {
+        console.log('Now logged out!');
       })
       .catch(() => {
         console.log('Logout error');
@@ -58,11 +69,10 @@ export const createUserThunk = user => {
     return axios
       .post('/api/users', user)
       .then(res => {
-        console.log(res.data);
         dispatch(createUser(res.data));
       })
       .catch(err => {
-        console.error('Failed to create new user!', err);
+        console.log('Failed to create new user!');
       });
   };
 };
@@ -71,35 +81,22 @@ const userState = {
   currentUser: {},
   newUser: {},
   error: '',
-  loggedIn: false,
+  authenticated: false,
 };
 
 const userReducer = (state = userState, action) => {
   switch (action.type) {
-    case GOT_USER:
+    case GOT_USER: {
       return { ...state, currentUser: action.user };
-    case LOGOUT_USER: {
-      return { ...userState };
     }
     case CHANGE_LOGIN_STATUS: {
-      return { ...state, loggedIn: action.loginStatus };
+      return { ...state, authenticated: action.authenticated };
     }
     case CREATE_USER: {
-      const newUser = ({ firstName, lastName, email, password } = action);
-      return { ...state, newUser };
+      return { ...state, newUser: action.user };
     }
     default:
       return state;
-  }
-};
-
-export const fetchUser = () => async dispatch => {
-  try {
-    const { data } = await axios.get('/api/users/me');
-    console.log(data);
-    dispatch(getUsers(data));
-  } catch (e) {
-    console.error(e);
   }
 };
 

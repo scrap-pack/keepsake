@@ -3,27 +3,28 @@ const { User } = require('../database/index.js');
 const auth = require('./utils/userAuth.js');
 const chalk = require('chalk');
 
-// Get all users
-router.get('/', auth, (req, res, next) => {
-  if (req.user.userType === 'registered') {
-    return User.findAll()
-      .then(users => {
-        console.log(chalk.green('Found all users'));
-        res.json(users);
-      })
-      .catch(error => {
-        console.error(chalk.bgRed('Error finding users from db!', error));
-        next(error);
-      });
-  } else res.status(401).send('Unauthorized access!');
-});
-
 // Get my user info
 router.get('/me', auth, (req, res, next) => {
-  res.json(req.user);
+  const headers = req.headers;
+  // console.log('header', headers.authorization)
+  res.json(req.user.getPublicProfile());
+  next();
+});
+// Get all users
+router.get('/', (req, res, next) => {
+  const { id } = req.params;
+  return User.findByPk(id)
+    .then(user => {
+      console.log(chalk.green('Found user'));
+      res.json(user);
+    })
+    .catch(error => {
+      console.error(chalk.bgRed('Error finding user from db!', error));
+      next(error);
+    });
 });
 
-// Post/Create user (Dummy post route, will need to be modified later)
+// Post/Create user
 router.post('/', (req, res, next) => {
   const { email, password } = req.body;
 
@@ -72,7 +73,7 @@ router.post('/logout', auth, async (req, res, next) => {
     });
     await user.save();
 
-    res.send({ message: 'Logged out user!' });
+    res.json({ authenticated: false });
   } catch (e) {
     res.status(500).json();
   }

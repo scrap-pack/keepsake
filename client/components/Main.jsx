@@ -9,7 +9,7 @@ import { fetchAllImages } from '../redux/images';
 
 // React Components
 import Upload from './Upload.jsx';
-import SingleImage from './singleImage.jsx';
+import SingleImage from './SingleImage.jsx';
 import { fetchImages } from '../redux/images';
 import Scrapbook from './Scrapbook.jsx';
 import Navbar from './Navbar.jsx';
@@ -26,7 +26,6 @@ class Main extends Component {
     const { getImages } = this.props;
     getImages();
   }
-
   render() {
     return (
       <div>
