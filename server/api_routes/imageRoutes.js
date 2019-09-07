@@ -50,11 +50,12 @@ router.get('/:id', (req, res, next) =>
 // post new image
 router.post('/', upload.single('imageUpload'), async (req, res, next) => {
   const { file } = req;
+  const fileName = file.originalname.split('.')[0];
   let newImage;
 
   const s3payload = {
     Bucket: process.env.BUCKET,
-    Key: file.originalname.split('.')[0],
+    Key: fileName,
     ContentType: file.mimetype,
     Body: file.buffer,
     ACL: 'public-read',
@@ -64,14 +65,14 @@ router.post('/', upload.single('imageUpload'), async (req, res, next) => {
   try {
     s3.upload(s3payload, async (err, data) => {
       if (err) {
-        console.log(chalk.red(`### ERROR IN S3 UPLOAD`), err);
+        console.log(chalk.red('### ERROR IN S3 UPLOAD'), err);
       }
       if (data) {
-        newImage = await Image.create({ imageUrl: data.Location });
+        newImage = await Image.create({ imageUrl: data.Location, fileName });
       }
     });
   } catch (error) {
-    console.error(chalk.red(`Failed to post new image`), error);
+    console.error(chalk.red('Failed to post new image'), error);
   }
 
   // try catch block for tensorflow ML tag detection + create new tag + associate tag(s) with newImage created above
@@ -88,18 +89,14 @@ router.post('/', upload.single('imageUpload'), async (req, res, next) => {
     const predictedTags = await objectDetector.detect(cnvs);
 
     // get tags from prediction
-    const mlTags = predictedTags.reduce(
-      (accum, elem) =>
-        !accum.includes(elem.class) ? [...accum, elem.class] : [...accum],
-      []
-    );
+    const mlTags = predictedTags.reduce((accum, elem) => !accum.includes(elem.class) ? [...accum, elem.class] : [...accum], []);
 
-    mlTags.forEach(async elem => {
-      const newTag = await Tag.create({ description: elem });
+    mlTags.forEach(async (elem) => {
+      const newTag = await Tag.findOrCreate({ description: elem });
       await newImage.setTags(newTag);
     });
   } catch (error) {
-    console.error(chalk.red(`Failed to create ML tag`), error);
+    console.error(chalk.red('Failed to create ML tag'), error);
   }
 });
 
