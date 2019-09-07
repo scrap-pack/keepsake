@@ -6,79 +6,99 @@ import {
   addSelectedImage,
   removeSelectedImage,
   getSingleImage,
+  flipSelect,
 } from '../redux/images';
-
-// select button to changes between single image veiw and select images
+import Tag from './Tag.jsx';
+import SingleImage from './SingleImage.jsx';
 
 const Home = props => {
+  const {
+    images,
+    select,
+    swapSelect,
+    selectImage,
+    deselectImage,
+    addToSingleImage,
+    currentImages,
+  } = props;
+
+  // select button to changes between single image veiw and select images
   return (
-    <div>
-      <div> Welcome! </div>
-      <Link to="/scrapbook" />
-      <Link to="/upload" />
+    <div
+      style={{
+        display: 'flex',
+      }}
+    >
+      <div>
+        <div> Welcome! </div>
+        <Link to="/scrapbook" />
+        <Link to="/upload" />,
+      </div>
+
+      <h1
+        onClick={event => {
+          event.preventDefault();
+          swapSelect();
+        }}
+      >
+        SELECT
+      </h1>
       <div
         style={{
           display: 'flex',
+          flexDirection: 'row',
+          justifyContent: 'space-evenly',
+          alignContent: 'space-around',
+          flexWrap: 'wrap',
         }}
       >
-        <h1
-          onClick={() => {
-            this.props.select = !this.props.select;
-          }}
-        >
-          SELECT
-        </h1>
+        {images.map(image => {
+          return (
+            <div key={image.id}>
+              <img
+                src={image.imageUrl}
+                alt=""
+                onClick={event => {
+                  event.preventDefault();
+                  if (select) {
+                    if (
+                      currentImages.filter(
+                        currentImage => currentImage.id === image.id
+                      ).length > 0
+                    ) {
+                      deselectImage(image);
+                    } else {
+                      selectImage(image);
+                      //add jsx to show image is selected
+                    }
+                  } else {
+                    addToSingleImage(image);
+                    // <Redirect to="/SingleImage" component={SingleImage} />;
+                    //fix this
+                  }
+                }}
+              />
+            </div>
+          );
+        })}
+      </div>
+
+      <Link to="/upload">
         <div
           style={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignContent: 'space-around',
-            flexWrap: 'wrap',
+            borderRadius: '50%',
+            width: '200px',
+            height: '200px',
+            background: 'orange',
+            border: '5px solid blue',
+            textAlign: 'center',
+            verticalAlign: 'middle',
+            size: '100px',
           }}
         >
-          {images.map(image => {
-            return (
-              <div key={image.id}>
-                <img
-                  src={image.imageUrl}
-                  alt=""
-                  onClick={event => {
-                    event.preventDefault();
-                    if (this.props.select) {
-                      if (elem in this.props.currentImages) {
-                        this.props.deselectImage(image);
-                      } else {
-                        this.props.selectImage(image);
-                        //add jsx to show image is selected
-                      }
-                    } else {
-                      this.props.addToSingleImage(image);
-                      <Redirect to="/singleImage" />;
-                    }
-                  }}
-                />
-              </div>
-            );
-          })}
+          Upload
         </div>
-        <Link to="/upload">
-          <div
-            style={{
-              borderRadius: '50%',
-              width: '200px',
-              height: '200px',
-              background: 'orange',
-              border: '5px solid blue',
-              textAlign: 'center',
-              verticalAlign: 'middle',
-              size: '100px',
-            }}
-          >
-            Upload
-          </div>
-        </Link>
-      </div>
+      </Link>
     </div>
   );
 };
@@ -99,7 +119,7 @@ const mapStateToProps = state => {
   return {
     images: state.images.allImages,
     currentImages: state.images.selectedImages,
-    select: false,
+    select: state.images.select,
   };
 };
 
@@ -111,13 +131,18 @@ const mapDispatchToProps = dispatch => {
     deselectImage: image => {
       dispatch(removeSelectedImage(image));
     },
-    addToSingleImage: image => dispatch(getSingleImage(image)),
+    addToSingleImage: image => {
+      dispatch(getSingleImage(image));
+    },
+    swapSelect: () => {
+      dispatch(flipSelect());
+    },
   };
 };
 
 const connectedComponent = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 );
 
 const connectedImagesComponent = connectedComponent(Home);
