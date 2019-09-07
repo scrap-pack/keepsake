@@ -7,7 +7,7 @@ import tagReducer from './tags';
 
 const combinedReducer = combineReducers({
   images: imageReducer,
-  users: userReducer,
+  currentUser: userReducer,
   tags: tagReducer,
 });
 

@@ -1,9 +1,6 @@
 const { name, internet, image } = require('faker');
 const chalk = require('chalk');
-const {
-  db, User, Image, Tag,
-} = require('../index');
-
+const { db, User, Image, Tag } = require('../index');
 
 const seed = async () => {
   // const Users = [];
@@ -11,6 +8,13 @@ const seed = async () => {
   try {
     console.log(chalk.cyan('Syncing db...'));
     await db.sync({ force: true });
+    await User.create({
+      firstName: 'Admin',
+      lastName: 'AlsoAdmin',
+      email: 'keepsake@keepsake.com',
+      password: 'keepsafe',
+      userType: 'registered',
+    });
 
     await Tag.create({ description: 'people' });
     await Tag.create({ description: 'animals' });
@@ -25,14 +29,25 @@ const seed = async () => {
         firstName: name.firstName(),
         lastName: name.lastName(),
         email: internet.email(),
+        password: 'keepsake',
       };
       const user = await User.create(userFaker);
       let imgs = [];
       for (let j = 0; j < 7; j++) {
-        const imgType = ['people', 'animals', 'transport', 'food', 'fashion', 'nature', 'nightlife'];
+        const imgType = [
+          'people',
+          'animals',
+          'transport',
+          'food',
+          'fashion',
+          'nature',
+          'nightlife',
+        ];
         const img = await { imageUrl: image.imageUrl(400, 400, imgType[j]) };
         const imgRecord = await Image.create(img);
-        const foundTag = await Tag.findOne({ where: { description: imgType[j] } });
+        const foundTag = await Tag.findOne({
+          where: { description: imgType[j] },
+        });
         await imgRecord.addTag(foundTag);
         imgs.push(imgRecord.id);
       }
@@ -41,7 +56,7 @@ const seed = async () => {
     }
 
     console.log(
-      chalk.hex('#ACE000')('Finished seeding data...db will now close...'),
+      chalk.hex('#ACE000')('Finished seeding data...db will now close...')
     );
     await db.close();
   } catch (error) {
