@@ -23,7 +23,7 @@ export const fetchUser = () => {
         // { headers: { Authorization: token }}
         .then(({ data }) => dispatch(gotUser(data)))
         .catch(err => {
-          console.log('Error retrieving my info from db!', err);
+          console.log('Error retrieving my info from db!');
         })
     );
   };
@@ -35,13 +35,12 @@ export const loginThunk = (email, password) => {
       .post('/api/users/login', { email, password })
       .then(res => res.data)
       .then(user => {
-        console.log('redux user', user);
         Cookies.set('sid', user.token, { expires: 1 });
         dispatch(gotUser(user));
         dispatch(changeLoginStatus(true));
       })
       .catch(err => {
-        console.log('Login error', err);
+        console.log('Login error');
         dispatch(gotUser({ error: 'Invalid login credentials!' }));
       });
   };
@@ -54,9 +53,6 @@ export const logoutThunk = () => {
       .then(() => {
         Cookies.remove('sid');
         dispatch(changeLoginStatus(false));
-      })
-      .then(() => {
-        console.log('Now logged out!');
       })
       .catch(() => {
         console.log('Logout error');
