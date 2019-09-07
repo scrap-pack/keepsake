@@ -3,22 +3,26 @@ import axios from 'axios';
 // Actions
 const GET_TAGS = 'GET_TAGS';
 const GET_SINGLE_TAG = 'GET_SINGLE_TAG';
-const UPLOAD_TAGS = 'UPLOAD_TAGS';
+const ADD_TAG = 'ADD_TAG';
 const CLEAR_TAGS = 'CLEAR_TAGS';
 const SEARCH_TAGS = 'SEARCH_TAGS';
 const CLEAR_FILTERED_TAGS = 'CLEAR_FILTERED_TAGS';
 const CLEAR_SELECTED_TAG = 'CLEAR_SELECTED_TAGS';
 const SET_SELECTED_TAG = 'SET_SELECTED_TAG';
+const PARSE_TAGS = 'PARSE_TAG';
+const CLEAR_TAG_STRING = 'CLEAR_TAG_STRINGS';
 
 // Action Creators
 const getTags = tags => ({ type: GET_TAG, tags });
 const getSingleTag = tag => ({ type: GET_SINGLE_TAG, tag });
-const uploadTags = addedtags => ({ type: UPLOAD_TAGS, addedtags });
-const clearTags = () => ({ type: CLEAR_TAGS });
+export const clearTags = () => ({ type: CLEAR_TAGS });
 const getSearchTags = tags => ({ type: SEARCH_TAGS, tags });
+export const addEnteredTags = tagString => ({ type: ADD_TAG, tagString });
+export const parseTags = () => ({ type: PARSE_TAGS });
 export const clearFilteredTags = () => ({ type: CLEAR_FILTERED_TAGS });
 export const clearSelectedTag = () => ({ type: CLEAR_SELECTED_TAG });
 export const setSelectedTag = tag => ({ type: SET_SELECTED_TAG, tag });
+export const clearString = () => ({ type: CLEAR_TAG_STRING });
 
 const parseTagsFromString = tagsString => {
   let tagsArr = [];
@@ -26,19 +30,23 @@ const parseTagsFromString = tagsString => {
   for (let i = 0; i < tagsString.length; i++) {
     if (tagsString[i] === ',' || tagsString[i] === ' ') {
       tagsArr.push(tag);
+      tag = '';
     } else {
       tag += tagsString[i];
     }
-    return tagsArr;
   }
+  tagsArr.push(tag);
+  const tags = {};
+  return tagsArr.filter(tag => {
+    if (!tags[tag] && tag && tag !== ' ') {
+      tags[tag] = tag;
+      return true;
+    }
+    return false;
+  });
 };
 
 // Thunks
-export const storeTags = (tags, dispatch) => {
-  const addedTags = parseTagsFromString(tags);
-  dispatch(uploadTags(addedTags));
-};
-
 export const fetchTags = () => dispatch => {
   axios
     .get('/api/tags')
@@ -55,7 +63,7 @@ export const fetchSingleTag = id => dispatch => {
 
 export const postTags = tags => dispatch => {
   axios
-    .post('/api/tags', [...tags])
+    .post('/api/tags', tags)
     .then(tags => dispatch(clearTags(tags)))
     .catch(e => console.error(e));
 };
@@ -75,6 +83,7 @@ const intialState = {
   singleTag: {},
   filteredTags: [],
   selectedTag: {},
+  tagString: '',
 };
 
 const tags = (state = intialState, action) => {
@@ -83,11 +92,16 @@ const tags = (state = intialState, action) => {
       return { ...state, currentTags: [...state.currentTags, ...action.tags] };
     case GET_SINGLE_TAG:
       return { ...state, singleTag: action.tag };
-    case UPLOAD_TAGS:
+    case ADD_TAG:
       return {
         ...state,
-        currentTags: [...state.currentTags, ...action.addedTags],
+        tagString: action.tagString,
       };
+    case PARSE_TAGS:
+      const tags = parseTagsFromString(state.tagString);
+      return { ...state, currentTags: tags };
+    case CLEAR_TAG_STRING:
+      return { ...state, tagString: '' };
     case CLEAR_TAGS:
       return { ...state, currentTags: [] };
     case SEARCH_TAGS:

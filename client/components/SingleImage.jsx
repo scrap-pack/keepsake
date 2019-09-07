@@ -3,49 +3,65 @@ import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tag from './Tag.jsx';
-import { addSelectedImage, removeSelectedImage } from '../redux/images';
+import {
+  addSelectedImage,
+  removeSelectedImage,
+  deleteImageFromDB,
+} from '../redux/images';
 import Home from './Home.jsx';
 
 const SingleImage = props => {
-  const { image, selectedImages } = props;
   return (
     <div>
       <div>
         <img
-          src={image.imageUrl}
+          src={props.image.imageUrl}
           onClick={event => {
             event.preventDefault();
-            if (image in selectedImages) {
-              props.deselectImage(image);
-            } else {
-              props.selectImage(image);
-            }
+            // if (image in selectedImages) {
+            //   props.deselectImage(image);
+            // } else {
+            //   props.selectImage(image);
+            // }
           }}
         />
       </div>
       <Tag />
+      <div>
+        <button
+          onClick={event => {
+            event.preventDefault();
+            props.deleteImage(props.image);
+          }}
+        >
+          DELETE
+        </button>
+      </div>
     </div>
   );
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    back: () => <Redirect to="/" component={Home} />,
-    selectImage: image => dispatch(addSelectedImage(image)),
-    deselectImage: image => dispatch(removeSelectedImage(image)),
+    back: () => <Link to="/" component={Home} />,
+    deleteImage: image => {
+      dispatch(deleteImageFromDB(image));
+    },
+    // selectImage: image => dispatch(addSelectedImage(image)),
+    // deselectImage: image => dispatch(removeSelectedImage(image)),
   };
 };
 
 const mapStateToProps = state => {
   return {
     image: state.images.singleImage,
-    selectedImages: state.images.selectedImages,
+    // selectedImages: state.images.selectedImages,
   };
 };
 
 SingleImage.propTypes = {
   image: PropTypes.shape({
-    imageUrl: PropTypes.string.isRequired,
+    imageUrl: PropTypes.string,
     dateTaken: PropTypes.number,
     fileName: PropTypes.string,
     latitude: PropTypes.number,
