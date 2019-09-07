@@ -13,13 +13,6 @@ const Album = db.define('album', {
     type: STRING,
     allowNull: false,
   },
-  // ownerId: {
-  //   type: UUID,
-  //   allowNull: false,
-  //   validate: {
-  //     isUUID: 4,
-  //   },
-  // },
 });
 
 module.exports = Album;
