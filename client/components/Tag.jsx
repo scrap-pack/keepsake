@@ -29,7 +29,10 @@ class Tag extends React.Component {
           <form
             onSubmit={event => {
               event.preventDefault();
-              this.props.uploadTags(this.props.currentTags);
+              this.props.uploadTags(
+                this.props.currentTags,
+                this.props.selectedImages
+              );
             }}
           >
             <label>Add Tags seperated by commas</label>
@@ -68,6 +71,7 @@ const mapStateToProps = state => {
     selectedImages: state.images.selectedImages,
     currentTags: state.tags.currentTags,
     singleTag: state.tags.singleTag,
+    select: state.images.select,
   };
 };
 
@@ -75,7 +79,10 @@ const mapDispatchToProps = dispatch => {
   return {
     getTags: () => dispatch(fetchTags()),
     getTag: id => dispatch(fetchSingleTag(id)),
-    uploadTags: currentTags => dispatch(postTags(currentTags)),
+    uploadTags: (currentTags, selectedImages) => {
+      dispatch(parseTags());
+      dispatch(postTags(currentTags, selectedImages));
+    },
     addTags: tags => {
       dispatch(addEnteredTags(tags));
     },

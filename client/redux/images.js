@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { activationOptions } from '@tensorflow/tfjs-layers/dist/keras_format/activation_config';
 
 // Actions
 const GET_ALL_IMAGES = 'GET_ALL_IMAGES';
@@ -20,8 +21,9 @@ export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });
 export const clearFilteredImages = () => ({ type: CLEAR_FILTERED_IMAGES });
 export const flipSelect = () => ({ type: SWAP_SELECT });
-const deselectAllSelectedImages = () => ({
+const deselectAllSelectedImages = images => ({
   type: DESELECT_ALL_SELECTED_IMAGES,
+  images,
 });
 
 // Thunks
@@ -122,6 +124,13 @@ const images = (state = imageState, action) => {
     case DESELECT_ALL_SELECTED_IMAGES:
       return {
         ...state,
+        allImages: state.allImages.filter(image => {
+          return (
+            state.selectedImages.filter(
+              selectedImage => image.id === selectedImage.id
+            ).length === 0
+          );
+        }),
         selectedImages: [],
       };
     default:

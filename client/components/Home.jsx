@@ -90,9 +90,14 @@ const Home = props => {
       </Link>
       <Tag />
       <div>
-        {/* <button onClick={deleteSelectedImages(currentImages)}>
-          DELETE SELECTED IMAGES
-        </button> */}
+        <form
+          onSubmit={event => {
+            event.preventDefault();
+            if (currentImages.length > 0) deleteSelectedImages(currentImages);
+          }}
+        >
+          <button>DELETE SELECTED IMAGES</button>
+        </form>
       </div>
     </div>
   );
