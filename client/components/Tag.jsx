@@ -14,6 +14,16 @@ import {
 //import Home from './Home.jsx';
 
 class Tag extends React.Component {
+  constructor(props) {
+    super(props);
+    this.parse = this.parse.bind(this);
+  }
+
+  parse(event) {
+    event.preventDefault();
+    this.props.convertTagStringToTags(event.target.value);
+  }
+
   render() {
     return (
       <div>
@@ -30,22 +40,10 @@ class Tag extends React.Component {
                 event.preventDefault();
                 this.props.addTags(event.target.value);
               }}
-              onMouseLeave={event => {
-                event.preventDefault();
-                this.props.convertTagStringToTags();
-              }}
-              onTouchEnd={event => {
-                event.preventDefault();
-                this.props.convertTagStringToTags();
-              }}
-              onTouchMove={event => {
-                event.preventDefault();
-                this.props.convertTagStringToTags();
-              }}
-              onTouchEnd={event => {
-                event.preventDefault();
-                this.props.convertTagStringToTags();
-              }}
+              onMouseLeave={this.parse}
+              onTouchEnd={this.parse}
+              onTouchMove={this.parse}
+              onTouchEnd={this.parse}
             ></input>
             <button type="onSubmit">Upload Tags</button>
           </form>
