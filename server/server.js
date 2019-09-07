@@ -1,7 +1,9 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const chalk = require('chalk');
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 
@@ -14,6 +16,7 @@ app.use(express.static(publicPath));
 const apiRoutes = require('./api_routes');
 
 // Add cookies and sessions
+app.use(cookieParser());
 
 app.use('/api', apiRoutes);
 

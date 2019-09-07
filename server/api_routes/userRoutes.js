@@ -1,42 +1,47 @@
 const router = require('express').Router();
-const { db, User } = require('../database/index.js');
+const { User } = require('../database/index.js');
+const auth = require('./utils/userAuth.js');
 const chalk = require('chalk');
 
+// Get my user info
+router.get('/me', auth, (req, res, next) => {
+  const headers = req.headers;
+  // console.log('header', headers.authorization)
+  res.json(req.user.getPublicProfile());
+  next();
+});
 // Get all users
 router.get('/', (req, res, next) => {
-  return User.findAll()
-    .then(users => {
-      console.log(chalk.green('Found all users'));
-      res.json(users);
-    })
-    .catch(error => {
-      console.error(chalk.bgRed('Error finding users from db!', error));
-      next(error);
-    });
-});
-
-// Get users by id
-router.get('/:id', (req, res, next) => {
   const { id } = req.params;
-
   return User.findByPk(id)
     .then(user => {
       console.log(chalk.green('Found user'));
       res.json(user);
     })
     .catch(error => {
-      console.error(chalk.bgRed('Error find user: ', user));
+      console.error(chalk.bgRed('Error finding user from db!', error));
       next(error);
     });
 });
 
-// Post/Create user (Dummy post route, will need to be modified later)
+// Post/Create user
 router.post('/', (req, res, next) => {
-  console.log(req.body);
-  return User.create(req.body)
-    .then(newUser => {
-      console.log(chalk.green('New user created: ', newUser));
-      res.status(201).json(req.body);
+  const { email, password } = req.body;
+
+  return User.findOne({ where: { email } })
+    .then(user => {
+      if (user) {
+        res.json({ error: 'User already exists!' });
+      } else if (password.length < 8 || password.length > 24) {
+        res.json({
+          error: 'Password must be between 8 to 24 characters long!',
+        });
+      } else {
+        return User.create(req.body).then(newUser => {
+          console.log(chalk.green('New user created: ', newUser));
+          res.status(201).json(req.body);
+        });
+      }
     })
     .catch(error => {
       console.log(chalk.bgRed('Error creating new user', error));
@@ -44,26 +49,70 @@ router.post('/', (req, res, next) => {
     });
 });
 
-// Put route for updating user by id
-router.put('/:id', (req, res, next) => {
-  const { id } = req.params;
-  return User.findByPk(id)
-    .then(user => {
-      return user.update(req.body);
-    })
-    .then(() => {
-      res.status(200).json({ message: 'User info updated successfully!' });
-    })
-    .catch(error => {
-      console.error(chalk.bgRed('Error updating user info!'));
-      next(error);
+// Login route
+router.post('/login', async (req, res, next) => {
+  const { email, password } = req.body;
+  if (!email || !password)
+    res.status(400).json({ error: 'Invalid login credentials!' });
+
+  try {
+    const user = await User.findByCredentials(email, password);
+    const token = await user.generateAuthToken();
+    if (user) res.send({ user: user.getPublicProfile(), token });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// User logout single session route
+router.post('/logout', auth, async (req, res, next) => {
+  const { user } = req;
+  try {
+    user.tokens = user.tokens.filter(token => {
+      return token.token !== req.token;
     });
+    await user.save();
+
+    res.json({ authenticated: false });
+  } catch (e) {
+    res.status(500).json();
+  }
+});
+
+// User logout all sessions
+router.post('/logoutAll', auth, async (req, res, next) => {
+  try {
+    req.user.tokens = [];
+    await req.user.save();
+    res.json({ message: 'Logged out all sessions!' });
+  } catch (e) {
+    res.status(500).send('Error logging out all sessions!');
+  }
+});
+
+// Put route for updating user by id
+router.put('/me', auth, async (req, res, next) => {
+  const updates = Object.keys(req.body);
+  const allowedUpdates = ['firstName', 'lastName', 'email', 'password'];
+  const isValidUpdate = updates.every(update =>
+    allowedUpdates.includes(update)
+  );
+
+  if (!isValidUpdate) res.status(400).send({ error: 'Invalid update!' });
+
+  try {
+    updates.forEach(update => (req.user[update] = req.body[update]));
+    await req.user.save();
+    res.send({ user: req.user, message: 'Successfully updated user!' });
+  } catch (e) {
+    res.status(400).send(e);
+  }
 });
 
 // Delete user by id
-router.delete('/:id', (req, res, next) => {
-  const { id } = req.params;
-  return User.destroy({ where: { id } })
+router.delete('/me', auth, (req, res, next) => {
+  const { user } = req;
+  return User.destroy({ where: { id: user.id } })
     .then(() => {
       console.log(chalk.green('Successfully deleted user!'));
       res.status(200).json({ message: 'User successfully deleted!' });

@@ -84,20 +84,7 @@ const Home = props => {
       </div>
 
       <Link to="/upload">
-        <div
-          style={{
-            borderRadius: '50%',
-            width: '200px',
-            height: '200px',
-            background: 'orange',
-            border: '5px solid blue',
-            textAlign: 'center',
-            verticalAlign: 'middle',
-            size: '100px',
-          }}
-        >
-          Upload
-        </div>
+        <div className="btn orange darken-2">Upload</div>
       </Link>
       <Tag />
     </div>

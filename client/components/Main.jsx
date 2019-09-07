@@ -14,6 +14,8 @@ import { fetchImages } from '../redux/images';
 import Scrapbook from './Scrapbook.jsx';
 import Navbar from './Navbar.jsx';
 import Home from './Home.jsx';
+import Login from './Login.jsx';
+import SignUp from './SignUp.jsx';
 
 const propTypes = {
   getImages: PropTypes.func.isRequired,
@@ -24,7 +26,6 @@ class Main extends Component {
     const { getImages } = this.props;
     getImages();
   }
-
   render() {
     return (
       <div>
@@ -34,6 +35,8 @@ class Main extends Component {
           <Route exact path="/upload" component={Upload} />
           <Route path="/SingleImage" component={SingleImage} />
           <Route exact path="/scrapbook" component={Scrapbook} />
+          <Route exact path="/login" component={Login} />
+          <Route exact path="/signup" component={SignUp} />
         </Switch>
       </div>
     );
