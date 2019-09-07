@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const chalk = require('chalk');
 const { Op } = require('sequelize');
-const { Tag } = require('../database/index');
+const { Tag, Image } = require('../database/index');
 
 // Search Tags
 router.get('/search', async (req, res) => {
@@ -61,17 +61,64 @@ router.get('/:id', (req, res, next) => {
 });
 
 //post new tag
-router.post('/', (req, res, next) => {
-  console.log('-------', req.body);
-  return Tag.findOrCreate({ where: { description: req.body.description } })
-    .then(tag => {
-      console.log(`Successfully posted new tag`);
-      return res.status(201).json(tag);
-    })
-    .catch(e => {
-      console.error(chalk.red(`Failed to post new tag`), e);
-      next(e);
-    });
+router.post('/', async (req, res, next) => {
+  try {
+    const tags = await Promise.all(
+      req.body.tags.map(tag =>
+        Tag.findOrCreate({ where: { description: tag } })
+      )
+    );
+    console.log(chalk.green(`Successfully posted new tags`));
+
+    const images = await Promise.all(
+      req.body.images.map(image => Image.findByPk(image.id))
+    );
+
+    console.log(chalk.green(`Successfully got selected images`));
+    console.log('IMAGES', images, '\n\nTAGS', tags);
+
+    await images.forEach(image => image.addTags(tags));
+
+    return res.status(201).json(tags);
+  } catch (e) {
+    console.error(chalk.red(`Failed to post new tags`), e);
+    return res.sendStatus(400);
+  }
+
+  //console.log('-------', req.body);
+  // {images:[],
+  // tags:[]}
+  // Promise.all(
+  //   req.body.tags.map(tag => {
+  //     return Tag.findOrCreate({ where: { description: tag } });
+  //   })
+  // )
+  //   .then(tags => {
+  //     let images = Promise.all(
+  //       req.body.images.map(image => Image.findByPk(image.id))
+  //     );
+  //     images = images.then(images => images);
+  //     console.log('------', images);
+  //     return { images, tags };
+  //   })
+  //   .then(imagesAndTags => {
+  //     const { images, tags } = imagesAndTags;
+  //     images.forEach(image => {
+  //       tags.forEach(tag => {
+  //         //console.log('IMAGE: ', image, '   TAG: ', tag);
+  //         image.addTag(tag);
+  //       });
+  //     });
+  //     return tags.map(tag => tag.description);
+  //   })
+  // .then(tags => {
+  //   console.log(`Successfully posted new tags`);
+  //   return res.status(201).json(tags);
+  // })
+  // .catch(e => {
+  //   console.error(chalk.red(`Failed to post new tags`), e);
+  //   next(e);
+  // });
 });
 
 //put (update) tag by ID
