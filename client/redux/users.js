@@ -3,6 +3,7 @@ import axios from 'axios';
 export const GOT_USER = 'GOT_USER';
 export const CHANGE_LOGIN_STATUS = 'CHANGE_LOGIN_STATUS';
 export const CREATE_USER = 'CREATE_USER';
+export const LOGIN_ERROR = 'LOGIN_ERROR';
 
 export const gotUser = user => ({ type: GOT_USER, user });
 export const changeLoginStatus = authenticated => ({
@@ -13,6 +14,7 @@ export const createUser = user => ({
   type: CREATE_USER,
   user,
 });
+export const loginError = () => ({ type: LOGIN_ERROR });
 
 export const fetchUser = () => {
   // const token = Cookies.get('sid');
@@ -41,6 +43,7 @@ export const loginThunk = (email, password) => {
       })
       .catch(err => {
         console.log('Error logging in!');
+        dispatch(loginError());
       });
   };
 };
@@ -76,6 +79,7 @@ export const createUserThunk = user => {
 const userState = {
   currentUser: {},
   newUser: {},
+  error: '',
   authenticated: false,
 };
 
@@ -89,6 +93,9 @@ const userReducer = (state = userState, action) => {
     }
     case CREATE_USER: {
       return { ...state, newUser: action.user };
+    }
+    case LOGIN_ERROR: {
+      return { ...state, error: 'Invalid Login Credentials!' };
     }
     default:
       return state;
