@@ -62,14 +62,17 @@ export const fetchSingleTag = id => dispatch => {
 };
 
 export const postTags = (tags, images) => dispatch => {
-  return (
-    axios
-      .post(`/api/tags`, { tags, images })
-      //.then(tags => tags.map(tag => tag.description))
-      .then(tags => dispatch(clearTags(tags)))
-      .then(() => dispatch(clearString()))
-      .catch(e => console.error(e))
-  );
+  // const post = await axios.post('api/tags', { tags, images });
+  // dispatch()
+  // return (
+  axios
+    .post(`/api/tags`, { tags, images })
+    .then()
+    //.then(tags => tags.map(tag => tag.description))
+    //.then(tags => dispatch(clearTags(tags)))
+    // .then(() => dispatch(clearString()))
+    .catch(e => console.error(e));
+  // );
 };
 
 export const searchTags = queryString => async dispatch => {

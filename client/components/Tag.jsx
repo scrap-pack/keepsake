@@ -29,6 +29,7 @@ class Tag extends React.Component {
           <form
             onSubmit={event => {
               event.preventDefault();
+              this.parse(event);
               this.props.uploadTags(
                 this.props.currentTags,
                 this.props.selectedImages
@@ -80,7 +81,6 @@ const mapDispatchToProps = dispatch => {
     getTags: () => dispatch(fetchTags()),
     getTag: id => dispatch(fetchSingleTag(id)),
     uploadTags: (currentTags, selectedImages) => {
-      dispatch(parseTags());
       dispatch(postTags(currentTags, selectedImages));
     },
     addTags: tags => {
