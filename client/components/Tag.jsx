@@ -7,8 +7,6 @@ import {
   postTags,
   addEnteredTags,
   parseTags,
-  // clearTags,
-  // clearString,
 } from '../redux/tags';
 
 class Tag extends React.Component {
@@ -30,10 +28,16 @@ class Tag extends React.Component {
             onSubmit={event => {
               event.preventDefault();
               this.parse(event);
-              this.props.uploadTags(
-                this.props.currentTags,
-                this.props.selectedImages
-              );
+              if (this.props.selectedImages)
+                this.props.uploadTags(
+                  this.props.currentTags,
+                  this.props.selectedImages
+                );
+              else
+                this.props.uploadTags(
+                  this.props.currentTags,
+                  this.props.singleImage
+                );
             }}
           >
             <label>Add Tags seperated by commas</label>
@@ -72,7 +76,8 @@ const mapStateToProps = state => {
     selectedImages: state.images.selectedImages,
     currentTags: state.tags.currentTags,
     singleTag: state.tags.singleTag,
-    select: state.images.select,
+    selectMode: state.images.selectMode,
+    sinlgeImage: state.images.sinlgeImage,
   };
 };
 
@@ -89,12 +94,6 @@ const mapDispatchToProps = dispatch => {
     convertTagStringToTags: () => {
       dispatch(parseTags());
     },
-    // clearCurrentTags: () => {
-    //   dispatch(clearTags());
-    // },
-    // clearTagString: () => {
-    //   dispatch(clearString());
-    // },
   };
 };
 

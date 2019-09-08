@@ -62,9 +62,6 @@ export const fetchSingleTag = id => dispatch => {
 };
 
 export const postTags = (tags, images) => dispatch => {
-  // const post = await axios.post('api/tags', { tags, images });
-  // dispatch()
-  // return (
   axios
     .post(`/api/tags`, { tags, images })
     .then()

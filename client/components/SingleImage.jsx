@@ -37,7 +37,6 @@ const SingleImage = props => {
           DELETE
         </button>
       </div>
-      <Link to="/">HOME</Link>
     </div>
   );
 };

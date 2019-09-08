@@ -89,9 +89,13 @@ router.post('/', upload.single('imageUpload'), async (req, res, next) => {
     const predictedTags = await objectDetector.detect(cnvs);
 
     // get tags from prediction
-    const mlTags = predictedTags.reduce((accum, elem) => !accum.includes(elem.class) ? [...accum, elem.class] : [...accum], []);
+    const mlTags = predictedTags.reduce(
+      (accum, elem) =>
+        !accum.includes(elem.class) ? [...accum, elem.class] : [...accum],
+      []
+    );
 
-    mlTags.forEach(async (elem) => {
+    mlTags.forEach(async elem => {
       const newTag = await Tag.findOrCreate({ description: elem });
       await newImage.setTags(newTag);
     });
@@ -119,7 +123,7 @@ router.put('/:id', (req, res, next) =>
 // delete image by ID
 router.delete('/:id', (req, res, next) =>
   Image.findByPk(req.params.id)
-    .then(image => image.destroy({ where: req.params.id }))
+    .then(image => Image.destroy({ where: image.id }))
     .then(image =>
       res.status(200).json({ messgae: 'Image successfully deleted', image })
     )

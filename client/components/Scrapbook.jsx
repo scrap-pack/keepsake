@@ -7,6 +7,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import Search from './Search.jsx';
 import SingleImage from './SingleImage.jsx';
+import Tag from './Tag.jsx';
 import {
   addSelectedImage,
   removeSelectedImage,
@@ -38,6 +39,7 @@ const Scrapbook = props => {
       <div className="row">
         <Search />
       </div>
+
       <div className="row">
         <div className="col s1 offset-s11">
           <button

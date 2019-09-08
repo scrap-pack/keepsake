@@ -10,7 +10,7 @@ const SELECT_IMAGE = 'SELECT_IMAGE';
 const DESELECT_IMAGE = 'DESELECT_IMAGE';
 const SWAP_SELECT = 'SWAP_SELECT';
 const CLEAR_FILTERED_IMAGES = 'CLEAR_FILTERED_IMAGES';
-const DELETE_ALL_SELECTED_IMAGES = 'DELETE_SELECTED_IMAGES';
+const DELETE_ALL_SELECTED_IMAGES = 'DELETE_ALL_sSELECTED_IMAGES';
 
 // Action Creators
 const getAllImages = images => ({ type: GET_ALL_IMAGES, images });
@@ -21,7 +21,7 @@ export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });
 export const clearFilteredImages = () => ({ type: CLEAR_FILTERED_IMAGES });
 export const flipSelect = () => ({ type: SWAP_SELECT });
-const deselectAllSelectedImages = images => ({
+const removeAllSelectedImages = images => ({
   type: DELETE_ALL_SELECTED_IMAGES,
   images,
 });
@@ -81,7 +81,7 @@ export const deleteAllSelectedImages = images => dispatch => {
       axios.delete(`api/images/${image.id}`);
     })
   )
-    .then(() => dispatch(deselectAllSelectedImages()))
+    .then(() => dispatch(removeAllSelectedImages()))
     .catch(e => console.error(e));
 };
 
@@ -114,6 +114,9 @@ const images = (state = imageState, action) => {
         ...state,
         selectedImages: state.selectedImages.filter(
           selectedImage => selectedImage.id !== action.image.id
+        ),
+        allImages: state.allImages.filter(
+          image => image.id !== action.image.id
         ),
       };
     case SWAP_SELECT:

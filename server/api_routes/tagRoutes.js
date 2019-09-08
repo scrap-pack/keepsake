@@ -80,7 +80,7 @@ router.post('/', async (req, res, next) => {
     for (let i = 0; i < images.length; i++) {
       await imageModels[i].addTags(tagModels);
     }
-    console.log(tagModels, '\n\n\n', imageModels);
+
     return res.status(201).json(tags);
   } catch (e) {
     console.error(chalk.red(`Failed to post new tags`), e);
