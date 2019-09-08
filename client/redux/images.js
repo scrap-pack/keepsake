@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { activationOptions } from '@tensorflow/tfjs-layers/dist/keras_format/activation_config';
 
 // Actions
 const GET_ALL_IMAGES = 'GET_ALL_IMAGES';
@@ -10,12 +9,14 @@ const SELECT_IMAGE = 'SELECT_IMAGE';
 const DESELECT_IMAGE = 'DESELECT_IMAGE';
 const SWAP_SELECT = 'SWAP_SELECT';
 const CLEAR_FILTERED_IMAGES = 'CLEAR_FILTERED_IMAGES';
-const DELETE_ALL_SELECTED_IMAGES = 'DELETE_ALL_sSELECTED_IMAGES';
+const DELETE_ALL_SELECTED_IMAGES = 'DELETE_ALL_SELECTED_IMAGES';
+const DELETE_SELECTED_IMAGE = 'DELETE_SELECTED_IMAGE';
 
 // Action Creators
 const getAllImages = images => ({ type: GET_ALL_IMAGES, images });
 const getFilteredImages = images => ({ type: GET_FILTERED_IMAGES, images });
 const uploadImages = () => ({ type: UPLOAD_IMAGES });
+const deleteSelectedImage = image => ({ type: DELETE_SELECTED_IMAGE, image });
 export const getSingleImage = image => ({ type: GET_SINGLE_IMAGE, image });
 export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });
@@ -69,9 +70,11 @@ export const postImages = fileData => async dispatch => {
 };
 
 export const deleteImageFromDB = image => dispatch => {
+  console.log('test');
+  dispatch(deleteSelectedImage(image));
   axios
-    .delete(`api/image/${image.id}`)
-    .then(image => dispatch(removeSelectedImage(image)))
+    .delete(`api/images/${image.id}`)
+    .then(() => {})
     .catch(e => console.error(e));
 };
 
@@ -115,9 +118,6 @@ const images = (state = imageState, action) => {
         selectedImages: state.selectedImages.filter(
           selectedImage => selectedImage.id !== action.image.id
         ),
-        allImages: state.allImages.filter(
-          image => image.id !== action.image.id
-        ),
       };
     case SWAP_SELECT:
       if (state.selectMode) {
@@ -141,6 +141,15 @@ const images = (state = imageState, action) => {
             ).length === 0
           );
         }),
+        selectedImages: [],
+      };
+    case DELETE_SELECTED_IMAGE:
+      return {
+        ...state,
+        allImages: state.allImages.filter(
+          image => image.id !== action.image.id
+        ),
+        singleImage: {},
         selectedImages: [],
       };
     default:

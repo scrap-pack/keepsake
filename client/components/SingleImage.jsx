@@ -3,11 +3,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tag from './Tag.jsx';
-import {
-  addSelectedImage,
-  removeSelectedImage,
-  deleteImageFromDB,
-} from '../redux/images';
+import { deleteImageFromDB } from '../redux/images';
 import Home from './Home.jsx';
 
 const SingleImage = props => {
@@ -18,11 +14,6 @@ const SingleImage = props => {
           src={props.image.imageUrl}
           onClick={event => {
             event.preventDefault();
-            // if (image in selectedImages) {
-            //   props.deselectImage(image);
-            // } else {
-            //   props.selectImage(image);
-            // }
           }}
         />
       </div>
@@ -43,19 +34,15 @@ const SingleImage = props => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    back: () => <Link to="/" component={Home} />,
     deleteImage: image => {
       dispatch(deleteImageFromDB(image));
     },
-    // selectImage: image => dispatch(addSelectedImage(image)),
-    // deselectImage: image => dispatch(removeSelectedImage(image)),
   };
 };
 
 const mapStateToProps = state => {
   return {
     image: state.images.singleImage,
-    // selectedImages: state.images.selectedImages,
   };
 };
 
