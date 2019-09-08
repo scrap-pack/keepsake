@@ -1,7 +1,15 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const Home = () => (
-  <h1>Unauthenticated User Homepage Here</h1>
-);
+import LandingPage from './LandingPage.jsx';
 
-export default Home;
+const Home = props => {
+  const { authenticated } = props.currentUser;
+
+  if (!authenticated) return <LandingPage />;
+  return <div> hello</div>;
+};
+
+const mapStateToProps = ({ currentUser }) => ({ currentUser });
+
+export default connect(mapStateToProps)(Home);
