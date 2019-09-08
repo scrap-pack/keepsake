@@ -96,8 +96,13 @@ router.post('/', upload.single('imageUpload'), async (req, res, next) => {
     );
 
     mlTags.forEach(async elem => {
-      const newTag = await Tag.findOrCreate({ description: elem });
-      await newImage.setTags(newTag);
+      const newTag = await Tag.findOrCreate({
+        where: { description: elem },
+      });
+      await newImage.setTags(newTag[0]);
+      console.log(
+        chalk.green('Successfully added image and tagged by tensorFlow')
+      );
     });
   } catch (error) {
     console.error(chalk.red('Failed to create ML tag'), error);

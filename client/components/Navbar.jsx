@@ -13,7 +13,7 @@ const Navbar = props => {
         <Link to="/scrapbook">My Images</Link>
       </li>
       <li key="logout">
-        <Link to="/" onClick={logout}>
+        <Link to="/login" onClick={logout}>
           Logout
         </Link>
       </li>

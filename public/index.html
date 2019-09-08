@@ -20,10 +20,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
-    <link
-      rel="stylesheet"
-      href="css/styles.css"
-    />
+    <link rel="stylesheet" href="css/styles.css" />
     <script type="text/javascript" src="js/materialize.min.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Materialize.css links, scripts, meta -->
@@ -43,7 +40,10 @@
         $(document).ready(function() {
           $('.fixed-action-btn').floatingActionButton({ hoverEnabled: false });
         });
-        0;
+
+        $(document).ready(function() {
+          $('.parallax').parallax();
+        });
       }
     </script>
   </body>

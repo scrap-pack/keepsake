@@ -10,6 +10,7 @@
     "seed": "node ./server/database/utils/seed.js"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@tensorflow-models/coco-ssd": "^2.0.0",
     "@tensorflow-models/mobilenet": "^2.0.3",
     "@tensorflow/tfjs": "^1.2.8",
@@ -49,6 +50,7 @@
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-react": "^7.14.3",
     "faker": "^4.1.0",
+    "file-loader": "^4.2.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2",
