@@ -19,7 +19,7 @@ Image.belongsToMany(Tag, { through: ImageTag });
 Tag.belongsToMany(Image, { through: ImageTag });
 Album.belongsTo(User, { as: 'owner' });
 Album.belongsToMany(User, { through: UserAlbum });
-User.belongsToMany(Album, { as: 'participant', through: UserAlbum, foreignKey: 'participantId' });
+User.belongsToMany(Album, { as: 'userAlbums', through: UserAlbum, foreignKey: 'participantId' });
 Album.belongsToMany(Image, { through: ImageAlbum });
 Image.belongsToMany(Album, { through: ImageAlbum });
 
