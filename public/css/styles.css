@@ -1,0 +1,43 @@
+/* Custom CSS */
+
+/* CSS FOR SELECTING IMAGES */
+
+/* Container needed to position the overlay. Adjust the width as needed */
+.image-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  /* Make the image to be responsive */
+  .image {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* The overlay effect (full height and width) - lays on top of the container and over the image */
+  .selected-image-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.5;
+    background-color: lightgrey;
+  }
+
+  /* The icon inside the overlay is positioned in the middle vertically and horizontally */
+  .selected-image-overlay-icon {
+    color: white;
+    font-size: 10%;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgb(4, 210, 210);
+    border-radius: 50%;
+  }

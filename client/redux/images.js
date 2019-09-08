@@ -10,7 +10,7 @@ const SELECT_IMAGE = 'SELECT_IMAGE';
 const DESELECT_IMAGE = 'DESELECT_IMAGE';
 const SWAP_SELECT = 'SWAP_SELECT';
 const CLEAR_FILTERED_IMAGES = 'CLEAR_FILTERED_IMAGES';
-const DESELECT_ALL_SELECTED_IMAGES = 'DELETE_SELECTED_IMAGES';
+const DELETE_ALL_SELECTED_IMAGES = 'DELETE_SELECTED_IMAGES';
 
 // Action Creators
 const getAllImages = images => ({ type: GET_ALL_IMAGES, images });
@@ -22,7 +22,7 @@ export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });
 export const clearFilteredImages = () => ({ type: CLEAR_FILTERED_IMAGES });
 export const flipSelect = () => ({ type: SWAP_SELECT });
 const deselectAllSelectedImages = images => ({
-  type: DESELECT_ALL_SELECTED_IMAGES,
+  type: DELETE_ALL_SELECTED_IMAGES,
   images,
 });
 
@@ -90,7 +90,7 @@ const imageState = {
   allImages: [],
   singleImage: {},
   selectedImages: [],
-  select: false,
+  selectMode: false,
   filteredImages: [],
 };
 
@@ -121,7 +121,7 @@ const images = (state = imageState, action) => {
         ...state,
         select: !state.select,
       };
-    case DESELECT_ALL_SELECTED_IMAGES:
+    case DELETE_ALL_SELECTED_IMAGES:
       return {
         ...state,
         allImages: state.allImages.filter(image => {

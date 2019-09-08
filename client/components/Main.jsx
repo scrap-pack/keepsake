@@ -27,6 +27,7 @@ class Main extends Component {
     const { getImages } = this.props;
     getImages();
   }
+
   render() {
     return (
       <div>
@@ -34,10 +35,10 @@ class Main extends Component {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/upload" component={Upload} />
-          <Route path="/SingleImage" component={SingleImage} />
           <Route exact path="/scrapbook" component={Scrapbook} />
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={SignUp} />
+          <Route exact path="/images/:id" component={SingleImage} />
         </Switch>
         <FloatingUploadButton />
       </div>
@@ -47,13 +48,13 @@ class Main extends Component {
 
 Main.propTypes = propTypes;
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   getImages: () => dispatch(fetchAllImages()),
 });
 
 const connectedComponent = connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const connectedMain = connectedComponent(Main);
