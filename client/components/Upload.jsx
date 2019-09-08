@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { postImages } from '../redux/images';
@@ -25,7 +25,7 @@ const Upload = ({ uploadImage, previewImage }) => {
 
 Upload.propTypes = propTypes;
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch) => ({
   uploadImage: (e) => {
     e.preventDefault();
     const image = e.target.uploadInput.files[0];
@@ -36,7 +36,7 @@ const mapDispatchToProps = dispatch => ({
 
     dispatch(postImages(formData));
 
-    preview.src = "";
+    preview.src = '';
   },
   previewImage: async (e) => {
     e.preventDefault();
@@ -49,13 +49,8 @@ const mapDispatchToProps = dispatch => ({
       reader.readAsDataURL(fileList);
     }
 
-    reader.addEventListener("load", async () => {
+    reader.addEventListener('load', async () => {
       preview.src = reader.result;
-      const objectDetector = await cocoSsd.load();
-      const predictedObject = await objectDetector.detect(preview);
-  
-      console.log(predictedObject);
-  
     }, false);
   },
 });
