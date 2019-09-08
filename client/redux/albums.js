@@ -99,6 +99,6 @@ const albums = (state = albumState, action) => {
     default:
       return state;
   }
-}
+};
 
 export default albums;
