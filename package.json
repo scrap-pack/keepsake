@@ -10,6 +10,7 @@
     "seed": "node ./server/database/utils/seed.js"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.5.5",
     "@tensorflow-models/coco-ssd": "^2.0.0",
     "@tensorflow-models/mobilenet": "^2.0.3",
     "@tensorflow/tfjs": "^1.2.8",
