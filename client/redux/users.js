@@ -40,8 +40,7 @@ export const loginThunk = (email, password) => {
         dispatch(changeLoginStatus(true));
       })
       .catch(err => {
-        console.log('Login error');
-        dispatch(gotUser({ error: 'Invalid login credentials!' }));
+        console.log('Error logging in!');
       });
   };
 };
@@ -53,9 +52,10 @@ export const logoutThunk = () => {
       .then(() => {
         Cookies.remove('sid');
         dispatch(changeLoginStatus(false));
+        dispatch(gotUser({}));
       })
       .catch(() => {
-        console.log('Logout error');
+        console.log('Logout error!');
       });
   };
 };
@@ -76,7 +76,6 @@ export const createUserThunk = user => {
 const userState = {
   currentUser: {},
   newUser: {},
-  error: '',
   authenticated: false,
 };
 

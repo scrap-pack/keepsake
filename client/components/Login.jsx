@@ -13,6 +13,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
+      error: '',
     };
   }
 
@@ -23,14 +24,18 @@ class Login extends Component {
   handleLogin(ev) {
     ev.preventDefault();
     const { email, password } = this.state;
-    const { login } = this.props;
+    const { login, currentUser } = this.props;
     login(email, password);
-    this.setState(this.initState);
-    this.props.history.push('/');
+    if (!currentUser.authenticated) {
+      this.setState({ error: 'Invalid login credentials!' });
+    } else {
+      this.setState(this.initState);
+    }
   }
   render() {
-    const { loggedIn } = this.props;
-    if (!loggedIn) {
+    const { authenticated } = this.props.currentUser;
+
+    if (!authenticated) {
       return (
         <div id="signup-container" className="container valign-wrapper">
           <div className="row center-align">
@@ -82,6 +87,7 @@ class Login extends Component {
                   />
                 </div>
               </div>
+              <h5 className="red-text red-lighten-1">{this.state.error}</h5>
               <div className="row">
                 <div className="col s12">
                   <button className="btn-large teal darken-1" type="submit">
@@ -96,12 +102,12 @@ class Login extends Component {
           </div>
         </div>
       );
-    } else window.history.back();
+    } else this.props.history.push('/');
     return null;
   }
 }
 
-const mapState = ({ loggedIn }) => ({ loggedIn });
+const mapState = ({ currentUser }) => ({ currentUser });
 
 const mapDispatch = dispatch => ({
   login: (email, password) => {

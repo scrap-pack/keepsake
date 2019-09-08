@@ -14,6 +14,13 @@ const FloatingUploadButton = props => {
             </i>
           </a>
         </li>
+        <li>
+          <a href="/" className="btn-floating teal lighten-2">
+            <i className="material-icons" title="Home">
+              home
+            </i>
+          </a>
+        </li>
       </ul>
     </div>
   );
