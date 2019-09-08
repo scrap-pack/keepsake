@@ -81,6 +81,7 @@ router.put('/addImages/:albumId', async (req, res, next) => {
   }
 });
 
+// PUT (UPDATE) ALBUM WITH ADDITIONAL USERS
 router.put('/addUsers/:albumId', async (req, res, next) => {
   const { users } = req.body;
 
