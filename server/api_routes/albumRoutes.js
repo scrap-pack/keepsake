@@ -25,7 +25,7 @@ router.get('/:participantId', (req, res, next) => {
 router.get('/:userId/:albumId', (req, res, next) => {
   User.findOne({
     where: {
-      id: req.params.participantId,
+      id: req.params.userId,
     },
     include: [{
       model: Album,
@@ -61,11 +61,11 @@ router.post('/', async (req, res, next) => {
 });
 
 // PUT (UPDATE) ALBUM WITH IMAGES
-router.put('/addImages', async (req, res, next) => {
-  const { album, images } = req.body;
+router.put('/addImages/:albumId', async (req, res, next) => {
+  const { images } = req.body;
 
   try {
-    const retrievedAlbum = await Album.findByPk(album.id);
+    const retrievedAlbum = await Album.findByPk(req.params.albumId);
     // image to album association
     if (images.length > 0) {
       images.forEach(async (img) => {
@@ -81,8 +81,28 @@ router.put('/addImages', async (req, res, next) => {
   }
 });
 
+router.put('/addUsers/:albumId', async (req, res, next) => {
+  const { users } = req.body;
+
+  try {
+    const retrievedAlbum = await Album.findByPk(req.params.albumId);
+    // image to album association
+    if (users.length > 0) {
+      users.forEach(async (user) => {
+        await retrievedAlbum.setUsers(user);
+      });
+      console.log(chalk.green('Successfully added users to album'));
+    } else {
+      res.status(500).json('No users provided').end();
+    }
+  } catch (e) {
+    console.error(chalk.red('ERROR ADDING USERS TO ALBUM', e));
+    next(e);
+  }
+});
+
 // DELETE ALBUM
-router.delete('/remove/:albumId', async (req, res, next) => {
+router.delete('/:albumId', async (req, res, next) => {
   try {
     const album = await Album.findByPk(req.params.albumId);
     const deleteResponse = await album.destroy();
