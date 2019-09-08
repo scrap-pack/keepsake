@@ -11,10 +11,10 @@ const REMOVE_ALBUM = 'REMOVE_ALBUM';
 // ACTION CREATORS
 const getAllAlbums = (albums) => ({ type: GET_ALL_ALBUMS, albums });
 const getSingleAlbum = (album) => ({ type: GET_SINGLE_ALBUM, album });
-const createAlbum = () => ({ type: CREATE_ALBUM });
-const addImages = () => ({ type: ADD_IMAGES });
-const addUsers = () => ({ type: ADD_USERS });
-const removeAlbum = () => ({ type: REMOVE_ALBUM });
+const createAlbum = (msg) => ({ type: CREATE_ALBUM, mssg: msg });
+const addImages = (msg) => ({ type: ADD_IMAGES, mssg: msg });
+const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg  });
+const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg  });
 
 // API THUNKS
 export const fetchAllAlbums = (participantId) => async dispatch => {
@@ -37,8 +37,8 @@ export const fetchSingleAlbum = (userId, albumId) => async dispatch => {
 
 export const postNewAlbum = (album) => async dispatch => {
   try {
-    const { data } = await axios.post('/api/albums', album);
-    dispatch(createAlbum(data));
+    await axios.post('/api/albums', album);
+    dispatch(createAlbum('Create Album Successful'));
   } catch (error) {
     console.error('ERROR IN POST NEW ALBUM THUNK', error);
   }
@@ -46,30 +46,59 @@ export const postNewAlbum = (album) => async dispatch => {
 
 export const addImagesToAlbum = (albumId, images) => async dispatch => {
   try {
-    const { data } = await axios.post(`/api/albums/${albumId}`, images);
-    dispatch(addImages(data));
+    await axios.put(`/api/albums/addImages/${albumId}`, images);
+    dispatch(addImages('Add Imgs Successful'));
   } catch (error) {
     console.error('ERROR IN ADD IMG TO ALBUM THUNK', error);
   }
 };
 
-export const addImagesToAlbum = (albumId, images) => async dispatch => {
+export const addUsersToAlbum = (albumId, users) => async dispatch => {
   try {
-    const { data } = await axios.post(`/api/albums/${albumId}`, images);
-    dispatch(addImages(data));
+    await axios.put(`/api/albums/addUsers/${albumId}`, users);
+    dispatch(addUsers('Add Users Successful'));
   } catch (error) {
-    console.error('ERROR IN ADD IMG TO ALBUM THUNK', error);
+    console.error('ERROR IN ADD USER TO ALBUM THUNK', error);
   }
 };
+
+export const deleteAlbum = (albumId) => async dispatch => {
+  try {
+    await axios.delete(`/api/albums/${albumId}`);
+    dispatch(removeAlbum('Remove Album Successful'));
+  } catch (error) {
+    console.error('ERROR IN DELETE ALBUM THUNK', error);
+  }
+}
 
 // INITIAL STATE
 const albumState = {
   allAlbums: [],
   singleAlbum: {},
-  selectedImages: [],
-  selectMode: false,
+  createAlbumMsg: '',
+  addImgToAlbumMsg: '',
+  addUserToAlbumMsg: '',
+  removeAlbumMsg: '',
 };
 
 // REDUCER
+const albums = (state = albumState, action) => {
+  switch (action.type) {
+    case GET_ALL_ALBUMS:
+      return { ...state, allAlbums: [...state.allAlbums, ...action.albums] };
+    case GET_SINGLE_ALBUM:
+      return { ...state, singleAlbum: action.album };
+    case CREATE_ALBUM:
+      return { ...state, createAlbumMsg: action.mssg };
+    case ADD_IMAGES:
+      return { ...state, addImgToAlbumMsg: action.mssg };
+    case ADD_USERS:
+      return { ...state, addUserToAlbumMsg: action.mssg };
+    case REMOVE_ALBUM:
+      return { ...state, removeAlbumMsg: action.mssg };
+    default:
+      return state;
+  }
+}
 
 export default albums;
