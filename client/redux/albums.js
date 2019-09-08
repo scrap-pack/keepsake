@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios from 'axios';
 
 // ACTION CONSTANTS
 const GET_ALL_ALBUMS = 'GET_ALL_ALBUMS';
