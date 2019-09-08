@@ -26,11 +26,7 @@ const LandingPage = props => {
           </div>
         </div>
         <div className="parallax">
-          <img
-            style={{ width: '100%' }}
-            src={landingpageimg}
-            alt="Unsplashed background img 1"
-          />
+          <img style={{ width: '100%' }} src={landingpageimg} />
         </div>
       </div>
       <div className="container">
