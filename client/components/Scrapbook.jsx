@@ -7,6 +7,7 @@ import { Redirect } from 'react-router';
 import { connect } from 'react-redux';
 import Search from './Search.jsx';
 import SingleImage from './SingleImage.jsx';
+import AsyncImage from './AsyncImage.jsx';
 import {
   addSelectedImage,
   removeSelectedImage,
@@ -49,6 +50,41 @@ const Scrapbook = (props) => {
           </button>
         </div>
       </div>
+      <div
+        className={selectMode && selectedImages.length ? 'row' : 'row hide'}
+      >
+        <div className="col s6" />
+        <div className="col s2">
+          <button
+            type="button"
+            className="waves-effect waves-light btn"
+            onClick=""
+          >
+            <i className="material-icons left">book</i>
+            Add to Album
+          </button>
+        </div>
+        <div className="col s2">
+          <button
+            type="button"
+            className="waves-effect waves-light btn"
+            onClick=""
+          >
+            <i className="material-icons left">label</i>
+            Tag Images
+          </button>
+        </div>
+        <div className="col s2">
+          <button
+            type="button"
+            className="waves-effect waves-light btn red"
+            onClick=""
+          >
+            <i className="material-icons left">delete</i>
+            Delete Images
+          </button>
+        </div>
+      </div>
       <div className="row">
         {imagesToDisplay.map((image) => (
           <div key={image.id} className="col s12 m6 xl3">
@@ -63,16 +99,10 @@ const Scrapbook = (props) => {
                 }
               }}
             >
-              <div className="card-image">
-                <img
-                  className="responsive-img image"
-                  src={image.imageUrl}
-                  alt=""
-                />
+              <div className="image-container">
+                <AsyncImage image={image} />
                 <div
-                  style={{
-                    display: selectMode && selectedImages.includes(image) ? '' : 'none',
-                  }}
+                  className={selectMode && selectedImages.includes(image) ? '' : 'hide'}
                 >
                   <div className="selected-image-overlay" />
                   <i className="material-icons selected-image-overlay-icon small">check</i>
