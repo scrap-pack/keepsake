@@ -11,6 +11,7 @@ const SWAP_SELECT = 'SWAP_SELECT';
 const CLEAR_FILTERED_IMAGES = 'CLEAR_FILTERED_IMAGES';
 const DELETE_ALL_SELECTED_IMAGES = 'DELETE_ALL_SELECTED_IMAGES';
 const DELETE_SELECTED_IMAGE = 'DELETE_SELECTED_IMAGE';
+const SET_IMAGE_TAGS = 'SET_IMAGE_TAGS';
 
 // Action Creators
 const getAllImages = images => ({ type: GET_ALL_IMAGES, images });
@@ -26,6 +27,7 @@ const removeAllSelectedImages = images => ({
   type: DELETE_ALL_SELECTED_IMAGES,
   images,
 });
+const setImageTags = tags => ({ type: SET_IMAGE_TAGS, tags });
 
 // Thunks
 export const fetchAllImages = () => async dispatch => {
@@ -69,13 +71,14 @@ export const postImages = fileData => async dispatch => {
   }
 };
 
-export const deleteImageFromDB = image => dispatch => {
-  console.log('test');
-  dispatch(deleteSelectedImage(image));
-  axios
-    .delete(`api/images/${image.id}`)
-    .then(() => {})
-    .catch(e => console.error(e));
+export const deleteImageFromDB = image => async dispatch => {
+  try {
+    const { data } = await axios.delete(`/api/images/${image.id}`);
+    console.log(`Image ${image.id} deleted`, data);
+    dispatch(deleteSelectedImage(image));
+  } catch (e) {
+    console.error(e);
+  }
 };
 
 export const deleteAllSelectedImages = images => dispatch => {
@@ -84,8 +87,19 @@ export const deleteAllSelectedImages = images => dispatch => {
       axios.delete(`api/images/${image.id}`);
     })
   )
-    .then(() => dispatch(removeAllSelectedImages()))
+    .then(() => dispatch(removeAllSelectedImages(images)))
     .catch(e => console.error(e));
+};
+
+export const getTagsForImage = image => dispatch => {
+  {
+    axios
+      .get(`api/images/${image.id}`)
+      .then(tags => {
+        dispatch(setImageTags(tags));
+      })
+      .catch(e => console.error(e));
+  }
 };
 
 // Reducer
@@ -136,12 +150,13 @@ const images = (state = imageState, action) => {
         ...state,
         allImages: state.allImages.filter(image => {
           return (
-            state.selectedImages.filter(
-              selectedImage => image.id === selectedImage.id
-            ).length === 0
+            state.selectedImages.filter(selectedImage => {
+              return image.id === selectedImage.id;
+            }).length === 0
           );
         }),
         selectedImages: [],
+        singleImage: {},
       };
     case DELETE_SELECTED_IMAGE:
       return {
@@ -152,6 +167,8 @@ const images = (state = imageState, action) => {
         singleImage: {},
         selectedImages: [],
       };
+    case SET_IMAGE_TAGS:
+      return {};
     default:
       return state;
   }

@@ -1,21 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tag from './Tag.jsx';
-import { deleteImageFromDB } from '../redux/images';
-import Home from './Home.jsx';
+import {
+  deleteImageFromDB,
+  deleteAllSelectedImages,
+  getTagsForImage,
+} from '../redux/images';
 
 const SingleImage = props => {
   return (
     <div>
       <div>
-        <img
-          src={props.image.imageUrl}
-          onClick={event => {
-            event.preventDefault();
-          }}
-        />
+        <img src={props.image.imageUrl} />
       </div>
       <Tag />
       <div>
@@ -37,6 +34,9 @@ const mapDispatchToProps = dispatch => {
     deleteImage: image => {
       dispatch(deleteImageFromDB(image));
     },
+    getImageTags: image => {
+      dispatch(getTagsForImage(image));
+    },
   };
 };
 
@@ -54,6 +54,8 @@ SingleImage.propTypes = {
     latitude: PropTypes.number,
     longitude: PropTypes.number,
   }).isRequired,
+  deleteImage: PropTypes.func.isRequired,
+  getImageTags: PropTypes.func.isRequired,
 };
 
 export default connect(

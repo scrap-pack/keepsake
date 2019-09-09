@@ -3,11 +3,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
+
 import { connect } from 'react-redux';
 import Search from './Search.jsx';
-import SingleImage from './SingleImage.jsx';
-import Tag from './Tag.jsx';
+
 import AsyncImage from './AsyncImage.jsx';
 import {
   addSelectedImage,
