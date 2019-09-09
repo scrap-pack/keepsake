@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { loginThunk } from '../redux/users.js';
 
 class Login extends Component {
@@ -9,11 +9,20 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
-    this.initState = { email: '', password: '' };
+    this.renderAlert = this.renderAlert.bind(this);
+    this.initState = {
+      email: '',
+      password: '',
+      error: 'Invalid Login Credentials',
+    };
     this.state = {
       email: '',
       password: '',
+      error: 'Invalid Login Credentials!',
     };
+  }
+  componentDidMount() {
+    this.setState(this.initState);
   }
 
   handleChange(ev) {
@@ -25,12 +34,16 @@ class Login extends Component {
     const { email, password } = this.state;
     const { login } = this.props;
     login(email, password);
-    this.setState(this.initState);
-    this.props.history.push('/');
+  }
+
+  renderAlert() {
+    if (this.props.currentUser.error) {
+      return <h5 className="red-text red-lighten-1">{this.state.error}</h5>;
+    }
   }
   render() {
-    const { loggedIn } = this.props;
-    if (!loggedIn) {
+    const { authenticated } = this.props.currentUser;
+    if (!authenticated) {
       return (
         <div id="signup-container" className="container valign-wrapper">
           <div className="row center-align">
@@ -82,6 +95,7 @@ class Login extends Component {
                   />
                 </div>
               </div>
+              {this.renderAlert()}
               <div className="row">
                 <div className="col s12">
                   <button className="btn-large teal darken-1" type="submit">
@@ -96,12 +110,11 @@ class Login extends Component {
           </div>
         </div>
       );
-    } else window.history.back();
-    return null;
+    } else return <Redirect to="/" />;
   }
 }
 
-const mapState = ({ loggedIn }) => ({ loggedIn });
+const mapState = ({ currentUser }) => ({ currentUser });
 
 const mapDispatch = dispatch => ({
   login: (email, password) => {

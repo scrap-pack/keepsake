@@ -28,6 +28,9 @@ class Main extends Component {
   componentDidMount() {
     const { getImages } = this.props;
     getImages();
+    $(document).ready(function() {
+      $('.fixed-action-btn').floatingActionButton({ hoverEnabled: false });
+    });
   }
 
   render() {
@@ -53,13 +56,13 @@ class Main extends Component {
 
 Main.propTypes = propTypes;
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   getImages: () => dispatch(fetchAllImages()),
 });
 
 const connectedComponent = connect(
   null,
-  mapDispatchToProps,
+  mapDispatchToProps
 );
 
 const connectedMain = connectedComponent(Main);
