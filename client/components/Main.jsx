@@ -10,13 +10,15 @@ import { fetchAllImages } from '../redux/images';
 // React Components
 import Upload from './Upload.jsx';
 import SingleImage from './SingleImage.jsx';
-import { fetchImages } from '../redux/images';
 import Scrapbook from './Scrapbook.jsx';
 import Navbar from './Navbar.jsx';
 import Home from './Home.jsx';
 import Login from './Login.jsx';
 import SignUp from './SignUp.jsx';
 import FloatingUploadButton from './FUB.jsx';
+import AddToAlbumModal from './AddToAlbumModal.jsx';
+import TagImagesModal from './TagImagesModal.jsx';
+import DeleteImagesModal from './DeleteImagesModal.jsx';
 
 const propTypes = {
   getImages: PropTypes.func.isRequired,
@@ -32,6 +34,9 @@ class Main extends Component {
     return (
       <div>
         <Navbar />
+        <AddToAlbumModal />
+        <DeleteImagesModal />
+        <TagImagesModal />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/upload" component={Upload} />
