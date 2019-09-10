@@ -1,7 +1,11 @@
+require('dotenv').config();
+const Twilio = require('twilio');
 const chalk = require('chalk');
 const router = require('express').Router();
 const Album = require('../database/models/Album');
 const User = require('../database/models/User');
+
+const client = new Twilio(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
 
 // GET ALL ALBUMS FOR A GIVEN USER
 router.get('/:participantId', (req, res, next) => {
@@ -113,6 +117,19 @@ router.delete('/:albumId', async (req, res, next) => {
     console.error(chalk.red('ERROR DELETING ALBUM', e));
     next(e);
   }
+});
+
+router.post('/invite', async (req, res, next) => {
+  const { phoneNumber, album } = req.body;
+
+  // URL TO BE DETERMINED UPON DEPLOYMENT SETUP
+  const link = `https:\\www.TO-BE-DETERMINED.com?invite=${album.id}`;
+
+  client.messages.create({
+    body: `You were invited to a Scrap Book! Click the link below to begin sharing images with your homies!\n\n ${link}`,
+    to: `${phoneNumber}`,
+    from: process.env.PHONE_NUMBER,
+  });
 });
 
 module.exports = router;
