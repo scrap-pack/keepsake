@@ -19,6 +19,9 @@ import FloatingUploadButton from './FUB.jsx';
 import AddToAlbumModal from './AddToAlbumModal.jsx';
 import TagImagesModal from './TagImagesModal.jsx';
 import DeleteImagesModal from './DeleteImagesModal.jsx';
+import AllAlbums from './AllAlbums.jsx';
+import SingleAlbum from './SingleAlbum.jsx';
+import ShareAlbumModal from './ShareAlbumModal.jsx';
 
 const propTypes = {
   getImages: PropTypes.func.isRequired,
@@ -40,6 +43,7 @@ class Main extends Component {
         <AddToAlbumModal />
         <DeleteImagesModal />
         <TagImagesModal />
+        <ShareAlbumModal />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/upload" component={Upload} />
@@ -47,6 +51,8 @@ class Main extends Component {
           <Route exact path="/login" component={Login} />
           <Route exact path="/signup" component={SignUp} />
           <Route exact path="/images/:id" component={SingleImage} />
+          <Route exact path="/albums" component={AllAlbums} />
+          <Route exact path="/albums/:id" component={SingleAlbum} />
         </Switch>
         <FloatingUploadButton />
       </div>
@@ -62,7 +68,7 @@ const mapDispatchToProps = dispatch => ({
 
 const connectedComponent = connect(
   null,
-  mapDispatchToProps
+  mapDispatchToProps,
 );
 
 const connectedMain = connectedComponent(Main);

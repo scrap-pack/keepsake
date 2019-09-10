@@ -10,17 +10,18 @@ const REMOVE_ALBUM = 'REMOVE_ALBUM';
 
 // ACTION CREATORS
 const getAllAlbums = (albums) => ({ type: GET_ALL_ALBUMS, albums });
-const getSingleAlbum = (album) => ({ type: GET_SINGLE_ALBUM, album });
+export const getSingleAlbum = (album) => ({ type: GET_SINGLE_ALBUM, album });
 const createAlbum = (msg) => ({ type: CREATE_ALBUM, mssg: msg });
 const addImages = (msg) => ({ type: ADD_IMAGES, mssg: msg });
 const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg  });
 const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg  });
 
 // API THUNKS
-export const fetchAllAlbums = (participantId) => async dispatch => {
+export const fetchAllAlbums = (participant) => async dispatch => {
   try {
-    const { albums } = await axios.get(`/api/albums/${participantId}`);
-    dispatch(getAllAlbums(albums));
+    const { data } = await axios.get(`/api/albums/${participant.id}`);
+    console.log('albums from thunk:', data);
+    dispatch(getAllAlbums(data));
   } catch (error) {
     console.error('ERROR IN FETCH ALL ALBUMS THUNK', error);
   }

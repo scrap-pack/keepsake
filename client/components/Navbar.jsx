@@ -9,8 +9,11 @@ const Navbar = props => {
 
   const amIAuthenticated = authenticated ? (
     <div>
+      <li key="my-albums">
+        <Link to="/albums">Albums</Link>
+      </li>
       <li key="my-images">
-        <Link to="/scrapbook">My Images</Link>
+        <Link to="/scrapbook">Images</Link>
       </li>
       <li key="logout">
         <Link to="/login" onClick={logout}>
@@ -32,20 +35,20 @@ const Navbar = props => {
   return (
     <nav className="teal darken-2" role="navigation">
       <div className="nav-wrapper container">
-        <a id="logo-container" href="/" className="brand-logo">
+        <a id="logo-container" href="/scrapbook" className="brand-logo">
           <div id="logo" style={{ fontFamily: 'Chalkduster, fantasy' }}>
             KeepSake
           </div>
         </a>
         <ul className="right hide-on-med-and-down">{amIAuthenticated}</ul>
-        <ul id="nav-mobile" className="sidenav">
+        {/* <ul id="nav-mobile" className="sidenav">
           <li>
             <a href="/">Navbar Link</a>
           </li>
         </ul>
         <a href="#" data-target="nav-mobile" className="sidenav-trigger">
           <i className="material-icons">menu</i>
-        </a>
+        </a> */}
       </div>
     </nav>
   );
