@@ -8,26 +8,59 @@ import {
   getTagsForImage,
 } from '../redux/images';
 
-const SingleImage = props => {
-  return (
-    <div>
+class SingleImage extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    this.props.getImageTags(this.props.image);
+  }
+
+  render() {
+    return (
       <div>
-        <img src={props.image.imageUrl} />
+        <div>
+          <img src={this.props.image.imageUrl} />
+          tags
+          <label></label>
+        </div>
+        <Tag />
+        <div>
+          <button
+            onClick={event => {
+              event.preventDefault();
+              this.props.deleteImage(this.props.image);
+            }}
+          >
+            DELETE
+          </button>
+        </div>
       </div>
-      <Tag />
-      <div>
-        <button
-          onClick={event => {
-            event.preventDefault();
-            props.deleteImage(props.image);
-          }}
-        >
-          DELETE
-        </button>
-      </div>
-    </div>
-  );
-};
+    );
+  }
+}
+
+// const SingleImage = props => {
+//   return (
+//     <div>
+//       <div>
+//         <img src={props.image.imageUrl} />
+//       </div>
+//       <Tag />
+//       <div>
+//         <button
+//           onClick={event => {
+//             event.preventDefault();
+//             props.deleteImage(props.image);
+//           }}
+//         >
+//           DELETE
+//         </button>
+//       </div>
+//     </div>
+//   );
+// };
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -43,6 +76,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     image: state.images.singleImage,
+    imageTags: state.images.imageTags,
   };
 };
 

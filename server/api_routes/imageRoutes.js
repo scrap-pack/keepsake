@@ -34,6 +34,18 @@ router.get('/search', async (req, res) => {
   }
 });
 
+router.get('/tags/:id', (req, res, next) =>
+  Image.findByPk(req.params.id, { include: [{ model: Tag }] })
+    .then(image => {
+      console.log(image);
+      //console.log(chalk.green('Successfully got image with its tags'));
+      return res.status(200).json(image);
+    })
+    .catch(e => {
+      console.error(e);
+      next(e);
+    })
+);
 // Get image by ID
 router.get('/:id', (req, res, next) =>
   Image.findByPk(req.params.id)

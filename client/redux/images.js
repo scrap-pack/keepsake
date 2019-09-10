@@ -91,14 +91,13 @@ export const deleteAllSelectedImages = images => dispatch => {
     .catch(e => console.error(e));
 };
 
-export const getTagsForImage = image => dispatch => {
-  {
-    axios
-      .get(`api/images/${image.id}`)
-      .then(tags => {
-        dispatch(setImageTags(tags));
-      })
-      .catch(e => console.error(e));
+export const getTagsForImage = image => async dispatch => {
+  try {
+    const { data } = await axios.get(`api/images/tags/${image.id}`);
+    // console.log(data);
+    dispatch(setImageTags(data)); //.tags.map(tag => tag.description)));
+  } catch (e) {
+    console.error(e);
   }
 };
 
@@ -109,6 +108,7 @@ const imageState = {
   selectedImages: [],
   selectMode: false,
   filteredImages: [],
+  imageTags: [],
 };
 
 const images = (state = imageState, action) => {
@@ -168,7 +168,10 @@ const images = (state = imageState, action) => {
         selectedImages: [],
       };
     case SET_IMAGE_TAGS:
-      return {};
+      return {
+        ...state,
+        imageTags: action.tags,
+      };
     default:
       return state;
   }
