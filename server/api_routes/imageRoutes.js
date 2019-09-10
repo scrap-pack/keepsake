@@ -138,7 +138,7 @@ router.put('/:id', (req, res, next) =>
 
 // delete image by ID
 router.delete('/:id', (req, res, next) => {
-  console.log('TEST');
+  //console.log('TEST');
   Image.findByPk(req.params.id)
     .then(image => image.destroy({ where: { id: image.id } }))
     .then(image =>

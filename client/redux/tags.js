@@ -64,12 +64,9 @@ export const fetchSingleTag = id => dispatch => {
 export const postTags = (tags, images) => dispatch => {
   axios
     .post(`/api/tags`, { tags, images })
-    .then()
-    //.then(tags => tags.map(tag => tag.description))
-    //.then(tags => dispatch(clearTags(tags)))
-    // .then(() => dispatch(clearString()))
+    .then(() => dispatch(clearTags()))
     .catch(e => console.error(e));
-  // );
+  9;
 };
 
 export const searchTags = queryString => async dispatch => {

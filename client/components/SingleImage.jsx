@@ -2,7 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tag from './Tag.jsx';
-import { deleteImageFromDB, getTagsForImage } from '../redux/images';
+import {
+  deleteImageFromDB,
+  getTagsForImage,
+  fetchSingleImage,
+} from '../redux/images';
 
 class SingleImage extends React.Component {
   constructor(props) {
@@ -20,8 +24,8 @@ class SingleImage extends React.Component {
           <img src={this.props.image.imageUrl} />
 
           <ul>
-            {this.props.imageTags.map(tag => (
-              <li key={tag}>{tag.toUpperCase()}</li>
+            {this.props.imageTags.map((tag, idx) => (
+              <li key={idx}>{tag.toUpperCase()}</li>
             ))}
           </ul>
         </div>
@@ -49,6 +53,9 @@ const mapDispatchToProps = dispatch => {
     getImageTags: image => {
       dispatch(getTagsForImage(image));
     },
+    addNewTags: image => {
+      dispatch(fetchSingleImage(image.id));
+    },
   };
 };
 
@@ -67,8 +74,10 @@ SingleImage.propTypes = {
     latitude: PropTypes.number,
     longitude: PropTypes.number,
   }).isRequired,
+  imageTags: PropTypes.arrayOf(PropTypes.string),
   deleteImage: PropTypes.func.isRequired,
   getImageTags: PropTypes.func.isRequired,
+  addNewTags: PropTypes.func.isRequired,
 };
 
 export default connect(

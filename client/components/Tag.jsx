@@ -8,6 +8,7 @@ import {
   addEnteredTags,
   parseTags,
 } from '../redux/tags';
+import { getTagsForImage } from '../redux/images';
 
 class Tag extends React.Component {
   constructor(props) {
@@ -28,15 +29,19 @@ class Tag extends React.Component {
             onSubmit={event => {
               event.preventDefault();
               this.parse(event);
-              if (this.props.selectedImages.length > 0)
+              if (this.props.selectedImages.length > 0) {
                 this.props.uploadTags(
                   this.props.currentTags,
                   this.props.selectedImages
                 );
-              else
+              } else {
                 this.props.uploadTags(this.props.currentTags, [
                   this.props.singleImage,
                 ]);
+                setTimeout(() => {
+                  this.props.addNewTags(this.props.singleImage);
+                }, 10 * this.props.tagString.length + (75 - this.props.tagString.length));
+              }
             }}
           >
             <input
@@ -70,6 +75,29 @@ Tag.propTypes = {
       longitude: PropTypes.number,
     })
   ),
+  currentTags: PropTypes.arrayOf(PropTypes.string),
+  singleTag: PropTypes.shape({
+    imageUrl: PropTypes.string,
+    dateTaken: PropTypes.number,
+    fileName: PropTypes.string,
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+  }),
+  selectMode: PropTypes.bool.isRequired,
+  singleImage: PropTypes.shape({
+    imageUrl: PropTypes.string,
+    dateTaken: PropTypes.number,
+    fileName: PropTypes.string,
+    latitude: PropTypes.number,
+    longitude: PropTypes.number,
+  }),
+  tagString: PropTypes.string,
+  getTags: PropTypes.func.isRequired,
+  getTag: PropTypes.func.isRequired,
+  uploadTags: PropTypes.func.isRequired,
+  addTags: PropTypes.func.isRequired,
+  convertTagStringToTags: PropTypes.func.isRequired,
+  addNewTags: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -79,6 +107,7 @@ const mapStateToProps = state => {
     singleTag: state.tags.singleTag,
     selectMode: state.images.selectMode,
     singleImage: state.images.singleImage,
+    tagString: state.tags.tagString,
   };
 };
 
@@ -94,6 +123,9 @@ const mapDispatchToProps = dispatch => {
     },
     convertTagStringToTags: () => {
       dispatch(parseTags());
+    },
+    addNewTags: image => {
+      dispatch(getTagsForImage(image));
     },
   };
 };
