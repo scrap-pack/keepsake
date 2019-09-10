@@ -40,6 +40,7 @@ router.post('/', (req, res, next) => {
           if (Object.hasOwnProperty.call(req.body.albumId, 'check')) {
             const album = await Album.findByPk(req.body.albumId);
             await album.setUsers(newUser);
+            res.status(201).json(newUser).redirect(`/albums/${album.id}`);
           }
           console.log(chalk.green('New user created: ', newUser));
           res.status(201).json(newUser);
@@ -64,6 +65,7 @@ router.post('/login', async (req, res, next) => {
       if (user && Object.hasOwnProperty.call(req.body.albumId, 'check')) {
         const album = await Album.findByPk(req.body.albumId);
         await album.setUsers(user);
+        res.status(201).json(user).redirect(`/albums/${album.id}`);
       }
       if (user) res.send({ user: user.getPublicProfile(), token });
     } catch (e) {
