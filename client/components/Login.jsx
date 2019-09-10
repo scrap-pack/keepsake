@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { loginThunk } from '../redux/users.js';
 
 class Login extends Component {
@@ -9,12 +9,20 @@ class Login extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
-    this.initState = { email: '', password: '' };
+    this.renderAlert = this.renderAlert.bind(this);
+    this.initState = {
+      email: '',
+      password: '',
+      error: 'Invalid Login Credentials',
+    };
     this.state = {
       email: '',
       password: '',
-      error: '',
+      error: 'Invalid Login Credentials!',
     };
+  }
+  componentDidMount() {
+    this.setState(this.initState);
   }
 
   handleChange(ev) {
@@ -24,17 +32,17 @@ class Login extends Component {
   handleLogin(ev) {
     ev.preventDefault();
     const { email, password } = this.state;
-    const { login, currentUser } = this.props;
+    const { login } = this.props;
     login(email, password);
-    if (!currentUser.authenticated) {
-      this.setState({ error: 'Invalid login credentials!' });
-    } else {
-      this.setState(this.initState);
+  }
+
+  renderAlert() {
+    if (this.props.currentUser.error) {
+      return <h5 className="red-text red-lighten-1">{this.state.error}</h5>;
     }
   }
   render() {
     const { authenticated } = this.props.currentUser;
-
     if (!authenticated) {
       return (
         <div id="signup-container" className="container valign-wrapper">
@@ -87,7 +95,7 @@ class Login extends Component {
                   />
                 </div>
               </div>
-              <h5 className="red-text red-lighten-1">{this.state.error}</h5>
+              {this.renderAlert()}
               <div className="row">
                 <div className="col s12">
                   <button className="btn-large teal darken-1" type="submit">
@@ -102,8 +110,7 @@ class Login extends Component {
           </div>
         </div>
       );
-    } else this.props.history.push('/');
-    return null;
+    } else return <Redirect to="/" />;
   }
 }
 
