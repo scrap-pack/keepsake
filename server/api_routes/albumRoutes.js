@@ -122,8 +122,8 @@ router.delete('/:albumId', async (req, res, next) => {
 router.post('/invite', async (req, res, next) => {
   const { phoneNumber, album } = req.body;
 
-  // URL TO BE DETERMINED UPON DEPLOYMENT SETUP
-  const link = `https:\\www.TO-BE-DETERMINED.com?invite=${album.id}`;
+  // link to be updated once we have deployed app URL
+  const link = `http://localhost:3000/album?invite=${album.id}`;
 
   client.messages.create({
     body: `You were invited to a Scrap Book! Click the link below to begin sharing images with your homies!\n\n ${link}`,
