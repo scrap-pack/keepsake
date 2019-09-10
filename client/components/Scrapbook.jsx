@@ -57,7 +57,7 @@ const Scrapbook = props => {
           <button
             type="button"
             className="waves-effect waves-light btn"
-            onClick=""
+            onClick={() => {}}
           >
             <i className="material-icons left">book</i>
             Add to Album
@@ -67,7 +67,7 @@ const Scrapbook = props => {
           <button
             type="button"
             className="waves-effect waves-light btn"
-            onClick=""
+            onClick={() => {}}
           >
             <i className="material-icons left">label</i>
             Tag Images
@@ -77,7 +77,7 @@ const Scrapbook = props => {
           <button
             type="button"
             className="waves-effect waves-light btn red"
-            onClick=""
+            onClick={() => {}}
           >
             <i className="material-icons left">delete</i>
             Delete Images

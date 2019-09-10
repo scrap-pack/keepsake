@@ -2,11 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tag from './Tag.jsx';
-import {
-  deleteImageFromDB,
-  deleteAllSelectedImages,
-  getTagsForImage,
-} from '../redux/images';
+import { deleteImageFromDB, getTagsForImage } from '../redux/images';
 
 class SingleImage extends React.Component {
   constructor(props) {

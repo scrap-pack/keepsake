@@ -28,16 +28,15 @@ class Tag extends React.Component {
             onSubmit={event => {
               event.preventDefault();
               this.parse(event);
-              if (this.props.selectedImages)
+              if (this.props.selectedImages.length > 0)
                 this.props.uploadTags(
                   this.props.currentTags,
                   this.props.selectedImages
                 );
               else
-                this.props.uploadTags(
-                  this.props.currentTags,
-                  this.props.singleImage
-                );
+                this.props.uploadTags(this.props.currentTags, [
+                  this.props.singleImage,
+                ]);
             }}
           >
             <input
@@ -79,7 +78,7 @@ const mapStateToProps = state => {
     currentTags: state.tags.currentTags,
     singleTag: state.tags.singleTag,
     selectMode: state.images.selectMode,
-    sinlgeImage: state.images.sinlgeImage,
+    singleImage: state.images.singleImage,
   };
 };
 
