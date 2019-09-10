@@ -84,7 +84,7 @@ export const deleteImageFromDB = image => async dispatch => {
 export const deleteAllSelectedImages = images => dispatch => {
   Promise.all(
     images.map(image => {
-      axios.delete(`api/images/${image.id}`);
+      axios.delete(`/api/images/${image.id}`);
     })
   )
     .then(() => dispatch(removeAllSelectedImages(images)))
@@ -93,9 +93,8 @@ export const deleteAllSelectedImages = images => dispatch => {
 
 export const getTagsForImage = image => async dispatch => {
   try {
-    const { data } = await axios.get(`api/images/tags/${image.id}`);
-    // console.log(data);
-    dispatch(setImageTags(data)); //.tags.map(tag => tag.description)));
+    const { data } = await axios.get(`/api/images/tags/${image.id}`);
+    dispatch(setImageTags(data.tags.map(tag => tag.description)));
   } catch (e) {
     console.error(e);
   }

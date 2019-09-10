@@ -22,10 +22,13 @@ class SingleImage extends React.Component {
       <div>
         <div>
           <img src={this.props.image.imageUrl} />
-          tags
-          <label></label>
+
+          <ul>
+            {this.props.imageTags.map(tag => (
+              <li key={tag}>{tag.toUpperCase()}</li>
+            ))}
+          </ul>
         </div>
-        <Tag />
         <div>
           <button
             onClick={event => {
@@ -33,34 +36,14 @@ class SingleImage extends React.Component {
               this.props.deleteImage(this.props.image);
             }}
           >
-            DELETE
+            DELETE IMAGE
           </button>
-        </div>
+        </div>{' '}
+        <Tag />
       </div>
     );
   }
 }
-
-// const SingleImage = props => {
-//   return (
-//     <div>
-//       <div>
-//         <img src={props.image.imageUrl} />
-//       </div>
-//       <Tag />
-//       <div>
-//         <button
-//           onClick={event => {
-//             event.preventDefault();
-//             props.deleteImage(props.image);
-//           }}
-//         >
-//           DELETE
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
 
 const mapDispatchToProps = dispatch => {
   return {

@@ -40,7 +40,6 @@ class Tag extends React.Component {
                 );
             }}
           >
-            <label>Add Tags seperated by commas</label>
             <input
               onChange={event => {
                 event.preventDefault();
@@ -51,6 +50,9 @@ class Tag extends React.Component {
               onTouchMove={this.parse}
               onTouchEnd={this.parse}
             ></input>
+            <label>
+              Enter Tag(s). Seperate multiple tags with spaces or commas.
+            </label>
             <button type="onSubmit">Upload Tags</button>
           </form>
         </div>
