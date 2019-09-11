@@ -53,6 +53,7 @@ const Upload = ({ uploadImage, previewImage, currentUser }) => {
           <div className="row">
             <div className="input-field col s12">
               <img
+                src=""
                 height="200"
                 width="200"
                 name="imagePreview"
