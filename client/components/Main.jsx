@@ -58,7 +58,6 @@ const connectedComponent = connect(
   null,
   mapDispatchToProps
 );
-
 const connectedMain = connectedComponent(Main);
 
 export default connectedMain;
