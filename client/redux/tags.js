@@ -15,8 +15,8 @@ const CLEAR_TAG_STRING = 'CLEAR_TAG_STRINGS';
 // Action Creators
 const getTags = tags => ({ type: GET_TAG, tags });
 const getSingleTag = tag => ({ type: GET_SINGLE_TAG, tag });
-export const clearTags = () => ({ type: CLEAR_TAGS });
 const getSearchTags = tags => ({ type: SEARCH_TAGS, tags });
+export const clearTags = () => ({ type: CLEAR_TAGS });
 export const addEnteredTags = tagString => ({ type: ADD_TAG, tagString });
 export const parseTags = () => ({ type: PARSE_TAGS });
 export const clearFilteredTags = () => ({ type: CLEAR_FILTERED_TAGS });

@@ -9,13 +9,7 @@ import {
   parseTags,
 } from '../redux/tags';
 import { getTagsForImage } from '../redux/images';
-PropTypes.shape({
-  imageUrl: PropTypes.string,
-  dateTaken: PropTypes.number,
-  fileName: PropTypes.string,
-  latitude: PropTypes.number,
-  longitude: PropTypes.number,
-}).isRequired;
+
 class Tag extends React.Component {
   constructor(props) {
     super(props);

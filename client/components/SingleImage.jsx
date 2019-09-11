@@ -9,10 +9,6 @@ import {
 } from '../redux/images';
 
 class SingleImage extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     this.props.getImageTags(this.props.image);
   }

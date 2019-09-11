@@ -17,17 +17,17 @@ const SET_IMAGE_TAGS = 'SET_IMAGE_TAGS';
 const getAllImages = images => ({ type: GET_ALL_IMAGES, images });
 const getFilteredImages = images => ({ type: GET_FILTERED_IMAGES, images });
 const uploadImages = () => ({ type: UPLOAD_IMAGES });
+const removeAllSelectedImages = images => ({
+  type: DELETE_ALL_SELECTED_IMAGES,
+  images,
+});
+const setImageTags = tags => ({ type: SET_IMAGE_TAGS, tags });
 const deleteSelectedImage = image => ({ type: DELETE_SELECTED_IMAGE, image });
 export const getSingleImage = image => ({ type: GET_SINGLE_IMAGE, image });
 export const addSelectedImage = image => ({ type: SELECT_IMAGE, image });
 export const removeSelectedImage = image => ({ type: DESELECT_IMAGE, image });
 export const clearFilteredImages = () => ({ type: CLEAR_FILTERED_IMAGES });
 export const flipSelect = () => ({ type: SWAP_SELECT });
-const removeAllSelectedImages = images => ({
-  type: DELETE_ALL_SELECTED_IMAGES,
-  images,
-});
-const setImageTags = tags => ({ type: SET_IMAGE_TAGS, tags });
 
 // Thunks
 export const fetchAllImages = () => async dispatch => {
