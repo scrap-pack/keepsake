@@ -7,7 +7,6 @@ class LandingPage extends React.Component {
     super(props);
   }
   componentDidMount() {
-    console.log('rerun');
     $(document).ready(function() {
       $('.parallax').parallax();
     });

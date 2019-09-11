@@ -15,7 +15,7 @@ db.sync()
             Listening on PORT : ${PORT}
 
             http://localhost:${PORT}
-        `),
+        `)
       );
     });
   })
