@@ -43,10 +43,10 @@ const SelectMode = props => {
                 </button>
               </div>
             </div>
-            <div className="col s3  l3 right-align">
+            <div className="col s3 l3 center-align">
               <button
                 type="button"
-                className="waves-effect waves-teal btn-flat"
+                className="waves-effect waves-teal btn btn-small red"
                 onClick={() => swapSelectMode()}
               >
                 Cancel
@@ -58,11 +58,12 @@ const SelectMode = props => {
     );
   } else
     return (
-      <div id="select-mode" className="row">
-        <div className="col s2 offset-s8 l1 offset-l11">
+      <div id="select-mode" className="row s12 l12">
+        <div className="col s9 l9"></div>
+        <div className="col s3 l3 center-align">
           <button
             type="button"
-            className="waves-effect waves-teal btn-flat"
+            className="waves-effect waves-teal btn-small"
             onClick={() => swapSelectMode()}
           >
             Select

@@ -39,10 +39,11 @@ const Scrapbook = props => {
   }
   return (
     <div>
-      <div className="row">
+      <div className="container">
         <Search />
       </div>
       <SelectMode />
+<<<<<<< HEAD
       <div className="row">
         {imagesToDisplay.map(image => (
           <div key={image.id} className="col s12 m6 xl3">
@@ -65,17 +66,42 @@ const Scrapbook = props => {
                 <div
                   className={
                     selectMode && selectedImages.includes(image) ? '' : 'hide'
+=======
+      <div className="container teal darken-1" style={{ borderRadius: '4px' }}>
+        <div className="row">
+          {imagesToDisplay.map(image => (
+            <div key={image.id} className="col s3 m3 l2">
+              <div
+                className="card"
+                onClick={() => {
+                  if (selectMode && selectedImages.includes(image))
+                    deselectImage(image);
+                  else if (selectMode && !selectedImages.includes(image.id))
+                    selectImage(image);
+                  else if (!selectMode) {
+                    getImage(image);
+                    props.history.push(`/images/${image.id}`);
+>>>>>>> Remodeled scrapbook images container
                   }
-                >
-                  <div className="selected-image-overlay" />
-                  <i className="material-icons selected-image-overlay-icon small">
-                    check
-                  </i>
+                }}
+              >
+                <div className="image-container">
+                  <AsyncImage image={image} />
+                  <div
+                    className={
+                      selectMode && selectedImages.includes(image) ? '' : 'hide'
+                    }
+                  >
+                    <div className="selected-image-overlay" />
+                    <i className="material-icons selected-image-overlay-icon small">
+                      check
+                    </i>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
     </div>
   );
