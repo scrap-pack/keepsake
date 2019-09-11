@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
 
-import { createUserThunk } from '../redux/users.js';
+import { createUserThunk, getAlbumFromInvite } from '../redux/users.js';
 
 class SignUp extends Component {
   constructor(props) {
@@ -31,6 +31,16 @@ class SignUp extends Component {
     this.setState(this.initState);
     this.props.history.push('/');
   }
+
+  componentDidMount() {
+    const { getAlbum } = this.props;
+    const url = window.location.href;
+    if (url.includes('?invite')) {
+      const albumId = url.split('=')[1];
+      getAlbum(albumId);
+    }
+  }
+
   render() {
     // If every value of the form is not empty, then signup button will be active
     const isEnabled = Object.values(this.state).every(val => val.length > 0);
@@ -163,6 +173,9 @@ const mapState = ({ currentUser }) => ({ currentUser });
 const mapDispatch = dispatch => ({
   createUser: user => {
     dispatch(createUserThunk(user));
+  },
+  getAlbum: (album) => {
+    dispatch(getAlbumFromInvite(album));
   },
 });
 
