@@ -7,6 +7,7 @@ const CREATE_ALBUM = 'CREATE_ALBUM';
 const ADD_IMAGES = 'ADD_IMAGES';
 const ADD_USERS = 'ADD_USERS';
 const REMOVE_ALBUM = 'REMOVE_ALBUM';
+const INVITE_TO_ALBUM = 'INVITE_TO_ALBUM'
 
 // ACTION CREATORS
 const getAllAlbums = (albums) => ({ type: GET_ALL_ALBUMS, albums });
@@ -15,6 +16,7 @@ const createAlbum = (msg) => ({ type: CREATE_ALBUM, mssg: msg });
 const addImages = (msg) => ({ type: ADD_IMAGES, mssg: msg });
 const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg  });
 const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg  });
+const inviteToAlbum = (inviteDetails) => ({ type: INVITE_TO_ALBUM, inviteDetails });
 
 // API THUNKS
 export const fetchAllAlbums = (participant) => async dispatch => {

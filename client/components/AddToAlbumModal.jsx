@@ -13,7 +13,6 @@ class AddToAlbum extends React.Component {
 
   handleChange(event) {
     this.setState({ selectedOption: event.target.value });
-    console.log('handleChange ran');
   }
 
   render() {
