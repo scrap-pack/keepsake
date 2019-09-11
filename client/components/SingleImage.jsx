@@ -11,6 +11,10 @@ import {
 import Home from './Home.jsx';
 
 const SingleImage = props => {
+  if (!props.authenticated) {
+    return <Redirect to="/login" />;
+  }
+
   return (
     <div>
       <div>
@@ -55,6 +59,7 @@ const mapDispatchToProps = dispatch => {
 const mapStateToProps = state => {
   return {
     image: state.images.singleImage,
+    authenticated: state.currentUser.authenticated,
     // selectedImages: state.images.selectedImages,
   };
 };

@@ -15,7 +15,7 @@ import {
   flipSelect,
 } from '../redux/images';
 
-const Scrapbook = (props) => {
+const Scrapbook = props => {
   const {
     allImages,
     filteredImages,
@@ -25,7 +25,12 @@ const Scrapbook = (props) => {
     selectImage,
     deselectImage,
     getImage,
+    authenticated,
   } = props;
+
+  if (!authenticated) {
+    return <Redirect to="/login" />;
+  }
 
   let imagesToDisplay = [];
   if (filteredImages.length) {
@@ -33,7 +38,6 @@ const Scrapbook = (props) => {
   } else {
     imagesToDisplay = allImages;
   }
-
   return (
     <div>
       <div className="row">
@@ -50,15 +54,13 @@ const Scrapbook = (props) => {
           </button>
         </div>
       </div>
-      <div
-        className={selectMode && selectedImages.length ? 'row' : 'row hide'}
-      >
+      <div className={selectMode && selectedImages.length ? 'row' : 'row hide'}>
         <div className="col s6" />
         <div className="col s2">
           <button
             type="button"
             className="waves-effect waves-light btn"
-            onClick=""
+            // onClick=""
           >
             <i className="material-icons left">book</i>
             Add to Album
@@ -68,7 +70,7 @@ const Scrapbook = (props) => {
           <button
             type="button"
             className="waves-effect waves-light btn"
-            onClick=""
+            // onClick=""
           >
             <i className="material-icons left">label</i>
             Tag Images
@@ -78,7 +80,7 @@ const Scrapbook = (props) => {
           <button
             type="button"
             className="waves-effect waves-light btn red"
-            onClick=""
+            // onClick=""
           >
             <i className="material-icons left">delete</i>
             Delete Images
@@ -86,13 +88,15 @@ const Scrapbook = (props) => {
         </div>
       </div>
       <div className="row">
-        {imagesToDisplay.map((image) => (
+        {imagesToDisplay.map(image => (
           <div key={image.id} className="col s12 m6 xl3">
             <div
               className="card"
               onClick={() => {
-                if (selectMode && selectedImages.includes(image)) deselectImage(image);
-                else if (selectMode && !selectedImages.includes(image.id)) selectImage(image);
+                if (selectMode && selectedImages.includes(image))
+                  deselectImage(image);
+                else if (selectMode && !selectedImages.includes(image.id))
+                  selectImage(image);
                 else if (!selectMode) {
                   getImage(image);
                   props.history.push(`/images/${image.id}`);
@@ -102,10 +106,14 @@ const Scrapbook = (props) => {
               <div className="image-container">
                 <AsyncImage image={image} />
                 <div
-                  className={selectMode && selectedImages.includes(image) ? '' : 'hide'}
+                  className={
+                    selectMode && selectedImages.includes(image) ? '' : 'hide'
+                  }
                 >
                   <div className="selected-image-overlay" />
-                  <i className="material-icons selected-image-overlay-icon small">check</i>
+                  <i className="material-icons selected-image-overlay-icon small">
+                    check
+                  </i>
                 </div>
               </div>
             </div>
@@ -116,17 +124,18 @@ const Scrapbook = (props) => {
   );
 };
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   allImages: state.images.allImages,
   filteredImages: state.images.filteredImages,
   selectedImages: state.images.selectedImages,
   selectMode: state.images.selectMode,
+  authenticated: state.currentUser.authenticated,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  selectImage: (image) => dispatch(addSelectedImage(image)),
-  deselectImage: (image) => dispatch(removeSelectedImage(image)),
-  getImage: (image) => dispatch(getSingleImage(image)),
+const mapDispatchToProps = dispatch => ({
+  selectImage: image => dispatch(addSelectedImage(image)),
+  deselectImage: image => dispatch(removeSelectedImage(image)),
+  getImage: image => dispatch(getSingleImage(image)),
   swapSelectMode: () => dispatch(flipSelect()),
 });
 
@@ -144,7 +153,7 @@ Scrapbook.propTypes = propTypes;
 
 const ConnectedScrapbook = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(Scrapbook);
 
 export default ConnectedScrapbook;
