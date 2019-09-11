@@ -27,7 +27,7 @@ const Upload = ({ uploadImage, previewImage, currentUser }) => {
 
     <div id="upload-container" className="container valign-wrapper">
       <div className="row center-align">
-        <h3>Choose File(s) To Upload</h3>
+        <h3>Choose Files To Upload</h3>
         <form
           action="#"
           id="login-form"
@@ -62,9 +62,16 @@ const Upload = ({ uploadImage, previewImage, currentUser }) => {
           </div>
 
           <div className="row center-align">
-            <div className="col s12">
-              <button className="btn-large teal" type="submit">
+            <div className="col s6">
+              <button className="btn teal" type="submit">
                 UPLOAD <i className="material-icons right">file_upload</i>
+              </button>
+            </div>
+            <div className="col s6">
+              <button className="btn teal ">
+                <a className="white-text" href="/scrapbook">
+                  My Images <i className="material-icons right">exit_to_app</i>
+                </a>
               </button>
             </div>
           </div>
