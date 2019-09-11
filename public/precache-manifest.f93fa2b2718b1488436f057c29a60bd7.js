@@ -4,7 +4,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     url: '/images/landingpage.jpg',
   },
   {
-    revision: '40eb74ebf50e4c57c650',
+    revision: 'c982756a4404fe374f8d',
     url: 'index.html',
   },
 ]);
