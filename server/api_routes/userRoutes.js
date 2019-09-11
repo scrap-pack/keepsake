@@ -38,7 +38,7 @@ router.post('/', (req, res, next) => {
         });
       } else {
         return User.create(createUserObj).then(async (newUser) => {
-          if (Object.hasOwnProperty.call(req.body.albumId, 'check')) {
+          if (Object.hasOwnProperty.call(req.body, 'albumId')) {
             const album = await Album.findByPk(req.body.albumId);
             await album.setUsers(newUser);
             res.status(201).json(newUser).redirect(`/albums/${album.id}`);
@@ -63,7 +63,7 @@ router.post('/login', async (req, res, next) => {
     try {
       const user = await User.findByCredentials(email, password);
       const token = await user.generateAuthToken();
-      if (user && Object.hasOwnProperty.call(req.body.albumId, 'check')) {
+      if (user && Object.hasOwnProperty.call(req.body, 'albumId')) {
         const album = await Album.findByPk(req.body.albumId);
         await album.setUsers(user);
         res.status(201).json(user).redirect(`/albums/${album.id}`);
