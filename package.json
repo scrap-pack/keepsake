@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "start-server": "./node_modules/.bin/nodemon ./server/index.js",
-    "start": "npm run build & npm run start-server",
+    "start": "npm run start-server",
     "seed": "node ./server/database/utils/seed.js"
   },
   "dependencies": {

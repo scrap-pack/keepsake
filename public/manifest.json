@@ -5,8 +5,14 @@
   "display": "standalone",
   "background_color": "#2A3443",
   "description": "A scrapbook app",
+  "orientation": "portrait",
   "theme_color": "#2A3443",
   "icons": [
+    {
+      "src": "./images/favicon-32x32.png",
+      "type": "image/png",
+      "sizes": "32x32"
+    },
     {
       "src": "./images/logo-192x192.png",
       "type": "image/png",
