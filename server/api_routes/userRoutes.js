@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { User } = require('../database/index.js');
+const Album = require('../database/models/Album');
 const auth = require('./utils/userAuth.js');
 const chalk = require('chalk');
 
@@ -24,7 +25,8 @@ router.get('/', (req, res, next) => {
 
 // Post/Create user
 router.post('/', (req, res, next) => {
-  const { email, password } = req.body;
+  const {firstName, lastName, email, password } = req.body;
+  const createUserObj = { firstName, lastName, email, password };
 
   return User.findOne({ where: { email } })
     .then(user => {
@@ -35,9 +37,14 @@ router.post('/', (req, res, next) => {
           error: 'Password must be between 8 to 24 characters long!',
         });
       } else {
-        return User.create(req.body).then(newUser => {
+        return User.create(createUserObj).then(async (newUser) => {
+          if (Object.hasOwnProperty.call(req.body, 'albumId')) {
+            const album = await Album.findByPk(req.body.albumId);
+            await album.setUsers(newUser);
+            res.status(201).json(newUser).redirect(`/albums/${album.id}`);
+          }
           console.log(chalk.green('New user created: ', newUser));
-          res.status(201).json(req.body);
+          res.status(201).json(newUser);
         });
       }
     })
@@ -56,6 +63,11 @@ router.post('/login', async (req, res, next) => {
     try {
       const user = await User.findByCredentials(email, password);
       const token = await user.generateAuthToken();
+      if (user && Object.hasOwnProperty.call(req.body, 'albumId')) {
+        const album = await Album.findByPk(req.body.albumId);
+        await album.setUsers(user);
+        res.status(201).json(user).redirect(`/albums/${album.id}`);
+      }
       if (user) res.send({ user: user.getPublicProfile(), token });
     } catch (e) {
       next(e);
