@@ -1,31 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import { inviteToAlbum } from '../redux/albums';
 
 class ShareAlbum extends React.Component {
   constructor(props) {
     super(props);
+    const { album } = props;
     this.state = {
-      phone: '',
+      phoneNumber: '',
+      album,
     };
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   handleChange(event) {
-    this.setState({ phone: event.target.value });
+    this.setState({ phoneNumber: event.target.value });
   }
 
   handleSubmit(event) {
-    this.setState({ phone: '' });
+    const { invite } = this.props;
+    event.preventDefault();
+    this.setState({
+      phoneNumber: '',
+      album: {},
+    });
+    invite(this.state);
   }
 
   render() {
-    const { phone } = this.state;
+    const { phoneNumber } = this.state;
     return (
       <div id="share-album" className="modal">
         <div className="modal-content">
           <h4>Share Album</h4>
-          <form>
+          <form onSubmit={this.handleSubmit}>
             <div className="row">
               <p>Enter a friend's number and they'll receive a text with an invite.</p>
             </div>
@@ -34,7 +44,7 @@ class ShareAlbum extends React.Component {
               <input
                 id="icon_telephone"
                 type="tel"
-                value={phone}
+                value={phoneNumber}
                 className="validate"
                 onChange={this.handleChange}
               />
@@ -50,4 +60,13 @@ class ShareAlbum extends React.Component {
   }
 }
 
-export default ShareAlbum;
+const mapDispatchToProps = dispatch => ({
+  invite: (inviteDetails) => dispatch(inviteToAlbum(inviteDetails)),
+});
+
+const ConnectedShareAlbum = connect(
+  null,
+  mapDispatchToProps,
+)(ShareAlbum);
+
+export default ConnectedShareAlbum;

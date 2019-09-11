@@ -7,7 +7,7 @@ const User = require('../database/models/User');
 const Image = require('../database/models/Image');
 const UserAlbum = require('../database/models/UserAlbum');
 
-const client = new Twilio(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
+// const client = new Twilio(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
 
 // GET ALL ALBUMS FOR A GIVEN USER
 router.get('/:participantId', async (req, res, next) => {

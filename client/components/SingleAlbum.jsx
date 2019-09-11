@@ -14,10 +14,10 @@ const SingleAlbum = (props) => {
       <div className="col s12">
         <h4>{singleAlbum.name}</h4>
       </div>
-      <div className="row">
+      <div className="col">
         {singleAlbum
           ? (
-            <div className="row">
+            <div className="col">
               {singleAlbum.images
                 .map((image) => (
                   <AsyncImage image={image} key={image.id} />

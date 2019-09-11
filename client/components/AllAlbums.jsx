@@ -3,6 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import AsyncAlbum from './AsyncAlbum.jsx';
+import ShareAlbumModal from './ShareAlbumModal.jsx';
 
 const AllAlbums = (props) => {
   const {
@@ -10,13 +11,16 @@ const AllAlbums = (props) => {
   } = props;
 
   return (
-    <div className="row">
-      <div className="col">
+    <div>
+      <div className="row">
         <h4>Albums</h4>
       </div>
-      <div className="col">
+      <div className="row">
         {allAlbums.map((album) => (
-          <AsyncAlbum album={album} key={album.id} />
+          <div className="col m4 l4">
+            <AsyncAlbum album={album} key={album.id} />
+            <div className="hide"><ShareAlbumModal album={album} style={{ display: 'none' }} /></div>
+          </div>
         ))}
       </div>
     </div>

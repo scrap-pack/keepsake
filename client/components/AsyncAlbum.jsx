@@ -10,6 +10,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import AsyncImage from './AsyncImage.jsx';
 import {
   getSingleAlbum,
 } from '../redux/albums';
@@ -31,58 +32,33 @@ class AsyncAlbum extends React.Component {
       <div>
         {album.id
           ? (
-            <div key={album.id} className="col s12 m6 xl3">
+            <div className="card" key={album.id}>
               <div
-                className="card"
+                className="image-column"
+                onClick={() => {
+                  getAlbum(album);
+                  history.push(`/albums/${album.id}`);
+                }}
               >
-                <div
-                  className="col"
-                  style={{marginTop: '10px'}}
-                  onClick={() => {
-                    getAlbum(album);
-                    history.push(`/albums/${album.id}`);
-                  }}
-                >
-                  <img
-                    style={{ width: '50%'}}
-                    className="responsive-img image"
-                    src={images[0].imageUrl}
-                    alt=""
-                  />
-                  <img
-                    style={{ width: '50%'}}
-                    className="responsive-img image"
-                    src={images[1].imageUrl}
-                    alt=""
-                  />
-                  <img
-                    style={{ width: '50%' }}
-                    className="responsive-img image"
-                    src={images[2].imageUrl}
-                    alt=""
-                  />
-                  <img
-                    style={{ width: '50%' }}
-                    className="responsive-img image"
-                    src={images[3].imageUrl}
-                    alt=""
-                  />
-                </div>
-                <div className="card-content vertical-align">
-                  <div>
-                    <p>
-                      {album.name}
-                      <span>
-                        <a
-                          data-target="share-album"
-                          style={{ float: 'right' }}
-                          className="btn-floating btn-small waves-effect waves-light teal modal-trigger"
-                        >
-                          <i className="material-icons">share</i>
-                        </a>
-                      </span>
-                    </p>
-                  </div>
+                <AsyncImage image={images[0]} />
+                <AsyncImage image={images[1]} />
+                <AsyncImage image={images[2]} />
+                <AsyncImage image={images[3]} />
+              </div>
+              <div className="card-content">
+                <div>
+                  <p>
+                    {album.name}
+                    <span>
+                      <a
+                        data-target="share-album"
+                        style={{ float: 'right' }}
+                        className="btn-floating btn-small waves-effect waves-light teal modal-trigger"
+                      >
+                        <i className="material-icons">share</i>
+                      </a>
+                    </span>
+                  </p>
                 </div>
               </div>
             </div>
