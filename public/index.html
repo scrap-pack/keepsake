@@ -3,6 +3,8 @@
 <html>
   <head>
     <meta charset="UTF-8" />
+    <meta name="theme-color" content="#009688" />
+
     <title>Keepsake</title>
     <!-- Materialize.css links, scripts, meta -->
     <link
@@ -21,6 +23,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css"
     />
     <link rel="stylesheet" href="css/styles.css" />
+    <link rel="manifest" href="/manifest.json" />
     <script type="text/javascript" src="js/materialize.min.js" defer></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Materialize.css links, scripts, meta -->
@@ -33,7 +36,15 @@
   </head>
 
   <body>
+    <noscript> This page requires you to have the Javascript enabled.</noscript>
     <div id="app"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').then(function() {
+          console.log('Service Worker Registered');
+        });
+      }
+    </script>
   </body>
 </html>

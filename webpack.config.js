@@ -1,7 +1,9 @@
-const path = require('path');
+const path = require('path'),
+  Webpack = require('webpack'),
+  WorkboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
-  mode: 'development',
+  mode: process.env.NODE_ENV !== 'development' ? 'production' : 'development',
   entry: {
     main: path.join(__dirname, '/client/index.js'),
   },
@@ -25,4 +27,12 @@ module.exports = {
       },
     ],
   },
+  plugins: [
+    new Webpack.ProgressPlugin(),
+    new WorkboxPlugin.GenerateSW({
+      swDest: path.join(__dirname, '/public/sw.js'),
+      clientsClaim: true,
+      skipWaiting: true,
+    }),
+  ],
 };
