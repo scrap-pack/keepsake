@@ -25,7 +25,8 @@ router.get('/', (req, res, next) => {
 
 // Post/Create user
 router.post('/', (req, res, next) => {
-  const { email, password } = req.body;
+  const {firstName, lastName, email, password } = req.body;
+  const createUserObj = { firstName, lastName, email, password };
 
   return User.findOne({ where: { email } })
     .then(user => {
@@ -36,7 +37,7 @@ router.post('/', (req, res, next) => {
           error: 'Password must be between 8 to 24 characters long!',
         });
       } else {
-        return User.create({ email, password }).then(async (newUser) => {
+        return User.create(createUserObj).then(async (newUser) => {
           if (Object.hasOwnProperty.call(req.body.albumId, 'check')) {
             const album = await Album.findByPk(req.body.albumId);
             await album.setUsers(newUser);
