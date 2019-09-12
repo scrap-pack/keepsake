@@ -28,7 +28,7 @@ class SingleImage extends React.Component {
               </div>
               <div className="card-content">
                 <p>
-                  {'Tags:  '}
+                  {'Tags: '}
                   {this.props.imageTags.map((tag, idx) => {
                     if (idx !== this.props.imageTags.length - 1)
                       return (
