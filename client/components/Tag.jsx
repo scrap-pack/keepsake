@@ -23,42 +23,45 @@ class Tag extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <form
-            onSubmit={event => {
-              event.preventDefault();
-              this.parse(event);
-              if (this.props.selectedImages.length > 0) {
-                this.props.uploadTags(
-                  this.props.currentTags,
-                  this.props.selectedImages
-                );
-              } else {
-                this.props.uploadTags(this.props.currentTags, [
-                  this.props.singleImage,
-                ]);
-                setTimeout(() => {
-                  this.props.addNewTags(this.props.singleImage);
-                }, 10 * this.props.tagString.length + (75 - this.props.tagString.length));
-              }
-            }}
-          >
-            <input
-              onChange={event => {
-                event.preventDefault();
-                this.props.addTags(event.target.value);
-              }}
-              onMouseLeave={this.parse}
-              onTouchEnd={this.parse}
-              onTouchMove={this.parse}
-              onTouchEnd={this.parse}
-            ></input>
-            <label>
-              Enter Tag(s). Seperate multiple tags with spaces or commas.
-            </label>
-            <button type="onSubmit">Upload Tags</button>
-          </form>
+      <div className="row">
+        <div className="col s10 m3">
+          <div className="card">
+            <div className="card-content">
+              <span className="card-title">Add Tags</span>
+              <form
+                onSubmit={event => {
+                  event.preventDefault();
+                  this.parse(event);
+                  if (this.props.selectedImages.length > 0) {
+                    this.props.uploadTags(
+                      this.props.currentTags,
+                      this.props.selectedImages
+                    );
+                  } else {
+                    this.props.uploadTags(this.props.currentTags, [
+                      this.props.singleImage,
+                    ]);
+                    setTimeout(() => {
+                      this.props.addNewTags(this.props.singleImage);
+                    }, 10 * this.props.tagString.length + (75 - this.props.tagString.length));
+                  }
+                }}
+              >
+                <input
+                  onChange={event => {
+                    event.preventDefault();
+                    this.props.addTags(event.target.value);
+                  }}
+                  onMouseLeave={this.parse}
+                  onTouchEnd={this.parse}
+                  onTouchMove={this.parse}
+                  onTouchEnd={this.parse}
+                ></input>
+                <label>Seperate multiple tags with spaces or commas.</label>
+                <button type="onSubmit">Upload Tags</button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     );
