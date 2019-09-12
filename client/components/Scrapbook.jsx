@@ -95,12 +95,8 @@ const Scrapbook = props => {
               onClick={() => {
                 if (selectMode && selectedImages.includes(image))
                   deselectImage(image);
-<<<<<<< HEAD
                 else if (selectMode && !selectedImages.includes(image))
                   //else if (selectMode && !selectedImages.includes(image.id))
-=======
-                else if (selectMode && !selectedImages.includes(image.id))
->>>>>>> Revert "delete multiple or single images, can upload tags to the db put they are not associated to the selected image(s) yet"
                   selectImage(image);
                 else if (!selectMode) {
                   getImage(image);
