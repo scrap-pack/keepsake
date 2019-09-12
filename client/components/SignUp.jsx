@@ -152,7 +152,7 @@ class SignUp extends Component {
                   disabled={!isEnabled}
                   className="btn-large teal darken-1"
                   type="submit"
-                  onClick={() => <Redirect to="/" />}
+                  onClick={() => <Redirect to="/login" />}
                 >
                   Sign Up <i className="material-icons right">send</i>
                 </button>
