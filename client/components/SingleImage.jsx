@@ -8,59 +8,58 @@ import {
   fetchSingleImage,
 } from '../redux/images';
 
-
 class SingleImage extends React.Component {
-  
-componentDidMount() {
-  this.props.getImageTags(this.props.image);
-}
-
-render() {
-  if (!this.props.authenticated) {
-    return <Redirect to="/login" />;
+  componentDidMount() {
+    this.props.getImageTags(this.props.image);
   }
 
-  return (
-    <div>
-      <div>
-        <img
-          src={props.image.imageUrl}
-          onClick={event => {
-            event.preventDefault();
-            // if (image in selectedImages) {
-            //   props.deselectImage(image);
-            // } else {
-            //   props.selectImage(image);
-            // }
-          }}
-        />
-      </div>
-      <Tag />
-      <div>
-        <div>
-          <img src={this.props.image.imageUrl} />
+  render() {
+    if (!this.props.authenticated) {
+      return <Redirect to="/login" />;
+    }
 
-          <ul>
-            {this.props.imageTags.map((tag, idx) => (
-              <li key={idx}>{tag.toUpperCase()}</li>
-            ))}
-          </ul>
-        </div>
+    return (
+      <div>
         <div>
-          <button
+          <img
+            src={props.image.imageUrl}
             onClick={event => {
               event.preventDefault();
-              this.props.deleteImage(this.props.image);
+              // if (image in selectedImages) {
+              //   props.deselectImage(image);
+              // } else {
+              //   props.selectImage(image);
+              // }
             }}
-          >
-            DELETE IMAGE
-          </button>
-        </div>{' '}
+          />
+        </div>
         <Tag />
+        <div>
+          <div>
+            <img src={this.props.image.imageUrl} />
+
+            <ul>
+              {this.props.imageTags.map((tag, idx) => (
+                <li key={idx}>{tag.toUpperCase()}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <button
+              onClick={event => {
+                event.preventDefault();
+                this.props.deleteImage(this.props.image);
+              }}
+            >
+              DELETE IMAGE
+            </button>
+          </div>{' '}
+          <Tag />
+        </div>
       </div>
-      );
-    }
+    );
   }
+}
 
 const mapDispatchToProps = dispatch => {
   return {
