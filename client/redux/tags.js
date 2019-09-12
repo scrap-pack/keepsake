@@ -15,8 +15,8 @@ const CLEAR_TAG_STRING = 'CLEAR_TAG_STRINGS';
 // Action Creators
 const getTags = tags => ({ type: GET_TAG, tags });
 const getSingleTag = tag => ({ type: GET_SINGLE_TAG, tag });
-const getSearchTags = tags => ({ type: SEARCH_TAGS, tags });
 export const clearTags = () => ({ type: CLEAR_TAGS });
+const getSearchTags = tags => ({ type: SEARCH_TAGS, tags });
 export const addEnteredTags = tagString => ({ type: ADD_TAG, tagString });
 export const parseTags = () => ({ type: PARSE_TAGS });
 export const clearFilteredTags = () => ({ type: CLEAR_FILTERED_TAGS });
@@ -61,12 +61,11 @@ export const fetchSingleTag = id => dispatch => {
     .catch(e => console.error(e));
 };
 
-export const postTags = (tags, images) => dispatch => {
+export const postTags = tags => dispatch => {
   axios
-    .post(`/api/tags`, { tags, images })
-    .then(() => dispatch(clearTags()))
+    .post('/api/tags', tags)
+    .then(tags => dispatch(clearTags(tags)))
     .catch(e => console.error(e));
-  9;
 };
 
 export const searchTags = queryString => async dispatch => {
