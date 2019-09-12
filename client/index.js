@@ -5,6 +5,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import Main from './components/Main.jsx';
 import store from './redux';
 import { fetchUser, changeLoginStatus } from './redux/users';
+import Footer from './components/Footer.jsx';
 
 // eslint-disable-next-line no-undef
 const appDiv = document.getElementById('app');
@@ -25,3 +26,4 @@ render(
   </Provider>,
   appDiv
 );
+render(<Footer />, document.getElementById('footer'));

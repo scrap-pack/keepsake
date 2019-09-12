@@ -1,5 +1,15 @@
 /* Custom CSS */
 
+body {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
 /* CSS FOR SELECTING IMAGES */
 /* Container needed to position the overlay. Adjust the width as needed */
 .image-container {
