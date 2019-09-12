@@ -26,10 +26,10 @@ class SignUp extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     const { state } = this;
-    const { createUser } = this.props;
+    const { createUser, history } = this.props;
     createUser(state);
     this.setState(this.initState);
-    this.props.history.push('/');
+    history.push('/login');
   }
 
   componentDidMount() {

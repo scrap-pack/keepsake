@@ -7,7 +7,6 @@ const chalk = require('chalk');
 // Get my user info
 router.get('/me', auth, (req, res, next) => {
   res.json(req.user.getPublicProfile());
-  next();
 });
 // Get all users
 router.get('/', (req, res, next) => {
