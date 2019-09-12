@@ -37,16 +37,7 @@ router.post('/', (req, res, next) => {
           error: 'Password must be between 8 to 24 characters long!',
         });
       } else {
-        return User.create(createUserObj).then(async newUser => {
-          if (Object.hasOwnProperty.call(req.body, 'albumId')) {
-            const album = await Album.findByPk(req.body.albumId);
-            console.log(album);
-            await album.setUsers(newUser);
-            res
-              .status(201)
-              .json(newUser)
-              .redirect(`/albums/${album.id}`);
-          }
+        return User.create(createUserObj).then(newUser => {
           console.log(chalk.green('New user created: ', newUser));
           res.status(201).json(newUser);
         });
