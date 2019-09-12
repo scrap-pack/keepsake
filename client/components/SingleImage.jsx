@@ -8,13 +8,34 @@ import {
   fetchSingleImage,
 } from '../redux/images';
 
+
 class SingleImage extends React.Component {
-  componentDidMount() {
-    this.props.getImageTags(this.props.image);
+  
+componentDidMount() {
+  this.props.getImageTags(this.props.image);
+}
+
+render() {
+  if (!this.props.authenticated) {
+    return <Redirect to="/login" />;
   }
 
-  render() {
-    return (
+  return (
+    <div>
+      <div>
+        <img
+          src={props.image.imageUrl}
+          onClick={event => {
+            event.preventDefault();
+            // if (image in selectedImages) {
+            //   props.deselectImage(image);
+            // } else {
+            //   props.selectImage(image);
+            // }
+          }}
+        />
+      </div>
+      <Tag />
       <div>
         <div>
           <img src={this.props.image.imageUrl} />
@@ -37,9 +58,9 @@ class SingleImage extends React.Component {
         </div>{' '}
         <Tag />
       </div>
-    );
+      );
+    }
   }
-}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -59,6 +80,8 @@ const mapStateToProps = state => {
   return {
     image: state.images.singleImage,
     imageTags: state.images.imageTags,
+    authenticated: state.currentUser.authenticated,
+    // selectedImages: state.images.selectedImages,
   };
 };
 

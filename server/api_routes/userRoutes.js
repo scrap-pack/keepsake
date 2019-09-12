@@ -25,7 +25,7 @@ router.get('/', (req, res, next) => {
 
 // Post/Create user
 router.post('/', (req, res, next) => {
-  const {firstName, lastName, email, password } = req.body;
+  const { firstName, lastName, email, password } = req.body;
   const createUserObj = { firstName, lastName, email, password };
 
   return User.findOne({ where: { email } })
@@ -37,11 +37,15 @@ router.post('/', (req, res, next) => {
           error: 'Password must be between 8 to 24 characters long!',
         });
       } else {
-        return User.create(createUserObj).then(async (newUser) => {
+        return User.create(createUserObj).then(async newUser => {
           if (Object.hasOwnProperty.call(req.body, 'albumId')) {
             const album = await Album.findByPk(req.body.albumId);
+            console.log(album);
             await album.setUsers(newUser);
-            res.status(201).json(newUser).redirect(`/albums/${album.id}`);
+            res
+              .status(201)
+              .json(newUser)
+              .redirect(`/albums/${album.id}`);
           }
           console.log(chalk.green('New user created: ', newUser));
           res.status(201).json(newUser);
@@ -66,7 +70,10 @@ router.post('/login', async (req, res, next) => {
       if (user && Object.hasOwnProperty.call(req.body, 'albumId')) {
         const album = await Album.findByPk(req.body.albumId);
         await album.setUsers(user);
-        res.status(201).json(user).redirect(`/albums/${album.id}`);
+        res
+          .status(201)
+          .json(user)
+          .redirect(`/albums/${album.id}`);
       }
       if (user) res.send({ user: user.getPublicProfile(), token });
     } catch (e) {
