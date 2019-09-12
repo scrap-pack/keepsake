@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const chalk = require('chalk');
 const { Op } = require('sequelize');
-const { Tag, Image } = require('../database/index');
+const { Tag } = require('../database/index');
 
 // Search Tags
 router.get('/search', async (req, res) => {
@@ -61,31 +61,16 @@ router.get('/:id', (req, res, next) => {
 });
 
 //post new tag
-router.post('/', async (req, res, next) => {
-  const { tags, images } = req.body;
-  try {
-    let tagModels = [];
-    for (let i = 0; i < tags.length; i++) {
-      const tagModel = await Tag.findOrCreate({
-        where: { description: tags[i] },
-      });
-      tagModels.push(tagModel[0]);
-    }
-    let imageModels = [];
-    for (let i = 0; i < images.length; i++) {
-      const imageModel = await Image.findByPk(images[i].id);
-      imageModels.push(imageModel);
-    }
-
-    for (let i = 0; i < images.length; i++) {
-      await imageModels[i].addTags(tagModels);
-    }
-
-    return res.status(201).json(tags);
-  } catch (e) {
-    console.error(chalk.red(`Failed to post new tags`), e);
-    return res.sendStatus(400);
-  }
+router.post('/', (req, res, next) => {
+  return Tag.findOrCreate(req.body)
+    .then(tag => {
+      console.log(`Successfully posted new tag`);
+      return res.status(201).json(tag);
+    })
+    .catch(e => {
+      console.error(chalk.red(`Failed to post new tag`), e);
+      next(e);
+    });
 });
 
 //put (update) tag by ID

@@ -72,9 +72,7 @@ export const logoutThunk = () => {
 };
 
 export const createUserThunk = user => {
-  return (dispatch, getState) => {
-    const { albumId } = getState();
-    if (albumId) user.albumId = albumId;
+  return (dispatch) => {
     return axios
       .post('/api/users', user)
       .then(res => {

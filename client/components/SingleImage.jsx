@@ -1,12 +1,15 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Tag from './Tag.jsx';
 import {
+  addSelectedImage,
+  removeSelectedImage,
   deleteImageFromDB,
-  getTagsForImage,
-  fetchSingleImage,
 } from '../redux/images';
+import Home from './Home.jsx';
+
 
 class SingleImage extends React.Component {
   componentDidMount() {
@@ -48,6 +51,7 @@ class SingleImage extends React.Component {
                   onClick={event => {
                     event.preventDefault();
                     this.props.deleteImage(this.props.image);
+                    return <Redirect to="/scrapbook" />;
                   }}
                 >
                   DELETE IMAGE
@@ -64,24 +68,21 @@ class SingleImage extends React.Component {
   }
 }
 
+
 const mapDispatchToProps = dispatch => {
   return {
+    back: () => <Link to="/" component={Home} />,
     deleteImage: image => {
       dispatch(deleteImageFromDB(image));
     },
-    getImageTags: image => {
-      dispatch(getTagsForImage(image));
-    },
-    addNewTags: image => {
-      dispatch(fetchSingleImage(image.id));
-    },
+    // selectImage: image => dispatch(addSelectedImage(image)),
+    // deselectImage: image => dispatch(removeSelectedImage(image)),
   };
 };
 
 const mapStateToProps = state => {
   return {
     image: state.images.singleImage,
-    imageTags: state.images.imageTags,
     authenticated: state.currentUser.authenticated,
     // selectedImages: state.images.selectedImages,
   };
@@ -95,10 +96,6 @@ SingleImage.propTypes = {
     latitude: PropTypes.number,
     longitude: PropTypes.number,
   }).isRequired,
-  imageTags: PropTypes.arrayOf(PropTypes.string),
-  deleteImage: PropTypes.func.isRequired,
-  getImageTags: PropTypes.func.isRequired,
-  addNewTags: PropTypes.func.isRequired,
 };
 
 export default connect(
