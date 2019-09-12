@@ -25,11 +25,6 @@ class SingleImage extends React.Component {
             src={props.image.imageUrl}
             onClick={event => {
               event.preventDefault();
-              // if (image in selectedImages) {
-              //   props.deselectImage(image);
-              // } else {
-              //   props.selectImage(image);
-              // }
             }}
           />
         </div>
