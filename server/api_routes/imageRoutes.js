@@ -45,6 +45,7 @@ router.get('/tags/:id', (req, res, next) =>
       next(e);
     })
 );
+
 // Get image by ID
 router.get('/:id', (req, res, next) =>
   Image.findByPk(req.params.id)
@@ -137,17 +138,16 @@ router.put('/:id', (req, res, next) =>
 );
 
 // delete image by ID
-router.delete('/:id', (req, res, next) => {
-  //console.log('TEST');
+router.delete('/:id', (req, res, next) =>
   Image.findByPk(req.params.id)
-    .then(image => image.destroy({ where: { id: image.id } }))
+    .then(image => image.destroy({ where: req.params.id }))
     .then(image =>
-      res.status(200).json({ message: 'Image successfully deleted', image })
+      res.status(200).json({ messgae: 'Image successfully deleted', image })
     )
     .catch(e => {
       console.error(chalk.red(`Failed to delete image ${req.params.id}`), e);
       next(e);
-    });
-});
+    })
+);
 
 module.exports = router;
