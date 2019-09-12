@@ -14,17 +14,6 @@ const Upload = ({ uploadImage, previewImage, currentUser }) => {
     return <Redirect to="/login" />;
   }
   return (
-    // <form name="uploadForm" onSubmit={uploadImage} onChange={previewImage} encType="multipart/form-data" style={{ display: 'flex', flexDirection: 'column' }}>
-    //   <div>
-    //     <div>Choose image to upload</div>
-    //     <input type="file" id="imageUpload" name="uploadInput" accept="image/*" multiple />
-    //     <img src="" height="200" name="imagePreview" alt="preview..." />
-    //   </div>
-    //   <div>
-    //     <button type="submit">Submit</button>
-    //   </div>
-    // </form>
-
     <div id="upload-container" className="container valign-wrapper">
       <div className="row center-align">
         <h3>Choose Files To Upload</h3>

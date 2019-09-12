@@ -116,6 +116,7 @@ router.post('/', upload.single('imageUpload'), async (req, res, next) => {
         chalk.green('Successfully added image and tagged by tensorFlow')
       );
     });
+    res.send({redirect: `/images/${newImage.id}`});
   } catch (error) {
     console.error(chalk.red('Failed to create ML tag'), error);
   }
