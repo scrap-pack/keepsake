@@ -3,10 +3,10 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Redirect } from 'react-router';
+
 import { connect } from 'react-redux';
 import Search from './Search.jsx';
-import SingleImage from './SingleImage.jsx';
+
 import AsyncImage from './AsyncImage.jsx';
 import {
   addSelectedImage,
@@ -43,6 +43,7 @@ const Scrapbook = props => {
       <div className="row">
         <Search />
       </div>
+
       <div className="row">
         <div className="col s1 offset-s11">
           <button
@@ -60,7 +61,7 @@ const Scrapbook = props => {
           <button
             type="button"
             className="waves-effect waves-light btn"
-            // onClick=""
+            onClick={() => {}}
           >
             <i className="material-icons left">book</i>
             Add to Album
@@ -70,7 +71,7 @@ const Scrapbook = props => {
           <button
             type="button"
             className="waves-effect waves-light btn"
-            // onClick=""
+            onClick={() => {}}
           >
             <i className="material-icons left">label</i>
             Tag Images
@@ -80,7 +81,7 @@ const Scrapbook = props => {
           <button
             type="button"
             className="waves-effect waves-light btn red"
-            // onClick=""
+            onClick={() => {}}
           >
             <i className="material-icons left">delete</i>
             Delete Images
@@ -95,7 +96,9 @@ const Scrapbook = props => {
               onClick={() => {
                 if (selectMode && selectedImages.includes(image))
                   deselectImage(image);
-                else if (selectMode && !selectedImages.includes(image.id))
+
+                else if (selectMode && !selectedImages.includes(image)
+                //else if (selectMode && !selectedImages.includes(image.id))
                   selectImage(image);
                 else if (!selectMode) {
                   getImage(image);

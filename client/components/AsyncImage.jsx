@@ -16,18 +16,20 @@ class AsyncImage extends React.Component {
     const { loaded } = this.state;
     return (
       <div>
-        {image.id
-          ? (
-            <div className="card-image">
-              <img
-                className={loaded ? 'responsive-img image' : 'responsive-img image image-loading-placeholder'}
-                src={loaded ? image.imageUrl : '/placeholder.png'}
-                onLoad={this.onImageLoad}
-                alt=""
-              />
-            </div>
-          )
-          : null}
+        {image.id ? (
+          <div className="card-image">
+            <img
+              className={
+                loaded
+                  ? 'responsive-img image'
+                  : 'responsive-img image image-loading-placeholder'
+              }
+              src={loaded ? image.imageUrl : '/placeholder.png'}
+              onLoad={this.onImageLoad}
+              alt=""
+            />
+          </div>
+        ) : null}
       </div>
     );
   }
