@@ -1,6 +1,4 @@
-const {
-  STRING, UUID, UUIDV4, DATE, DECIMAL, Op,
-} = require('sequelize');
+const { STRING, UUID, UUIDV4, DATE, DECIMAL, Op } = require('sequelize');
 const db = require('../db');
 const Tag = require('./Tag');
 
@@ -49,14 +47,16 @@ Image.searchByTag = async function searchByTag(searchTerm) {
   }, []);
 
   const imageResults = await Image.findAll({
-    include: [{
-      model: Tag,
-      where: {
-        id: {
-          [Op.in]: tagIds,
+    include: [
+      {
+        model: Tag,
+        where: {
+          id: {
+            [Op.in]: tagIds,
+          },
         },
       },
-    }],
+    ],
     order: ['createdAt'],
   });
 
