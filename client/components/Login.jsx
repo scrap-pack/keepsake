@@ -32,8 +32,11 @@ class Login extends Component {
   handleLogin(ev) {
     ev.preventDefault();
     const { email, password } = this.state;
-    const { login } = this.props;
+    const { login, albumId, history } = this.props;
     login(email, password);
+    if (albumId) {
+      history.push(`/albums/${albumId}`);
+    }
   }
 
   renderAlert() {
@@ -114,7 +117,7 @@ class Login extends Component {
   }
 }
 
-const mapState = ({ currentUser }) => ({ currentUser });
+const mapState = ({ currentUser, albumId }) => ({ currentUser, albumId });
 
 const mapDispatch = dispatch => ({
   login: (email, password) => {

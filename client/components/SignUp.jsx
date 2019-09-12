@@ -26,10 +26,10 @@ class SignUp extends Component {
   handleSubmit(ev) {
     ev.preventDefault();
     const { state } = this;
-    const { createUser } = this.props;
+    const { createUser, history } = this.props;
     createUser(state);
     this.setState(this.initState);
-    this.props.history.push('/');
+    history.push('/login');
   }
 
   componentDidMount() {
@@ -152,7 +152,7 @@ class SignUp extends Component {
                   disabled={!isEnabled}
                   className="btn-large teal darken-1"
                   type="submit"
-                  onClick={() => <Redirect to="/" />}
+                  onClick={() => <Redirect to="/login" />}
                 >
                   Sign Up <i className="material-icons right">send</i>
                 </button>

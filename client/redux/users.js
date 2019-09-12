@@ -17,7 +17,10 @@ export const createUser = user => ({
   user,
 });
 export const loginError = () => ({ type: LOGIN_ERROR });
-export const getAlbumFromInvite = (album) => ({ type: GET_ALBUM_FROM_INVITE, album });
+export const getAlbumFromInvite = album => ({
+  type: GET_ALBUM_FROM_INVITE,
+  album,
+});
 
 export const fetchUser = () => {
   // const token = Cookies.get('sid');
@@ -73,9 +76,7 @@ export const logoutThunk = () => {
 };
 
 export const createUserThunk = user => {
-  return (dispatch, getState) => {
-    const { albumId } = getState();
-    if (albumId) user.albumId = albumId;
+  return (dispatch) => {
     return axios
       .post('/api/users', user)
       .then(res => {

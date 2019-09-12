@@ -18,7 +18,7 @@ class SelectWithOptions extends React.Component {
     return (
       <div>
         <div className="row">
-          <div className="col s12">
+          <div className="col s1 offset-s11">
             <button
               type="button"
               className="waves-effect waves-teal btn-flat"
@@ -31,7 +31,8 @@ class SelectWithOptions extends React.Component {
         <div
           className={selectMode && selectedImages.length ? 'row' : 'row hide'}
         >
-          <div className="col s12">
+          <div className="col s6" />
+          <div className="col s2">
             <button
               type="button"
               data-target="add-to-album"
@@ -40,6 +41,8 @@ class SelectWithOptions extends React.Component {
               <i className="material-icons left">book</i>
               Add to Album
             </button>
+          </div>
+          <div className="col s2">
             <button
               type="button"
               data-target="tag-images"
@@ -48,6 +51,8 @@ class SelectWithOptions extends React.Component {
               <i className="material-icons left">label</i>
             Tag
             </button>
+          </div>
+          <div className="col s2">
             <button
               type="button"
               data-target="delete-images"
