@@ -9,15 +9,15 @@ const ADD_USERS = 'ADD_USERS';
 const REMOVE_ALBUM = 'REMOVE_ALBUM';
 
 // ACTION CREATORS
-const getAllAlbums = albums => ({ type: GET_ALL_ALBUMS, albums });
-const getSingleAlbum = album => ({ type: GET_SINGLE_ALBUM, album });
-const createAlbum = msg => ({ type: CREATE_ALBUM, mssg: msg });
-const addImages = msg => ({ type: ADD_IMAGES, mssg: msg });
-const addUsers = msg => ({ type: ADD_USERS, mssg: msg });
-const removeAlbum = msg => ({ type: REMOVE_ALBUM, mssg: msg });
+const getAllAlbums = (albums) => ({ type: GET_ALL_ALBUMS, albums });
+const getSingleAlbum = (album) => ({ type: GET_SINGLE_ALBUM, album });
+const createAlbum = (msg) => ({ type: CREATE_ALBUM, mssg: msg });
+const addImages = (msg) => ({ type: ADD_IMAGES, mssg: msg });
+const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg  });
+const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg  });
 
 // API THUNKS
-export const fetchAllAlbums = participantId => async dispatch => {
+export const fetchAllAlbums = (participantId) => async dispatch => {
   try {
     const { albums } = await axios.get(`/api/albums/${participantId}`);
     dispatch(getAllAlbums(albums));
@@ -35,7 +35,7 @@ export const fetchSingleAlbum = (userId, albumId) => async dispatch => {
   }
 };
 
-export const postNewAlbum = album => async dispatch => {
+export const postNewAlbum = (album) => async dispatch => {
   try {
     await axios.post('/api/albums', album);
     dispatch(createAlbum('Create Album Successful'));
@@ -62,14 +62,14 @@ export const addUsersToAlbum = (albumId, users) => async dispatch => {
   }
 };
 
-export const deleteAlbum = albumId => async dispatch => {
+export const deleteAlbum = (albumId) => async dispatch => {
   try {
     await axios.delete(`/api/albums/${albumId}`);
     dispatch(removeAlbum('Remove Album Successful'));
   } catch (error) {
     console.error('ERROR IN DELETE ALBUM THUNK', error);
   }
-};
+}
 
 // INITIAL STATE
 const albumState = {

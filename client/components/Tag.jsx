@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import {
@@ -7,8 +8,10 @@ import {
   postTags,
   addEnteredTags,
   parseTags,
+  // clearTags,
+  // clearString,
 } from '../redux/tags';
-import { getTagsForImage } from '../redux/images';
+//import Home from './Home.jsx';
 
 class Tag extends React.Component {
   constructor(props) {
@@ -28,22 +31,10 @@ class Tag extends React.Component {
           <form
             onSubmit={event => {
               event.preventDefault();
-              this.parse(event);
-              if (this.props.selectedImages.length > 0) {
-                this.props.uploadTags(
-                  this.props.currentTags,
-                  this.props.selectedImages
-                );
-              } else {
-                this.props.uploadTags(this.props.currentTags, [
-                  this.props.singleImage,
-                ]);
-                setTimeout(() => {
-                  this.props.addNewTags(this.props.singleImage);
-                }, 10 * this.props.tagString.length + (75 - this.props.tagString.length));
-              }
+              this.props.uploadTags(this.props.currentTags);
             }}
           >
+            <label>Add Tags seperated by commas</label>
             <input
               onChange={event => {
                 event.preventDefault();
@@ -54,12 +45,10 @@ class Tag extends React.Component {
               onTouchMove={this.parse}
               onTouchEnd={this.parse}
             ></input>
-            <label>
-              Enter Tag(s). Seperate multiple tags with spaces or commas.
-            </label>
             <button type="onSubmit">Upload Tags</button>
           </form>
         </div>
+        <Link to="/">HOME</Link>
       </div>
     );
   }
@@ -75,29 +64,6 @@ Tag.propTypes = {
       longitude: PropTypes.number,
     })
   ),
-  currentTags: PropTypes.arrayOf(PropTypes.string),
-  singleTag: PropTypes.shape({
-    imageUrl: PropTypes.string,
-    dateTaken: PropTypes.number,
-    fileName: PropTypes.string,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-  }),
-  selectMode: PropTypes.bool.isRequired,
-  singleImage: PropTypes.shape({
-    imageUrl: PropTypes.string,
-    dateTaken: PropTypes.number,
-    fileName: PropTypes.string,
-    latitude: PropTypes.number,
-    longitude: PropTypes.number,
-  }),
-  tagString: PropTypes.string,
-  getTags: PropTypes.func.isRequired,
-  getTag: PropTypes.func.isRequired,
-  uploadTags: PropTypes.func.isRequired,
-  addTags: PropTypes.func.isRequired,
-  convertTagStringToTags: PropTypes.func.isRequired,
-  addNewTags: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => {
@@ -105,9 +71,6 @@ const mapStateToProps = state => {
     selectedImages: state.images.selectedImages,
     currentTags: state.tags.currentTags,
     singleTag: state.tags.singleTag,
-    selectMode: state.images.selectMode,
-    singleImage: state.images.singleImage,
-    tagString: state.tags.tagString,
   };
 };
 
@@ -115,18 +78,19 @@ const mapDispatchToProps = dispatch => {
   return {
     getTags: () => dispatch(fetchTags()),
     getTag: id => dispatch(fetchSingleTag(id)),
-    uploadTags: (currentTags, selectedImages) => {
-      dispatch(postTags(currentTags, selectedImages));
-    },
+    uploadTags: currentTags => dispatch(postTags(currentTags)),
     addTags: tags => {
       dispatch(addEnteredTags(tags));
     },
     convertTagStringToTags: () => {
       dispatch(parseTags());
     },
-    addNewTags: image => {
-      dispatch(getTagsForImage(image));
-    },
+    // clearCurrentTags: () => {
+    //   dispatch(clearTags());
+    // },
+    // clearTagString: () => {
+    //   dispatch(clearString());
+    // },
   };
 };
 
