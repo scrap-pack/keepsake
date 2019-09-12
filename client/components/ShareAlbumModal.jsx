@@ -1,7 +1,8 @@
+/* eslint-disable react/forbid-prop-types */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { inviteToAlbum } from '../redux/albums';
+import { inviteUserToAlbum, clearAlbumToShare } from '../redux/albums';
 
 class ShareAlbum extends React.Component {
   constructor(props) {
@@ -9,7 +10,6 @@ class ShareAlbum extends React.Component {
     const { album } = props;
     this.state = {
       phoneNumber: '',
-      album,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -17,16 +17,20 @@ class ShareAlbum extends React.Component {
 
   handleChange(event) {
     this.setState({ phoneNumber: event.target.value });
+    console.log(this.props);
   }
 
   handleSubmit(event) {
-    const { invite } = this.props;
+    const { invite, clearAlbum, album } = this.props;
+    const { phoneNumber } = this.state;
+    invite({ phoneNumber, album });
     event.preventDefault();
     this.setState({
       phoneNumber: '',
-      album: {},
     });
-    invite(this.state);
+    clearAlbum();
+    const toastHTML = '<span class="green-text text-accent-3">Invite Sent!</span>';
+    M.toast({ html: toastHTML });
   }
 
   render() {
@@ -35,37 +39,53 @@ class ShareAlbum extends React.Component {
       <div id="share-album" className="modal">
         <div className="modal-content">
           <h4>Share Album</h4>
-          <form onSubmit={this.handleSubmit}>
-            <div className="row">
-              <p>Enter a friend's number and they'll receive a text with an invite.</p>
-            </div>
-            <div className="input-field col s3">
-              <i className="material-icons prefix">phone</i>
-              <input
-                id="icon_telephone"
-                type="tel"
-                value={phoneNumber}
-                className="validate"
-                onChange={this.handleChange}
-              />
-              <label htmlFor="icon_telephone">Mobile Number</label>
-            </div>
-          </form>
-        </div>
-        <div className="modal-footer">
-          <button type="button" className="modal-close waves-effect waves-green btn-flat">Share</button>
+          <div className="row">
+            <p>Enter a friend's number and they'll receive a text with an invite.</p>
+          </div>
+          <div className="input-field col s3">
+            <i className="material-icons prefix">phone</i>
+            <input
+              id="icon_telephone"
+              type="tel"
+              value={phoneNumber}
+              className="validate"
+              onChange={this.handleChange}
+            />
+            <label htmlFor="icon_telephone">Mobile Number</label>
+          </div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="modal-close waves-effect waves-green btn-flat"
+              onClick={(e) => this.handleSubmit(e)}
+            >
+              Share
+            </button>
+          </div>
         </div>
       </div>
     );
   }
 }
-
-const mapDispatchToProps = dispatch => ({
-  invite: (inviteDetails) => dispatch(inviteToAlbum(inviteDetails)),
+const mapStateToProps = state => ({
+  album: state.albums.albumToShare,
 });
 
+const mapDispatchToProps = dispatch => ({
+  invite: (inviteDetails) => dispatch(inviteUserToAlbum(inviteDetails)),
+  clearAlbum: () => dispatch(clearAlbumToShare()),
+});
+
+const propTypes = {
+  invite: PropTypes.func.isRequired,
+  album: PropTypes.object.isRequired,
+  clearAlbum: PropTypes.func.isRequired,
+};
+
+ShareAlbum.propTypes = propTypes;
+
 const ConnectedShareAlbum = connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps,
 )(ShareAlbum);
 

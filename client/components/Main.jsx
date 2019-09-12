@@ -49,7 +49,7 @@ class Main extends Component {
           <Route exact path="/upload" component={Upload} />
           <Route exact path="/scrapbook" component={Scrapbook} />
           <Route exact path="/login" component={Login} />
-          <Route exact path="/signup" component={SignUp} />
+          <Route path="/signup" component={SignUp} />
           <Route exact path="/images/:id" component={SingleImage} />
           <Route exact path="/albums" component={AllAlbums} />
           <Route exact path="/albums/:id" component={SingleAlbum} />

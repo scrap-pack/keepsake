@@ -7,22 +7,23 @@ const CREATE_ALBUM = 'CREATE_ALBUM';
 const ADD_IMAGES = 'ADD_IMAGES';
 const ADD_USERS = 'ADD_USERS';
 const REMOVE_ALBUM = 'REMOVE_ALBUM';
-const INVITE_TO_ALBUM = 'INVITE_TO_ALBUM'
+const SELECT_ALBUM_TO_SHARE = 'SELECT_ALBUM_TO_SHARE';
+const CLEAR_ALBUM_TO_SHARE = 'CLEAR_ALBUM_TO_SHARE';
 
 // ACTION CREATORS
 const getAllAlbums = (albums) => ({ type: GET_ALL_ALBUMS, albums });
 export const getSingleAlbum = (album) => ({ type: GET_SINGLE_ALBUM, album });
 const createAlbum = (msg) => ({ type: CREATE_ALBUM, mssg: msg });
 const addImages = (msg) => ({ type: ADD_IMAGES, mssg: msg });
-const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg  });
-const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg  });
-const inviteToAlbum = (inviteDetails) => ({ type: INVITE_TO_ALBUM, inviteDetails });
+const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg });
+const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg });
+export const selectAlbumToShare = (album) => ({ type: SELECT_ALBUM_TO_SHARE, album });
+export const clearAlbumToShare = () => ({ type: CLEAR_ALBUM_TO_SHARE });
 
 // API THUNKS
 export const fetchAllAlbums = (participant) => async dispatch => {
   try {
     const { data } = await axios.get(`/api/albums/${participant.id}`);
-    console.log('albums from thunk:', data);
     dispatch(getAllAlbums(data));
   } catch (error) {
     console.error('ERROR IN FETCH ALL ALBUMS THUNK', error);
@@ -72,7 +73,15 @@ export const deleteAlbum = (albumId) => async dispatch => {
   } catch (error) {
     console.error('ERROR IN DELETE ALBUM THUNK', error);
   }
-}
+};
+
+export const inviteUserToAlbum = (inviteDetails) => async dispatch => {
+  try {
+    await axios.post('/api/albums/invite', inviteDetails);
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 // INITIAL STATE
 const albumState = {
@@ -82,6 +91,7 @@ const albumState = {
   addImgToAlbumMsg: '',
   addUserToAlbumMsg: '',
   removeAlbumMsg: '',
+  albumToShare: {},
 };
 
 // REDUCER
@@ -99,6 +109,10 @@ const albums = (state = albumState, action) => {
       return { ...state, addUserToAlbumMsg: action.mssg };
     case REMOVE_ALBUM:
       return { ...state, removeAlbumMsg: action.mssg };
+    case SELECT_ALBUM_TO_SHARE:
+      return { ...state, albumToShare: action.album };
+    case CLEAR_ALBUM_TO_SHARE:
+      return { ...state, albumToShare: {} };
     default:
       return state;
   }

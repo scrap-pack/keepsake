@@ -13,6 +13,7 @@ import { withRouter } from 'react-router-dom';
 import AsyncImage from './AsyncImage.jsx';
 import {
   getSingleAlbum,
+  selectAlbumToShare,
 } from '../redux/albums';
 
 class AsyncAlbum extends React.Component {
@@ -25,6 +26,7 @@ class AsyncAlbum extends React.Component {
       album,
       getAlbum,
       history,
+      selectAlbum,
     } = this.props;
     const { images } = album;
 
@@ -40,10 +42,10 @@ class AsyncAlbum extends React.Component {
                   history.push(`/albums/${album.id}`);
                 }}
               >
-                <AsyncImage image={images[0]} />
-                <AsyncImage image={images[1]} />
-                <AsyncImage image={images[2]} />
-                <AsyncImage image={images[3]} />
+                <div className={images[0] ? null : 'hide'}><AsyncImage image={images[0]} /></div>
+                <div className={images[1] ? null : 'hide'}><AsyncImage image={images[1]} /></div>
+                <div className={images[2] ? null : 'hide'}><AsyncImage image={images[2]} /></div>
+                <div className={images[3] ? null : 'hide'}><AsyncImage image={images[3]} /></div>
               </div>
               <div className="card-content">
                 <div>
@@ -51,6 +53,7 @@ class AsyncAlbum extends React.Component {
                     {album.name}
                     <span>
                       <a
+                        onClick={() => selectAlbum(album)}
                         data-target="share-album"
                         style={{ float: 'right' }}
                         className="btn-floating btn-small waves-effect waves-light teal modal-trigger"
@@ -71,12 +74,14 @@ class AsyncAlbum extends React.Component {
 
 const mapDispatchToProps = (dispatch) => ({
   getAlbum: (album) => dispatch(getSingleAlbum(album)),
+  selectAlbum: (album) => dispatch(selectAlbumToShare(album)),
 });
 
 const propTypes = {
   getAlbum: PropTypes.func.isRequired,
   album: PropTypes.object.isRequired,
   history: PropTypes.object,
+  selectAlbum: PropTypes.func.isRequired,
 };
 
 AsyncAlbum.propTypes = propTypes;

@@ -7,6 +7,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import Image from 'react-image-resizer';
 import {
   addSelectedImage,
   removeSelectedImage,
@@ -34,9 +35,14 @@ class AsyncImage extends React.Component {
       history,
     } = this.props;
     const { loaded } = this.state;
+    const style = {
+      image: {
+        background: '#ffffff',
+      },
+    };
     return (
       <div>
-        {image.id
+        {image
           ? (
             <div key={image.id} className="col s12 m6 xl3">
               <div
@@ -52,10 +58,14 @@ class AsyncImage extends React.Component {
               >
                 <div className="image-container">
                   <div className="card-image">
-                    <img
+                    <Image
+                      width={300}
+                      height={300}
+                      style={style.image}
                       className={loaded ? 'responsive-img image' : 'responsive-img image image-loading-placeholder'}
-                      src={loaded ? image.imageUrl : '/placeholder.png'}
-                      onLoad={this.onImageLoad}
+                      // src={loaded ? image.imageUrl : '/placeholder.png'}
+                      src={image.imageUrl}
+                      // onLoad={this.onImageLoad}
                       alt=""
                     />
                   </div>
