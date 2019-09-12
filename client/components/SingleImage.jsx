@@ -51,6 +51,7 @@ class SingleImage extends React.Component {
                   onClick={event => {
                     event.preventDefault();
                     this.props.deleteImage(this.props.image);
+                    return <Redirect to="/scrapbook" />;
                   }}
                 >
                   DELETE IMAGE
