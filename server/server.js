@@ -26,7 +26,7 @@ app.use('/*', (req, res) => {
   res.sendFile(publicHtml);
 });
 
-// Error-handling middleware
+// Error-handling middlewarels
 app.use((error, req, res) => {
   console.log(chalk.bold.red('Error: ', error.stack));
   res
