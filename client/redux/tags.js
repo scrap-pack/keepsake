@@ -66,7 +66,6 @@ export const postTags = (tags, images) => dispatch => {
     .post(`/api/tags`, { tags, images })
     .then(() => dispatch(clearTags()))
     .catch(e => console.error(e));
-  9;
 };
 
 export const searchTags = queryString => async dispatch => {

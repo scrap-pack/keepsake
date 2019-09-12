@@ -15,27 +15,47 @@ class SingleImage extends React.Component {
 
   render() {
     return (
-      <div>
-        <div>
-          <img src={this.props.image.imageUrl} />
+      <div className="single-image-container">
+        <div className="row">
+          <div className="col s12 xl3">
+            <div className="card">
+              <div className="card-image">
+                <img src={this.props.image.imageUrl} />
+                <span className="card-title">{this.props.image.fileName}</span>
+              </div>
+              <div className="card-content">
+                <p>
+                  {'Tags:  '}
+                  {this.props.imageTags.map((tag, idx) => {
+                    if (idx !== this.props.imageTags.length - 1)
+                      return (
+                        ` ${tag.slice(0, 1).toUpperCase()}` +
+                        `${tag.slice(1)}, `
+                      );
+                    return (
+                      ` ${tag.slice(0, 1).toUpperCase()}` + `${tag.slice(1)}`
+                    );
+                  })}
+                </p>
+              </div>
 
-          <ul>
-            {this.props.imageTags.map((tag, idx) => (
-              <li key={idx}>{tag.toUpperCase()}</li>
-            ))}
-          </ul>
+              <div className="card-action">
+                <button
+                  type="button"
+                  onClick={event => {
+                    event.preventDefault();
+                    this.props.deleteImage(this.props.image);
+                  }}
+                >
+                  DELETE IMAGE
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div>
-          <button
-            onClick={event => {
-              event.preventDefault();
-              this.props.deleteImage(this.props.image);
-            }}
-          >
-            DELETE IMAGE
-          </button>
-        </div>{' '}
-        <Tag />
+        <div className="single-image-tags">
+          <Tag />
+        </div>
       </div>
     );
   }
