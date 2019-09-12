@@ -23,6 +23,9 @@ class Navbar extends Component {
         <li key="my-images">
           <Link to="/scrapbook">My Images</Link>
         </li>
+        <li key="my-albums">
+          <Link to="/albums">My Albums</Link>
+        </li>
         <li key="logout">
           <Link to="/login" onClick={logout}>
             Logout

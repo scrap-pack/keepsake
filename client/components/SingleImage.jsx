@@ -49,8 +49,10 @@ class SingleImage extends React.Component {
                     event.preventDefault();
                     this.props.deleteImage(this.props.image);
                   }}
+                  className="waves-effect waves-light btn-flat"
                 >
-                  DELETE IMAGE
+                  <i className="material-icons left">delete</i>
+                Delete
                 </button>
               </div>
             </div>

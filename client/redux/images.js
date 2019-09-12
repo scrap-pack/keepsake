@@ -65,7 +65,7 @@ export const postImages = fileData => async dispatch => {
       },
     });
     console.log('SUCCESSS POSTING IMAGE!!!', data);
-    dispatch(uploadImages(data));
+    dispatch(getAllImages(data));
     if (typeof data.redirect === 'string') window.location = data.redirect;
   } catch (e) {
     console.error(e);

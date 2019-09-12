@@ -49,7 +49,7 @@ class SelectWithOptions extends React.Component {
               className="waves-effect waves-light btn modal-trigger"
             >
               <i className="material-icons left">label</i>
-            Tag
+            Tag Images
             </button>
           </div>
           <div className="col s2">
@@ -59,7 +59,7 @@ class SelectWithOptions extends React.Component {
               className="waves-effect waves-light btn red modal-trigger"
             >
               <i className="material-icons left">delete</i>
-              Delete
+              Delete Images
             </button>
           </div>
         </div>

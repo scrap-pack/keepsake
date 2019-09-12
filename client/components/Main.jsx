@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 // Redux store
 import { fetchAllImages } from '../redux/images';
+import { fetchAllAlbums } from '../redux/albums';
 
 // React Components
 import Upload from './Upload.jsx';

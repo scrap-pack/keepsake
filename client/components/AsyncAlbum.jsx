@@ -11,6 +11,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import AsyncImage from './AsyncImage.jsx';
+import Image from 'react-image-resizer';
 import {
   getSingleAlbum,
   selectAlbumToShare,
@@ -29,23 +30,50 @@ class AsyncAlbum extends React.Component {
       selectAlbum,
     } = this.props;
     const { images } = album;
-
+    const style = {
+      image: {
+        background: '#ffffff',
+      },
+    };
     return (
       <div>
         {album.id
           ? (
             <div className="card" key={album.id}>
               <div
-                className="image-column"
                 onClick={() => {
                   getAlbum(album);
                   history.push(`/albums/${album.id}`);
                 }}
               >
-                <div className={images[0] ? null : 'hide'}><AsyncImage image={images[0]} /></div>
-                <div className={images[1] ? null : 'hide'}><AsyncImage image={images[1]} /></div>
-                <div className={images[2] ? null : 'hide'}><AsyncImage image={images[2]} /></div>
-                <div className={images[3] ? null : 'hide'}><AsyncImage image={images[3]} /></div>
+                <Image
+                  style={{ display: 'inline-block', image: style.image }}
+                  width={200}
+                  height={200}
+                  src={images[0].imageUrl}
+                  alt=""
+                />
+                <Image
+                  style={{ display: 'inline-block', image: style.image }}
+                  width={200}
+                  height={200}
+                  src={images[1].imageUrl}
+                  alt=""
+                />
+                <Image
+                  style={{ display: 'inline-block', image: style.image }}
+                  width={200}
+                  height={200}
+                  src={images[2].imageUrl}
+                  alt=""
+                />
+                <Image
+                  style={{ display: 'inline-block', image: style.image }}
+                  width={200}
+                  height={200}
+                  src={images[3].imageUrl}
+                  alt=""
+                />
               </div>
               <div className="card-content">
                 <div>

@@ -8,7 +8,7 @@ const s3 = require('../aws3Config');
 require('dotenv').config();
 require('@tensorflow/tfjs-node');
 
-const upload = multer();
+const upload = multer({limits: { fieldSize: 25 * 1024 * 1024 }});
 
 // Get all images
 router.get('/', (req, res, next) => Image.findAll({ include: [Album] })

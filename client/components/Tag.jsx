@@ -7,8 +7,9 @@ import {
   postTags,
   addEnteredTags,
   parseTags,
+  clearTags,
 } from '../redux/tags';
-import { getTagsForImage } from '../redux/images';
+import { getTagsForImage, flipSelect } from '../redux/images';
 
 class Tag extends React.Component {
   constructor(props) {
@@ -22,9 +23,10 @@ class Tag extends React.Component {
   }
 
   render() {
+    const { source } = this.props;
     return (
       <div className="row">
-        <div className="col s10 m3">
+        <div className={source === 'modal' ? null : 'col s10 m3'}>
           <div className="card">
             <div className="card-content">
               <span className="card-title">Add Tags</span>
@@ -45,6 +47,12 @@ class Tag extends React.Component {
                       this.props.addNewTags(this.props.singleImage);
                     }, 10 * this.props.tagString.length + (75 - this.props.tagString.length));
                   }
+                  const toastHTML = '<span class="green-text text-accent-3">Image Tags Saved!</span>';
+                  M.toast({ html: toastHTML });
+                  this.props.clearTags();
+                  if (source === 'modal') {
+                    this.props.swapSelectMode();
+                  }
                 }}
               >
                 <input
@@ -57,8 +65,8 @@ class Tag extends React.Component {
                   onTouchMove={this.parse}
                   onTouchEnd={this.parse}
                 ></input>
-                <label>Seperate multiple tags with spaces or commas.</label>
-                <button type="onSubmit">Upload Tags</button>
+                <label>Separate multiple tags with spaces or commas.</label>
+                <button type="onSubmit" className="modal-close waves-effect waves-green btn-flat">Save Tags</button>
               </form>
             </div>
           </div>
@@ -79,6 +87,7 @@ Tag.propTypes = {
     })
   ),
   currentTags: PropTypes.arrayOf(PropTypes.string),
+  source: PropTypes.string,
   singleTag: PropTypes.shape({
     imageUrl: PropTypes.string,
     dateTaken: PropTypes.number,
@@ -87,6 +96,7 @@ Tag.propTypes = {
     longitude: PropTypes.number,
   }),
   selectMode: PropTypes.bool.isRequired,
+  swapSelectMode: PropTypes.func,
   singleImage: PropTypes.shape({
     imageUrl: PropTypes.string,
     dateTaken: PropTypes.number,
@@ -117,6 +127,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getTags: () => dispatch(fetchTags()),
+    swapSelectMode: () => dispatch(flipSelect()),
+    clearTags: () => dispatch(clearTags()),
     getTag: id => dispatch(fetchSingleTag(id)),
     uploadTags: (currentTags, selectedImages) => {
       dispatch(postTags(currentTags, selectedImages));

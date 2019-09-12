@@ -52,6 +52,7 @@ export const loginThunk = (email, password) => {
         Cookies.set('sid', user.token, { expires: 1 });
         dispatch(gotUser(user));
         dispatch(changeLoginStatus(true));
+        dispatch(fetchAllAlbums(user));
       })
       .catch(err => {
         console.log('Error logging in!');

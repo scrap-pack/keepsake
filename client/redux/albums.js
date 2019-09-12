@@ -24,6 +24,8 @@ export const clearAlbumToShare = () => ({ type: CLEAR_ALBUM_TO_SHARE });
 export const fetchAllAlbums = (participant) => async dispatch => {
   try {
     const { data } = await axios.get(`/api/albums/${participant.id}`);
+    console.log(participant);
+    console.log(data);
     dispatch(getAllAlbums(data));
   } catch (error) {
     console.error('ERROR IN FETCH ALL ALBUMS THUNK', error);
@@ -39,10 +41,11 @@ export const fetchSingleAlbum = (userId, albumId) => async dispatch => {
   }
 };
 
-export const postNewAlbum = (album) => async dispatch => {
+export const postNewAlbum = (albumDetails) => async dispatch => {
   try {
-    await axios.post('/api/albums', album);
-    dispatch(createAlbum('Create Album Successful'));
+    const { owner } = albumDetails;
+    await axios.post('/api/albums', albumDetails);
+    dispatch(fetchAllAlbums(owner));
   } catch (error) {
     console.error('ERROR IN POST NEW ALBUM THUNK', error);
   }
