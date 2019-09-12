@@ -123,7 +123,7 @@ router.post('/invite', async (req, res, next) => {
   const { phoneNumber, album } = req.body;
 
   // link to be updated once we have deployed app URL
-  const link = `http://localhost:3000/signup?invite=${album.id}`;
+  const link = `https://keepsake-1904.herokuapp.com/signup?invite=${album.id}`;
 
   client.messages.create({
     body: `You were invited to a Scrap Book! Click the link below to begin sharing images with your homies!\n\n ${link}`,
