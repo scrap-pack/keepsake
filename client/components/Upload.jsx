@@ -76,7 +76,7 @@ Upload.propTypes = propTypes;
 
 const mapState = ({ currentUser }) => ({ currentUser });
 
-const mapDispatchToProps = dispatch => ({
+const mapDispatchToProps = (dispatch, ownProps) => ({
   uploadImage: e => {
     e.preventDefault();
     const image = e.target.uploadInput.files[0];
@@ -84,7 +84,8 @@ const mapDispatchToProps = dispatch => ({
     const preview = document.querySelector('img');
     formData.append('imageUpload', image);
     formData.append('imageSrc', preview.src);
-
+    const toastHTML = '<span class="green-text text-accent-3">Image Uploaded!</span>';
+    M.toast({ html: toastHTML });
     dispatch(postImages(formData));
 
     preview.src = '';

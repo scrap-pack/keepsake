@@ -30,4 +30,5 @@ module.exports = {
   Tag,
   Session,
   ImageTag,
+  Album,
 };

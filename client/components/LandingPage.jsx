@@ -21,7 +21,7 @@ class LandingPage extends React.Component {
               <br />
               <div style={{ height: '250px' }} />
               <h3 className="header center orange-text orange-lighten-5">
-                Tresure your memories
+                Treasure your memories
               </h3>
               <div className="row center">
                 <a

@@ -4,60 +4,79 @@ const chalk = require('chalk');
 const router = require('express').Router();
 const Album = require('../database/models/Album');
 const User = require('../database/models/User');
+const Image = require('../database/models/Image');
+const UserAlbum = require('../database/models/UserAlbum');
 
 const client = new Twilio(process.env.ACCOUNT_SID, process.env.AUTH_TOKEN);
 
 // GET ALL ALBUMS FOR A GIVEN USER
-router.get('/:participantId', (req, res, next) => {
-  User.findAll({
-    where: {
-      id: req.params.participantId,
-    },
-    include: [{ model: Album, as: 'userAlbums' }],
-  })
-    .then(([user]) => {
-      console.log(chalk.green('Successfully got all albums'));
-      return res.status(200).json(user.userAlbums);
-    })
-    .catch((e) => {
-      console.error(chalk.red('Failed to find any albums', e));
-      next(e);
+router.get('/:participantId', async (req, res, next) => {
+  try {
+    const userAlbums = await UserAlbum.findAll({
+      where: {
+        participantId: req.params.participantId,
+      },
     });
+
+    const albums = [];
+    for (let i = 0; i < userAlbums.length; i++) {
+      const foundAlbum = await Album.findByPk(userAlbums[i].albumId, { include: [Image] });
+      albums.push(foundAlbum);
+    }
+    console.log(chalk.green('Successfully got all albums'));
+    return res.status(200).json(albums);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
 });
 
 // GET A SINGLE ALBUM BY ID FOR A GIVEN USER
-router.get('/:userId/:albumId', (req, res, next) => {
-  User.findOne({
-    where: {
-      id: req.params.userId,
-    },
-    include: [{
-      model: Album,
-      where: {
-        id: req.params.albumId,
-      },
-    }],
-  })
-    .then(([user]) => {
-      console.log(chalk.green('Successfully got album'));
-      return res.status(200).json(user.userAlbums);
-    })
-    .catch((e) => {
-      console.error(chalk.red('ERROR IN GET SINGLE album', e));
-      next(e);
-    });
+router.get('/:albumId', async (req, res, next) => {
+  try {
+    const { albumId } = req.params;
+    const { data } = Album.findByPk(albumId, { include: [Image] });
+    console.log(chalk.green('Successfully got album'));
+    return res.status(200).json(data);
+  } catch (e) {
+    console.error(chalk.red('ERROR IN GET SINGLE album', e));
+    next(e);
+  }
 });
 
 // POST NEW ALBUM
+// router.post('/', async (req, res, next) => {
+//   const { album, owner } = req.body;
+//   try {
+//     const newAlbum = await Album.create({ name: album });
+//     // owner association
+//     newAlbum.setUser(owner);
+//     // participant association
+//     newAlbum.setUsers(owner);
+//     console.log(chalk.green('Successfully CREATED album'));
+//   } catch (e) {
+//     console.error(chalk.red('Failed to post new album', e));
+//     next(e);
+//   }
+// });
+
+// POST NEW ALBUM WITH IMAGES
 router.post('/', async (req, res, next) => {
-  const { album, owner } = req.body;
+  const { newAlbumName, owner, selectedImages } = req.body;
+  console.log(newAlbumName, owner, selectedImages);
   try {
-    const newAlbum = await Album.create({ name: album });
+    const newAlbum = await Album.create({ name: newAlbumName });
     // owner association
-    newAlbum.setUser(owner);
+    await newAlbum.update({ ownerId: owner.id });
     // participant association
-    newAlbum.setUsers(owner);
+    const foundUser = await User.findByPk(owner.id);
+    const userAlbum = await UserAlbum.create({participantId: foundUser.id, albumId: newAlbum.id });
     console.log(chalk.green('Successfully CREATED album'));
+    // add images
+    for (let i = 0; i < selectedImages.length; i++) {
+      const foundImage = await Image.findByPk(selectedImages[i].id);
+      await newAlbum.addImage(foundImage);
+    }
   } catch (e) {
     console.error(chalk.red('Failed to post new album', e));
     next(e);
@@ -121,7 +140,9 @@ router.delete('/:albumId', async (req, res, next) => {
 
 router.post('/invite', async (req, res, next) => {
   const { phoneNumber, album } = req.body;
-
+  console.log('phoneNumer:', phoneNumber);
+  console.log('album:', album);
+  console.log('process.env.PHONE:', process.env.PHONE_NUMBER);
   // link to be updated once we have deployed app URL
   const link = `https://keepsake-1904.herokuapp.com/signup?invite=${album.id}`;
 
@@ -129,7 +150,9 @@ router.post('/invite', async (req, res, next) => {
     body: `You were invited to a Scrap Book! Click the link below to begin sharing images with your homies!\n\n ${link}`,
     to: phoneNumber,
     from: process.env.PHONE_NUMBER,
-  });
+  })
+    .then(message => console.log(message))
+    .catch(e => console.error(e));
 });
 
 module.exports = router;

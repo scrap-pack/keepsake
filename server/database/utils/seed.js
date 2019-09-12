@@ -1,9 +1,8 @@
 const { name, internet, image } = require('faker');
 const chalk = require('chalk');
-const { db, User, Image, Tag } = require('../index');
+const { db, User, Image, Tag, Album } = require('../index');
 
 const seed = async () => {
-  // const Users = [];
 
   try {
     console.log(chalk.cyan('Syncing db...'));
@@ -15,6 +14,12 @@ const seed = async () => {
       password: 'keepsafe',
       userType: 'registered',
     });
+
+    await Album.create({ name: 'Fun Party' });
+    await Album.create({ name: 'Charity Gala 2019' });
+    await Album.create({ name: 'Football Game' });
+    await Album.create({ name: 'Concert' });
+    await Album.create({ name: 'New Years 2018' });
 
     await Tag.create({ description: 'people' });
     await Tag.create({ description: 'animals' });
@@ -45,6 +50,9 @@ const seed = async () => {
         ];
         const img = await { imageUrl: image.imageUrl(400, 400, imgType[j]) };
         const imgRecord = await Image.create(img);
+        const allAlbums = await Album.findAll();
+        const randomAlbum = allAlbums[(Math.floor(Math.random() * 5))];
+        await imgRecord.addAlbum(randomAlbum);
         const foundTag = await Tag.findOne({
           where: { description: imgType[j] },
         });
@@ -54,10 +62,21 @@ const seed = async () => {
       await user.setImages(imgs);
       imgs = [];
     }
+    const allUsers = await User.findAll();
+    const allAlbums = await Album.findAll();
+    const albumUsersFunc = async () => {
+      for (let i = 0; i < allAlbums.length; i++) {
+        const updatedAlbum = await allAlbums[i].update({ ownerId: allUsers[(Math.floor(Math.random() * 12))].id });
+        const foundUser = await User.findByPk(updatedAlbum.ownerId);
+        await updatedAlbum.addUser(foundUser);
+      }
+    };
+    await albumUsersFunc();
 
     console.log(
-      chalk.hex('#ACE000')('Finished seeding data...db will now close...')
+      chalk.hex('#ACE000')('Finished seeding data...db will now close...'),
     );
+
     await db.close();
   } catch (error) {
     console.error(chalk.bold.bgRed('Error seeding data...', error));

@@ -3,25 +3,23 @@ const router = require('express').Router();
 const multer = require('multer');
 const cocoSsd = require('@tensorflow-models/coco-ssd');
 const canvas = require('canvas');
-const { Image, Tag } = require('../database/index');
+const { Image, Tag, Album } = require('../database/index');
 const s3 = require('../aws3Config');
 require('dotenv').config();
 require('@tensorflow/tfjs-node');
 
-const upload = multer();
+const upload = multer({limits: { fieldSize: 25 * 1024 * 1024 }});
 
 // Get all images
-router.get('/', (req, res, next) =>
-  Image.findAll()
-    .then(images => {
-      console.log(chalk.green('Successfully got all images'));
-      return res.status(200).json(images);
-    })
-    .catch(e => {
-      console.error(chalk.red('Failed to find any images', e));
-      next(e);
-    })
-);
+router.get('/', (req, res, next) => Image.findAll({ include: [Album] })
+  .then((images) => {
+    console.log(chalk.green('Successfully got all images'));
+    return res.status(200).json(images);
+  })
+  .catch((e) => {
+    console.error(chalk.red('Failed to find any images', e));
+    next(e);
+  }));
 
 // search images
 router.get('/search', async (req, res) => {

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { fetchAllAlbums } from './albums';
 
 export const GOT_USER = 'GOT_USER';
 export const CHANGE_LOGIN_STATUS = 'CHANGE_LOGIN_STATUS';
@@ -28,7 +29,10 @@ export const fetchUser = () => {
       axios
         .get(`/api/users/me`, { withCredentials: true })
         // { headers: { Authorization: token }}
-        .then(({ data }) => dispatch(gotUser(data)))
+        .then(({ data }) => {
+          dispatch(gotUser(data));
+          dispatch(fetchAllAlbums(data));
+        })
         .catch(err => {
           console.log('Error retrieving my info from db!');
         })
@@ -48,6 +52,7 @@ export const loginThunk = (email, password) => {
         Cookies.set('sid', user.token, { expires: 1 });
         dispatch(gotUser(user));
         dispatch(changeLoginStatus(true));
+        dispatch(fetchAllAlbums(user));
       })
       .catch(err => {
         console.log('Error logging in!');

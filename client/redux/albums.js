@@ -7,20 +7,26 @@ const CREATE_ALBUM = 'CREATE_ALBUM';
 const ADD_IMAGES = 'ADD_IMAGES';
 const ADD_USERS = 'ADD_USERS';
 const REMOVE_ALBUM = 'REMOVE_ALBUM';
+const SELECT_ALBUM_TO_SHARE = 'SELECT_ALBUM_TO_SHARE';
+const CLEAR_ALBUM_TO_SHARE = 'CLEAR_ALBUM_TO_SHARE';
 
 // ACTION CREATORS
 const getAllAlbums = (albums) => ({ type: GET_ALL_ALBUMS, albums });
-const getSingleAlbum = (album) => ({ type: GET_SINGLE_ALBUM, album });
+export const getSingleAlbum = (album) => ({ type: GET_SINGLE_ALBUM, album });
 const createAlbum = (msg) => ({ type: CREATE_ALBUM, mssg: msg });
 const addImages = (msg) => ({ type: ADD_IMAGES, mssg: msg });
-const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg  });
-const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg  });
+const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg });
+const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg });
+export const selectAlbumToShare = (album) => ({ type: SELECT_ALBUM_TO_SHARE, album });
+export const clearAlbumToShare = () => ({ type: CLEAR_ALBUM_TO_SHARE });
 
 // API THUNKS
-export const fetchAllAlbums = (participantId) => async dispatch => {
+export const fetchAllAlbums = (participant) => async dispatch => {
   try {
-    const { albums } = await axios.get(`/api/albums/${participantId}`);
-    dispatch(getAllAlbums(albums));
+    const { data } = await axios.get(`/api/albums/${participant.id}`);
+    console.log(participant);
+    console.log(data);
+    dispatch(getAllAlbums(data));
   } catch (error) {
     console.error('ERROR IN FETCH ALL ALBUMS THUNK', error);
   }
@@ -35,10 +41,11 @@ export const fetchSingleAlbum = (userId, albumId) => async dispatch => {
   }
 };
 
-export const postNewAlbum = (album) => async dispatch => {
+export const postNewAlbum = (albumDetails) => async dispatch => {
   try {
-    await axios.post('/api/albums', album);
-    dispatch(createAlbum('Create Album Successful'));
+    const { owner } = albumDetails;
+    await axios.post('/api/albums', albumDetails);
+    dispatch(fetchAllAlbums(owner));
   } catch (error) {
     console.error('ERROR IN POST NEW ALBUM THUNK', error);
   }
@@ -69,7 +76,15 @@ export const deleteAlbum = (albumId) => async dispatch => {
   } catch (error) {
     console.error('ERROR IN DELETE ALBUM THUNK', error);
   }
-}
+};
+
+export const inviteUserToAlbum = (inviteDetails) => async dispatch => {
+  try {
+    await axios.post('/api/albums/invite', inviteDetails);
+  } catch (e) {
+    console.error(e);
+  }
+};
 
 // INITIAL STATE
 const albumState = {
@@ -79,6 +94,7 @@ const albumState = {
   addImgToAlbumMsg: '',
   addUserToAlbumMsg: '',
   removeAlbumMsg: '',
+  albumToShare: {},
 };
 
 // REDUCER
@@ -96,6 +112,10 @@ const albums = (state = albumState, action) => {
       return { ...state, addUserToAlbumMsg: action.mssg };
     case REMOVE_ALBUM:
       return { ...state, removeAlbumMsg: action.mssg };
+    case SELECT_ALBUM_TO_SHARE:
+      return { ...state, albumToShare: action.album };
+    case CLEAR_ALBUM_TO_SHARE:
+      return { ...state, albumToShare: {} };
     default:
       return state;
   }
