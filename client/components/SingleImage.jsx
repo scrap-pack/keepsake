@@ -14,6 +14,9 @@ class SingleImage extends React.Component {
   }
 
   render() {
+    if (!this.props.authenticated) {
+      return <Redirect to="/login" />;
+    }
     return (
       <div className="single-image-container">
         <div className="row">
@@ -79,6 +82,8 @@ const mapStateToProps = state => {
   return {
     image: state.images.singleImage,
     imageTags: state.images.imageTags,
+    authenticated: state.currentUser.authenticated,
+    // selectedImages: state.images.selectedImages,
   };
 };
 

@@ -16,7 +16,10 @@ export const createUser = user => ({
   user,
 });
 export const loginError = () => ({ type: LOGIN_ERROR });
-export const getAlbumFromInvite = (album) => ({ type: GET_ALBUM_FROM_INVITE, album });
+export const getAlbumFromInvite = album => ({
+  type: GET_ALBUM_FROM_INVITE,
+  album,
+});
 
 export const fetchUser = () => {
   // const token = Cookies.get('sid');

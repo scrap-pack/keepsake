@@ -25,7 +25,12 @@ const Scrapbook = props => {
     selectImage,
     deselectImage,
     getImage,
+    authenticated,
   } = props;
+
+  if (!authenticated) {
+    return <Redirect to="/login" />;
+  }
 
   let imagesToDisplay = [];
   if (filteredImages.length) {
@@ -33,7 +38,6 @@ const Scrapbook = props => {
   } else {
     imagesToDisplay = allImages;
   }
-
   return (
     <div>
       <div className="row">
@@ -93,6 +97,7 @@ const Scrapbook = props => {
                 if (selectMode && selectedImages.includes(image))
                   deselectImage(image);
                 else if (selectMode && !selectedImages.includes(image))
+                  //else if (selectMode && !selectedImages.includes(image.id))
                   selectImage(image);
                 else if (!selectMode) {
                   getImage(image);
@@ -126,6 +131,7 @@ const mapStateToProps = state => ({
   filteredImages: state.images.filteredImages,
   selectedImages: state.images.selectedImages,
   selectMode: state.images.selectMode,
+  authenticated: state.currentUser.authenticated,
 });
 
 const mapDispatchToProps = dispatch => ({
