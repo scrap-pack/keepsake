@@ -3,10 +3,8 @@
 /* eslint-disable jsx-a11y/no-noninteractive-element-interactions */
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import { connect } from 'react-redux';
 import Search from './Search.jsx';
-
 import AsyncImage from './AsyncImage.jsx';
 import SelectMode from './SelectMode.jsx';
 import {
@@ -43,30 +41,7 @@ const Scrapbook = props => {
         <Search />
       </div>
       <SelectMode />
-<<<<<<< HEAD
-      <div className="row">
-        {imagesToDisplay.map(image => (
-          <div key={image.id} className="col s12 m6 xl3">
-            <div
-              className="card"
-              onClick={() => {
-                if (selectMode && selectedImages.includes(image))
-                  deselectImage(image);
-                else if (selectMode && !selectedImages.includes(image))
-                  selectImage(image);
-                //else if (selectMode && !selectedImages.includes(image.id))
-                else if (!selectMode) {
-                  getImage(image);
-                  props.history.push(`/images/${image.id}`);
-                }
-              }}
-            >
-              <div className="image-container">
-                <AsyncImage image={image} />
-                <div
-                  className={
-                    selectMode && selectedImages.includes(image) ? '' : 'hide'
-=======
+
       <div className="container teal darken-1" style={{ borderRadius: '4px' }}>
         <div className="row">
           {imagesToDisplay.map(image => (
@@ -81,7 +56,6 @@ const Scrapbook = props => {
                   else if (!selectMode) {
                     getImage(image);
                     props.history.push(`/images/${image.id}`);
->>>>>>> Remodeled scrapbook images container
                   }
                 }}
               >
