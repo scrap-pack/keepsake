@@ -96,8 +96,8 @@ const Scrapbook = props => {
               onClick={() => {
                 if (selectMode && selectedImages.includes(image))
                   deselectImage(image);
-                else if (selectMode && !selectedImages.includes(image))
-                  //else if (selectMode && !selectedImages.includes(image.id))
+                // else if (selectMode && !selectedImages.includes(image))
+                else if (selectMode && !selectedImages.includes(image.id))
                   selectImage(image);
                 else if (!selectMode) {
                   getImage(image);
