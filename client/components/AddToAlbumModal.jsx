@@ -15,6 +15,7 @@ class AddToAlbum extends React.Component {
       newAlbumName: '',
     };
 
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleChange = this.handleChange.bind(this);
   }
 
@@ -34,7 +35,8 @@ class AddToAlbum extends React.Component {
       newAlbumName: '',
     });
     swapSelectMode();
-    const toastHTML = '<span class="green-text text-accent-3">Saved Album!</span>';
+    const toastHTML =
+      '<span class="green-text text-accent-3">Saved Album!</span>';
     M.toast({ html: toastHTML });
   }
 
@@ -42,8 +44,9 @@ class AddToAlbum extends React.Component {
     const { selectedOption } = this.state;
     return (
       <div id="add-to-album" className="modal">
-        <div className="modal-content">
-          <h4>Add Images to Album</h4>
+        <form action="#">
+          <div className="modal-content">
+            <h4>Add Images to Album</h4>
             <div>
               <label>
                 <input
@@ -51,36 +54,44 @@ class AddToAlbum extends React.Component {
                   className="with-gap"
                   value="createNew"
                   type="radio"
-                  checked={selectedOption === 'createNew'}
+                  onChange={this.handleChange}
+                  checked
                 />
                 <span>Create new album</span>
               </label>
             </div>
-          <div className={selectedOption === 'createNew' ? 'row' : 'hide'}>
-            <div className="input-field">
-              <input id="album_name" type="text" className="validate" onChange={this.handleChange} />
-              <label htmlFor="album_name">Album Name</label>
+            <div className={selectedOption === 'createNew' ? 'row' : 'hide'}>
+              <div className="input-field">
+                <input
+                  id="album_name"
+                  type="text"
+                  value={this.state.newAlbumName}
+                  className="validate"
+                  onChange={this.handleChange}
+                />
+                <label htmlFor="album_name">Album Name</label>
+              </div>
+            </div>
+            <div>
+              <label>
+                <input
+                  name="albumOptions"
+                  className="with-gap"
+                  value="addToExisting"
+                  type="radio"
+                  onChange={this.handleChange}
+                />
+                <span>Add to existing album</span>
+              </label>
             </div>
           </div>
-          <div>
-            <label>
-              <input
-                name="albumOptions"
-                className="with-gap"
-                value="addToExisting"
-                type="radio"
-                checked={selectedOption === 'addToExisting'}
-                onChange={this.handleChange}
-              />
-              <span>Add to existing album</span>
-            </label>
-          </div>
-        </div>
+        </form>
+
         <div className="modal-footer">
           <button
             type="button"
             className="modal-close waves-effect waves-green btn-flat"
-            onClick={(e) => this.handleSubmit(e)}
+            onClick={e => this.handleSubmit(e)}
           >
             Save
           </button>
@@ -96,7 +107,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  createAlbum: (albumDetails) => dispatch(postNewAlbum(albumDetails)),
+  createAlbum: albumDetails => dispatch(postNewAlbum(albumDetails)),
   swapSelectMode: () => dispatch(flipSelect()),
 });
 
@@ -111,7 +122,7 @@ AddToAlbum.propTypes = propTypes;
 
 const ConnectedAddToAlbum = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(AddToAlbum);
 
 export default ConnectedAddToAlbum;

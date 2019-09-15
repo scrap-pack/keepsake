@@ -25,6 +25,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Materialize.css links, scripts, meta -->
     <script
+      type="text/javascript"
       src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"
       defer
     ></script>
@@ -34,16 +35,15 @@
 
   <body>
     <div id="app"></div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script
+      type="text/javascript"
+      src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"
+    ></script>
     <script type="text/javascript">
       {
-        (function ($) {
-          $(function () {   
+        $(document).ready(function() {
           $('.modal').modal();
-          });
-      })(jQuery);
-
-      M.AutoInit();
+        });
       }
     </script>
   </body>
