@@ -6,11 +6,6 @@ import AsyncAlbum from './AsyncAlbum.jsx';
 import { fetchAllAlbums } from '../redux/albums';
 
 class AllAlbums extends React.Component {
-  componentDidMount() {
-    const { getAlbums, owner } = this.props;
-    getAlbums(owner);
-  }
-
   render() {
     const { allAlbums } = this.props;
 

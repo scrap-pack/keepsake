@@ -25,9 +25,10 @@ class AddToAlbum extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    const { selectedOption, newAlbumName } = this.state;
+    let { selectedOption, newAlbumName } = this.state;
     const { createAlbum, owner, selectedImages, swapSelectMode } = this.props;
     if (selectedOption === 'createNew') {
+      if (!newAlbumName) newAlbumName = 'Untitled';
       createAlbum({ owner, newAlbumName, selectedImages });
     }
     this.setState({
