@@ -6,15 +6,8 @@ import AsyncAlbum from './AsyncAlbum.jsx';
 import { fetchAllAlbums } from '../redux/albums';
 
 class AllAlbums extends React.Component {
-  componentDidMount() {
-    const { getAlbums, owner } = this.props;
-    getAlbums(owner);
-  }
-
   render() {
-    const {
-      allAlbums,
-    } = this.props;
+    const { allAlbums } = this.props;
 
     return (
       <div>
@@ -22,8 +15,8 @@ class AllAlbums extends React.Component {
           <h4>My Albums</h4>
         </div>
         <div className="row">
-          {allAlbums.map((album) => (
-            <div key={album.id} className="col m4 l4">
+          {allAlbums.map((album, i) => (
+            <div key={i} className="col m4 l4">
               <AsyncAlbum album={album} key={album.id} />
             </div>
           ))}
@@ -31,15 +24,15 @@ class AllAlbums extends React.Component {
       </div>
     );
   }
-};
+}
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
   allAlbums: state.albums.allAlbums,
   owner: state.currentUser.currentUser,
 });
 
 const mapDispatchToProps = dispatch => ({
-  getAlbums: (owner) => dispatch(fetchAllAlbums(owner)),
+  getAlbums: owner => dispatch(fetchAllAlbums(owner)),
 });
 
 const propTypes = {
@@ -50,7 +43,7 @@ AllAlbums.propTypes = propTypes;
 
 const ConnectedAllAlbums = connect(
   mapStateToProps,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(AllAlbums);
 
 export default ConnectedAllAlbums;

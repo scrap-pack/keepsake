@@ -10,12 +10,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import AsyncImage from './AsyncImage.jsx';
 import Image from 'react-image-resizer';
-import {
-  getSingleAlbum,
-  selectAlbumToShare,
-} from '../redux/albums';
+import { getSingleAlbum, selectAlbumToShare } from '../redux/albums';
 
 class AsyncAlbum extends React.Component {
   constructor(props) {
@@ -23,86 +19,84 @@ class AsyncAlbum extends React.Component {
   }
 
   render() {
-    const {
-      album,
-      getAlbum,
-      history,
-      selectAlbum,
-    } = this.props;
+    const { album, getAlbum, history, selectAlbum } = this.props;
     const { images } = album;
     const style = {
       image: {
         background: '#ffffff',
       },
     };
+    // Creates album card with default 4 slots
+    const maxFourImages = images => {
+      let newImages = [];
+      for (let i = 0; i < 4; i++) {
+        if (images[i]) {
+          newImages.push(images[i]);
+        } else {
+          const nullImage = { id: i };
+          newImages.push(nullImage);
+        }
+      }
+      return newImages;
+    };
+    // All images from album gets passed in, if less than 4 images in album, placeholder will be used.
+    const fourImages = maxFourImages(images);
+
     return (
       <div>
-        {album.id
-          ? (
-            <div className="card" key={album.id}>
-              <div
-                onClick={() => {
-                  getAlbum(album);
-                  history.push(`/albums/${album.id}`);
-                }}
-              >
-                <Image
-                  style={{ display: 'inline-block', image: style.image }}
-                  width={200}
-                  height={200}
-                  src={images[0].imageUrl}
-                  alt=""
-                />
-                <Image
-                  style={{ display: 'inline-block', image: style.image }}
-                  width={200}
-                  height={200}
-                  src={images[1].imageUrl}
-                  alt=""
-                />
-                <Image
-                  style={{ display: 'inline-block', image: style.image }}
-                  width={200}
-                  height={200}
-                  src={images[2].imageUrl}
-                  alt=""
-                />
-                <Image
-                  style={{ display: 'inline-block', image: style.image }}
-                  width={200}
-                  height={200}
-                  src={images[3].imageUrl}
-                  alt=""
-                />
-              </div>
-              <div className="card-content">
-                <div>
-                  <p>
-                    {album.name}
-                    <span>
-                      <a
-                        onClick={() => selectAlbum(album)}
-                        data-target="share-album"
-                        style={{ float: 'right' }}
-                        className="btn-floating btn-small waves-effect waves-light teal modal-trigger"
-                      >
-                        <i className="material-icons">share</i>
-                      </a>
-                    </span>
-                  </p>
-                </div>
+        {album.id ? (
+          <div className="card" key={album.id}>
+            <div
+              onClick={() => {
+                getAlbum(album);
+                history.push(`/albums/${album.id}`);
+              }}
+            >
+              <ul>
+                {fourImages.map(image => {
+                  return (
+                    <Image
+                      key={image.id}
+                      style={{
+                        display: 'inline-block',
+                        image: style.image,
+                      }}
+                      width={200}
+                      height={200}
+                      src={image.imageUrl}
+                      alt=""
+                    />
+                  );
+                })}
+              </ul>
+            </div>
+            <div className="card-content">
+              <div>
+                <p>
+                  {album.name}
+                  <span>
+                    <a
+                      onClick={() => selectAlbum(album)}
+                      data-target="share-album"
+                      style={{ float: 'right' }}
+                      className="btn-floating btn-small waves-effect waves-light teal modal-trigger"
+                    >
+                      <i className="material-icons">share</i>
+                    </a>
+                  </span>
+                </p>
               </div>
             </div>
-          )
-          : null}
+          </div>
+        ) : null}
       </div>
     );
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  getAlbum: (album) => dispatch(getSingleAlbum(album)),
-  selectAlbum: (album) => dispatch(selectAlbumToShare(album)),
+const mapDispatchToProps = dispatch => ({
+  getAlbum: album => dispatch(getSingleAlbum(album)),
+  selectAlbum: album => dispatch(selectAlbumToShare(album)),
 });
 
 const propTypes = {
@@ -116,7 +110,7 @@ AsyncAlbum.propTypes = propTypes;
 
 const ConnectedAsyncAlbum = connect(
   null,
-  mapDispatchToProps,
+  mapDispatchToProps
 )(AsyncAlbum);
 
 export default withRouter(ConnectedAsyncAlbum);

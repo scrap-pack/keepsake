@@ -11,21 +11,24 @@ const SELECT_ALBUM_TO_SHARE = 'SELECT_ALBUM_TO_SHARE';
 const CLEAR_ALBUM_TO_SHARE = 'CLEAR_ALBUM_TO_SHARE';
 
 // ACTION CREATORS
-const getAllAlbums = (albums) => ({ type: GET_ALL_ALBUMS, albums });
-export const getSingleAlbum = (album) => ({ type: GET_SINGLE_ALBUM, album });
-const createAlbum = (msg) => ({ type: CREATE_ALBUM, mssg: msg });
-const addImages = (msg) => ({ type: ADD_IMAGES, mssg: msg });
-const addUsers = (msg) => ({ type: ADD_USERS, mssg: msg });
-const removeAlbum = (msg) => ({ type: REMOVE_ALBUM, mssg: msg });
-export const selectAlbumToShare = (album) => ({ type: SELECT_ALBUM_TO_SHARE, album });
+const getAllAlbums = albums => ({ type: GET_ALL_ALBUMS, albums });
+export const getSingleAlbum = album => ({ type: GET_SINGLE_ALBUM, album });
+const createAlbum = msg => ({ type: CREATE_ALBUM, mssg: msg });
+const addImages = msg => ({ type: ADD_IMAGES, mssg: msg });
+const addUsers = msg => ({ type: ADD_USERS, mssg: msg });
+const removeAlbum = msg => ({ type: REMOVE_ALBUM, mssg: msg });
+export const selectAlbumToShare = album => ({
+  type: SELECT_ALBUM_TO_SHARE,
+  album,
+});
 export const clearAlbumToShare = () => ({ type: CLEAR_ALBUM_TO_SHARE });
 
 // API THUNKS
-export const fetchAllAlbums = (participant) => async dispatch => {
+export const fetchAllAlbums = participant => async dispatch => {
   try {
     const { data } = await axios.get(`/api/albums/${participant.id}`);
-    console.log(participant);
-    console.log(data);
+    // console.log(participant);
+    // console.log(data);
     dispatch(getAllAlbums(data));
   } catch (error) {
     console.error('ERROR IN FETCH ALL ALBUMS THUNK', error);
@@ -41,7 +44,7 @@ export const fetchSingleAlbum = (userId, albumId) => async dispatch => {
   }
 };
 
-export const postNewAlbum = (albumDetails) => async dispatch => {
+export const postNewAlbum = albumDetails => async dispatch => {
   try {
     const { owner } = albumDetails;
     await axios.post('/api/albums', albumDetails);
@@ -69,7 +72,7 @@ export const addUsersToAlbum = (albumId, users) => async dispatch => {
   }
 };
 
-export const deleteAlbum = (albumId) => async dispatch => {
+export const deleteAlbum = albumId => async dispatch => {
   try {
     await axios.delete(`/api/albums/${albumId}`);
     dispatch(removeAlbum('Remove Album Successful'));
@@ -78,7 +81,7 @@ export const deleteAlbum = (albumId) => async dispatch => {
   }
 };
 
-export const inviteUserToAlbum = (inviteDetails) => async dispatch => {
+export const inviteUserToAlbum = inviteDetails => async dispatch => {
   try {
     await axios.post('/api/albums/invite', inviteDetails);
   } catch (e) {

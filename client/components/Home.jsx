@@ -1,16 +1,36 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import LandingPage from './LandingPage.jsx';
+import { fetchAllAlbums } from '../redux/albums.js';
 
-const Home = props => {
-  const { authenticated } = props.currentUser;
+class Home extends Component {
+  constructor(props) {
+    super(props);
+  }
 
-  if (!authenticated) return <LandingPage />;
-  else return <Redirect to="/scrapbook" />;
-};
+  componentDidMount() {
+    const { user } = this.props.currentUser;
+    const { fetchAllAlbums } = this.props;
+    fetchAllAlbums(user);
+  }
+
+  render() {
+    const { authenticated } = this.props.currentUser;
+
+    if (!authenticated) return <LandingPage />;
+    else return <Redirect to="/scrapbook" />;
+  }
+}
 
 const mapStateToProps = ({ currentUser }) => ({ currentUser });
 
-export default connect(mapStateToProps)(Home);
+const mapDispatch = dispatch => ({
+  fetchAllAlbums: user => dispatch(fetchAllAlbums(user)),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatch
+)(Home);

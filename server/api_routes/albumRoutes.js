@@ -20,13 +20,14 @@ router.get('/:participantId', async (req, res, next) => {
 
     const albums = [];
     for (let i = 0; i < userAlbums.length; i++) {
-      const foundAlbum = await Album.findByPk(userAlbums[i].albumId, { include: [Image] });
+      const foundAlbum = await Album.findByPk(userAlbums[i].albumId, {
+        include: [Image],
+      });
       albums.push(foundAlbum);
     }
     console.log(chalk.green('Successfully got all albums'));
     return res.status(200).json(albums);
   } catch (e) {
-    console.error(e);
     next(e);
   }
 });
@@ -70,7 +71,10 @@ router.post('/', async (req, res, next) => {
     await newAlbum.update({ ownerId: owner.id });
     // participant association
     const foundUser = await User.findByPk(owner.id);
-    const userAlbum = await UserAlbum.create({participantId: foundUser.id, albumId: newAlbum.id });
+    const userAlbum = await UserAlbum.create({
+      participantId: foundUser.id,
+      albumId: newAlbum.id,
+    });
     console.log(chalk.green('Successfully CREATED album'));
     // add images
     for (let i = 0; i < selectedImages.length; i++) {
@@ -91,12 +95,15 @@ router.put('/addImages/:albumId', async (req, res, next) => {
     const retrievedAlbum = await Album.findByPk(req.params.albumId);
     // image to album association
     if (images.length > 0) {
-      images.forEach(async (img) => {
+      images.forEach(async img => {
         await retrievedAlbum.setImages(img);
       });
       console.log(chalk.green('Successfully added imgs to album'));
     } else {
-      res.status(500).json('No images provided').end();
+      res
+        .status(500)
+        .json('No images provided')
+        .end();
     }
   } catch (e) {
     console.error(chalk.red('ERROR ADDING IMGS TO ALBUM', e));
@@ -112,12 +119,15 @@ router.put('/addUsers/:albumId', async (req, res, next) => {
     const retrievedAlbum = await Album.findByPk(req.params.albumId);
     // image to album association
     if (users.length > 0) {
-      users.forEach(async (user) => {
+      users.forEach(async user => {
         await retrievedAlbum.setUsers(user);
       });
       console.log(chalk.green('Successfully added users to album'));
     } else {
-      res.status(500).json('No users provided').end();
+      res
+        .status(500)
+        .json('No users provided')
+        .end();
     }
   } catch (e) {
     console.error(chalk.red('ERROR ADDING USERS TO ALBUM', e));
@@ -146,11 +156,12 @@ router.post('/invite', async (req, res, next) => {
   // link to be updated once we have deployed app URL
   const link = `https://keepsake-1904.herokuapp.com/signup?invite=${album.id}`;
 
-  client.messages.create({
-    body: `You were invited to a Scrap Book! Click the link below to begin sharing images with your homies!\n\n ${link}`,
-    to: phoneNumber,
-    from: process.env.PHONE_NUMBER,
-  })
+  client.messages
+    .create({
+      body: `You were invited to a Scrap Book! Click the link below to begin sharing images with your homies!\n\n ${link}`,
+      to: phoneNumber,
+      from: process.env.PHONE_NUMBER,
+    })
     .then(message => console.log(message))
     .catch(e => console.error(e));
 });
