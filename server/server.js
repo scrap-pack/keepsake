@@ -1,29 +1,33 @@
+require('dotenv').config();
 const path = require('path');
 const express = require('express');
 const chalk = require('chalk');
-const app = express();
 const morgan = require('morgan');
+const cookieParser = require('cookie-parser');
 
-app.use(morgan('dev'));
+const app = express();
+
+// app.use(morgan(process.env.MORGAN_MODE || null));
 app.use(express.json());
 
-const publicPath = path.join(__dirname, './public');
+const publicPath = path.join(__dirname, '..', 'public');
 app.use(express.static(publicPath));
 
 const apiRoutes = require('./api_routes');
 
 // Add cookies and sessions
+app.use(cookieParser());
 
 app.use('/api', apiRoutes);
 
 // Serve index.html for all paths
-app.use('/*', (req, res, next) => {
+app.use('/*', (req, res) => {
   const publicHtml = path.join(publicPath, 'index.html');
   res.sendFile(publicHtml);
 });
 
-// Error-handling middleware
-app.use((error, req, res, next) => {
+// Error-handling middlewarels
+app.use((error, req, res) => {
   console.log(chalk.bold.red('Error: ', error.stack));
   res
     .status(error.status || 500)

@@ -7,7 +7,7 @@ module.exports = {
   },
   output: {
     filename: 'bundle.js',
-    path: path.join(__dirname, '/server/public'),
+    path: path.join(__dirname, '/public'),
   },
   devtool: 'source-map',
   module: {
@@ -18,6 +18,10 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'file-loader?name=/images/[name].[ext]',
       },
     ],
   },
