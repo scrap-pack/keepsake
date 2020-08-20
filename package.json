@@ -17,7 +17,7 @@
     "@tensorflow/tfjs-node": "^1.2.8",
     "aws-sdk": "^2.518.0",
     "axios": "^0.19.0",
-    "bcrypt": "^3.0.6",
+    "bcrypt": "^5.0.0",
     "canvas": "^2.6.0",
     "cookie-parser": "^1.4.4",
     "dotenv": "^8.1.0",
